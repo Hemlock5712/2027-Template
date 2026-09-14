@@ -3,7 +3,7 @@
     python tools/bringup_report.py [log.wpilog]
 
 Defaults to the newest log in ./logs. Needs `pip install robotpy-wpiutil`.
-Record one first with:  ./gradlew simulateJavaAgent '-Pmode=utility:Bring-Up' -PstopAfter=14
+Record one first with:  ./gradlew simulateJavaAgent -Pmode=teleop   (then move the arm through its presets)
 
 Mechanisms are discovered from the log, not hardcoded - anything BringUp measured shows up, and
 whether it is an arm, an elevator or a flywheel is worked out from what it did, not declared.
@@ -295,7 +295,7 @@ def main():
     if path is None:
         logs = glob.glob(os.path.join("logs", "*.wpilog"))
         if not logs:
-            sys.exit("No logs found. Record one with simulateJavaAgent -Pmode=utility:Bring-Up")
+            sys.exit("No logs found. Record one with simulateJavaAgent -Pmode=teleop")
         path = max(logs, key=os.path.getmtime)
     print(f"log: {path}")
 

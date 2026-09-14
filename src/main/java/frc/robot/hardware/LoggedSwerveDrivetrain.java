@@ -13,7 +13,6 @@ import com.ctre.phoenix6.swerve.utility.WheelForceCalculator;
 import frc.robot.Robot;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.utils.RunMode;
-import frc.robot.utils.SkidDetector;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -474,11 +473,6 @@ public class LoggedSwerveDrivetrain implements LoggedHardware.Device {
     Logger.recordOutput(
         "Drivetrain/TranslationSpeedMps", Math.hypot(inputs.velocity.vx, inputs.velocity.vy));
     Logger.recordOutput("Drivetrain/OdometrySamplesPerLoop", inputs.sampleTimestamps.length);
-    // Instrumentation only - nothing acts on it yet. Read SkidDetector's blind spots first.
-    Logger.recordOutput(
-        "Drivetrain/SkidRatio",
-        SkidDetector.ratio(
-            inputs.moduleVelocities, drivetrain.getModuleLocations(), inputs.velocity.omega));
     // What the last cycle's velocity change ASKED of each module. Rigid-body allocation only: it
     // knows nothing about load transfer, so this is demand, not grip. Read it against each module's
     // StatorCurrentAmps to see how much of the traction budget a launch really used.

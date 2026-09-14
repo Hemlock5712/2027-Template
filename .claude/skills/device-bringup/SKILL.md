@@ -142,21 +142,20 @@ skill).
 
 ## Running it
 
-**In sim** — the `Bring-Up` `@Utility` OpMode sweeps the arm through three poses while the flywheel
-holds speed, so one run produces every number. Nothing physical can move, so this one auto-enables
-and ends by itself:
+`BringUp` logs on every run, so any log of the mechanism moving far enough is a bring-up run. Move
+it with the **Teleop** OpMode: right trigger stows (vertical), left trigger intakes (horizontal),
+right bumper scores. Hold each pose ~2 s so the holding voltage settles — a moving arm has no kG.
 
 ```powershell
-./gradlew simulateJavaAgent '-Pmode=utility:Bring-Up' -PstopAfter=14
+./gradlew simulateJavaAgent -Pmode=teleop     # sim; drive the arm with a controller
 python tools/bringup_report.py
 ```
 
-**On real devices, add `-PhwSim` — and then you drive it, not the script.** `-PhwSim` talks to the
-devices over CAN, so real motors turn. The run will **not** enable itself: it starts the Driver
-Station, prints which OpMode to pick, and waits for you.
+**On real devices, add `-PhwSim`.** It talks to the devices over CAN, so real motors turn. The run
+will **not** enable itself: it starts the Driver Station, prints which OpMode to pick, and waits.
 
 ```powershell
-./gradlew simulateJavaAgent -PhwSim '-Pmode=utility:Bring-Up'
+./gradlew simulateJavaAgent -PhwSim -Pmode=teleop
 ```
 
 Then, in the Driver Station: pick the OpMode, **clear the mechanism's path**, hit Enable — and keep
@@ -218,8 +217,8 @@ actually turns. The closed loop, by contrast, needs a kV in order to measure a k
 A single settled point folds kS into kV and reads high. Measured on a bare Kraken X60, per-point
 volts/rps ran 0.1117 / 0.1105 / 0.1102 at 1 / 2 / 3 V while the slope gave **0.1094**.
 
-**3. Closed loop, to confirm — not to measure.** Write the measured kV in, then run the **Bring-Up**
-OpMode, clear the mechanism's path, and enable. Selecting the OpMode and enabling *is* the
+**3. Closed loop, to confirm — not to measure.** Write the measured kV in, then run **Teleop**,
+clear the mechanism's path, and enable. Selecting the OpMode and enabling *is* the
 confirmation gate; disable always stops it. Read the log from `/U/logs` (see the `log-reading`
 skill). It should now settle on target: with kV 0.1094 it settled at 25.14 rps on 2.766 V against
 2.756 V predicted, a 10 mV agreement between two independent methods.
@@ -299,12 +298,12 @@ Put the measured numbers where the mechanism is configured, not in a spreadsheet
 - `kG`, `kV`, `kS` → `config.Slot0.*`
 - soft limits → `config.SoftwareLimitSwitch.*`, **before** anything runs closed-loop
 
-Then deploy and re-run the sweep to confirm.
+Then deploy and re-run the poses to confirm.
 
 ## Safety
 
-- Nothing here moves on its own. The **Bring-Up** OpMode does — selecting it and enabling is the
-  confirmation, and disable always works.
+- Nothing here moves on its own; you move the arm from **Teleop**. Selecting the OpMode and
+  enabling is the confirmation, and disable always works.
 - Do the disabled, hand-moved pass first. It gets the ratio, the sign and the zero with no risk.
 - Set soft limits before the first closed-loop move, not after.
 - The tool cannot see the robot. Any claim about physical state ("the arm is horizontal") is yours

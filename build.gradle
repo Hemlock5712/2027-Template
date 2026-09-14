@@ -96,6 +96,8 @@ dependencies {
 test {
     useJUnitPlatform()
     systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
+    // The template ships no unit tests; ReplayCheck is a main(), not JUnit. Don't fail an empty run.
+    failOnNoDiscoveredTests = false
 }
 
 // Simulation configuration (e.g. environment variables).
@@ -104,7 +106,7 @@ test {
 //   ./gradlew simulateJava                         -> normal GUI sim (a human clicks Enable)
 //   ./gradlew simulateJavaAgent                    -> headless, robot auto-enables in AUTONOMOUS
 //   ./gradlew simulateJavaAgent -Pmode=teleop      -> headless, auto-enables in TELEOP
-//   ./gradlew simulateJavaAgent -Pmode=auto:"Drive To Pose"  -> pick a specific @Autonomous OpMode
+//   ./gradlew simulateJavaAgent -Pmode=auto:"Drive 2 Meters"  -> pick a specific @Autonomous OpMode
 //   ./gradlew simulateJava -Pheadless -Pmode=auto  -> same headless behavior on the base task
 // SimStartup.java reads the frc.sim.startMode system property wired below; see the run-sim skill.
 def runningAgentSim = gradle.startParameter.taskNames.any { it.endsWith('simulateJavaAgent') }

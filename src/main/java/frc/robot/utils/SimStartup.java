@@ -21,7 +21,7 @@ public final class SimStartup {
 
   // Which OpMode a bare "-Pmode=auto" (or teleop, or utility) starts. Named on purpose: picking
   // "whichever OpMode is first" lets a newly added class silently take over the default run.
-  private static final String DEFAULT_AUTONOMOUS = "3 - Drive Stow Drive";
+  private static final String DEFAULT_AUTONOMOUS = "Drive 2 Meters";
   private static final String DEFAULT_TELEOP = "Teleop";
   private static final String DEFAULT_UTILITY = "Stow";
 

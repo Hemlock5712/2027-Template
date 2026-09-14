@@ -35,7 +35,7 @@ robot in the mode you ask for, so it actually starts playing instead of sitting 
 ./gradlew simulateJavaAgent -Pmode=utility
 
 # Pick a SPECIFIC OpMode by name: "<mode>:<@Autonomous/@Teleop/@Utility name>".
-./gradlew simulateJavaAgent '-Pmode=auto:2 - Drive To Pose'
+./gradlew simulateJavaAgent '-Pmode=auto:Drive 2 Meters'
 ```
 
 You can also apply the headless behavior to the base task: `./gradlew simulateJava -Pheadless -Pmode=auto`.
@@ -51,10 +51,9 @@ falls back rather than sitting silently disabled.
 | --- | --- |
 | `-Pheadless` | Skip the sim GUI. Implied by `simulateJavaAgent`. |
 | `-PhwSim` | Talk to REAL devices over CAN. Forces the Driver Station on and refuses to auto-enable. |
-| `-Pmode=auto` | Auto-enable in AUTONOMOUS (default for `simulateJavaAgent`). Runs **"3 - Drive Stow Drive"** — it exercises the drivetrain *and* the arm, so it's the useful regression test. |
+| `-Pmode=auto` | Auto-enable in AUTONOMOUS (default for `simulateJavaAgent`). Runs **"Drive 2 Meters"**. |
 | `-Pmode=teleop` | Auto-enable in TELEOPERATED. Runs **"Teleop"**. |
 | `-Pmode=utility` | Auto-enable in UTILITY (the renamed "Test"). Runs **"Stow"** — arm only, no drivetrain, so it's the clean way to isolate mechanism behavior. |
-| `-Pmode=utility:Bring-Up` | Sweep the arm through its presets with the flywheel spinning, to measure gear ratio / kG / kV. See the `device-bringup` skill. |
 | `-Pmode=<mode>:<name>` | Pick the OpMode of `<mode>` whose annotation `name` matches `<name>`. |
 | `-PstopAfter=<seconds>` | Exit on its own after N seconds. Without it the sim runs until killed, so scripts and CI need this. Works with `-Pmode=disabled` too. |
 | `-Pmode=disabled -PstopAfter=<n>` | Record a fixed-length log with the robot **never enabled** — the disabled first pass of the `device-bringup` skill. |
@@ -84,8 +83,8 @@ In the console output you should see, in order:
 
 ```
 ********** Robot program startup complete **********
-[SimStartup] Headless start: enabled=true mode=AUTONOMOUS opmode="3 - Drive Stow Drive"
-********** Starting OpMode 3 - Drive Stow Drive **********
+[SimStartup] Headless start: enabled=true mode=AUTONOMOUS opmode="Drive 2 Meters"
+********** Starting OpMode Drive 2 Meters **********
 ```
 
 If `[SimStartup]` is missing, the task wasn't `simulateJavaAgent` and you didn't pass `-Pmode`. If

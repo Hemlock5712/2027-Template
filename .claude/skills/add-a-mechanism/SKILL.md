@@ -94,8 +94,8 @@ Two traps, both of which produce a routine that silently skips a step:
   first loop of a chained move, so `positionOut.Position` still holds the *previous* pose and the
   motor's `MotionMagicAtTarget` is still the previous `true`. If the mechanism is already sitting at
   that previous pose, the step can finish instantly without moving. Keep this in mind when a
-  `.until(mech::atPosition)` step follows a hold at a different pose; `ArmState` sidesteps it with
-  its `current == requested` guard.
+  `.until(mech::atPosition)` step follows a hold at a different pose. A state machine sidesteps it
+  with a `current == requested` guard — see `StateMachineTeleop`.
 
 `getMotionMagicAtTarget()` still earns its place in the `&&`: it is false before anything commands
 the mechanism (so nothing reports success at startup) and it rules out "arrived" firing while the

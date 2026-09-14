@@ -16,11 +16,10 @@ import org.wpilib.opmode.PeriodicOpMode;
 /**
  * The simplest autonomous in this project: drive forward 2 meters and stop.
  *
- * <p>Start here. There are no field positions, no alliance colors, and no motion profiles - just
- * one {@link DriveDistance} command. Once this makes sense, "2 - Drive To Pose" is the next step
- * up.
+ * <p>No field positions, no alliance colors, no motion profiles - just one {@link DriveDistance}
+ * command. Swap in {@link frc.robot.commands.DriveToPose} for a field-relative goal.
  */
-@Autonomous(name = "1 - Drive 2 Meters")
+@Autonomous(name = "Drive 2 Meters")
 public class DriveDistanceOpMode extends PeriodicOpMode {
   private static final double DISTANCE_METERS = 2.0;
 

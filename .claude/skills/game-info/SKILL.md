@@ -31,8 +31,7 @@ Respect these as project conventions rather than re-deriving them:
 - **Field origin is blue alliance.** Odometry pose ([DriveMechanism.getPose](src/main/java/frc/robot/subsystems/DriveMechanism.java))
   is always in the **blue-alliance-origin** frame (the CTRE/Phoenix convention — the origin does
   **not** move with alliance). Field poses you hand to [DriveToPose](src/main/java/frc/robot/commands/DriveToPose.java)
-  are blue-origin (see the comments in [AutonomousOpMode.java](src/main/java/frc/robot/opmodes/AutonomousOpMode.java):
-  "x forward from the blue wall, y left").
+  are blue-origin: x forward from the blue wall, y left.
 - **Alliance affects the driver's *perspective*, not the field origin.** The drivetrain applies an
   **operator perspective** in [CommandSwerveDrivetrain.applyOperatorPerspective](src/main/java/frc/robot/subsystems/CommandSwerveDrivetrain.java):
   blue sees forward as `0°`, red sees forward as `180°`. So "push the stick away from you" means

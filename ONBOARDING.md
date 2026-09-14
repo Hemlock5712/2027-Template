@@ -35,16 +35,11 @@ drive and vision code is a real step up in difficulty, so it comes last on purpo
 6. **`opmodes/UtilityOpMode.java`** — the third mode kind, tiny.
 7. **`opmodes/DriveDistanceOpMode.java`** + **`commands/DriveDistance.java`** — the simplest auto,
    and your first **closed loop**: drive 2 meters and stop.
-8. **`opmodes/AutonomousOpMode.java`** — the same idea against real field positions.
-9. **`opmodes/DriveStowDriveOpMode.java`** — a multi-mechanism auto by **chaining**
-   (`sequence` + `.until` + `race`). This is as advanced as most routines need to be — see
-   "Holds never finish" below.
-10. **`opmodes/StateMachineTeleop.java`** — teleop as named states + transitions instead of
-    hold-a-button.
+8. **`opmodes/StateMachineTeleop.java`** — teleop as named states + transitions instead of
+   hold-a-button.
 
-The autonomous OpModes are **numbered on the driver station** (`1 - Drive 2 Meters`,
-`2 - Drive To Pose`, `3 - Drive Stow Drive`), so the list you pick from is the order to learn them
-in.
+One OpMode of each kind ships here, as a starting point to copy. `commands/DriveToPose.java` is the
+field-relative auto step to reach for once "drive 2 meters" isn't enough.
 
 **Advanced — don't start here.** This is real, working code, but it layers PID, feedforward, motion
 profiling, coordinate frames, and vision all at once. Come back once the pattern above feels
@@ -143,10 +138,8 @@ three rows) is as far as most routines ever need to go:**
 | Do a step *while* holding a pose | `Command.race(step, hold)` | the step finishes → the race cancels the hold |
 | Advanced: a hold spanning many steps, loops, branches | coroutine: `fork` holds, `await` finishers | `fork` never waits; only `await` waits |
 
-See `opmodes/AutonomousOpMode.java` (sequence) and `opmodes/DriveStowDriveOpMode.java` (chaining
-with `.until` + `race`) — those two cover almost everything. Coroutines are taught in the
-**workshop repo** (branch `6-Coroutines`); `opmodes/StateMachineTeleop.java` here shows teleop as a
-state machine.
+Coroutines are taught in the **workshop repo** (branch `6-Coroutines`);
+`opmodes/StateMachineTeleop.java` here shows teleop as a state machine.
 
 Tip: `.withTimeout(seconds)` on any `.until(...)` step is the seatbelt — if a mechanism never
 quite reaches its setpoint, the auto moves on instead of burning the whole period stuck.

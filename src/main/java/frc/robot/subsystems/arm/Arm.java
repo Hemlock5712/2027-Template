@@ -30,7 +30,7 @@ import org.wpilib.system.RobotController;
  * exposes commands - that's how the scheduler stops two things from fighting over the motor.
  */
 public class Arm extends Mechanism {
-  // 50 motor turns = 1 arm turn. Confirm on hardware with the "Bring-Up" utility OpMode.
+  // 50 motor turns = 1 arm turn. Confirm on hardware - see the device-bringup skill.
   private static final double GEAR_RATIO = 50.0;
 
   // Magnet offset and 0..1 range are set on the CANcoder itself in Tuner X, not here.

@@ -59,13 +59,10 @@ constructor taking `(Robot robot)` (or no args). Selecting a mode prints
 | --- | --- | --- |
 | [TeleopOpMode.java](src/main/java/frc/robot/opmodes/TeleopOpMode.java) | `@Teleop("Teleop")` | Driver experience. Xbox controller on port 0; field-centric swerve as the drivetrain default command. **LT** = `intake()`, **RB** = `score()`, **RT** = `stow()` (superstructure presets, `whileTrue`); **A** = `DriveToTag` align (camera `robot.limelightBR`); **Y** = `autoScore()` (arm to scoring pose + flywheel spin-up; releasing **Y** stops the flywheel). |
 | [StateMachineTeleop.java](src/main/java/frc/robot/opmodes/StateMachineTeleop.java) | `@Teleop("State Machine (no driving)")` | The superstructure as a Commands-v3 `StateMachine`: named states (stowed/pickup/prep/scoring), `when(...)` / `whenComplete()` transitions, enter/exit hooks. No drive controls — a superstructure showcase. |
-| [DriveDistanceOpMode.java](src/main/java/frc/robot/opmodes/DriveDistanceOpMode.java) | `@Autonomous("1 - Drive 2 Meters")` | The simplest auto and the first closed loop: one [DriveDistance](src/main/java/frc/robot/commands/DriveDistance.java) with a `.withTimeout(...)` seatbelt. No field frame, no alliance, no profile. |
-| [AutonomousOpMode.java](src/main/java/frc/robot/opmodes/AutonomousOpMode.java) | `@Autonomous("2 - Drive To Pose")` | Sequences two `DriveToPose` legs with `Command.sequence(...).named(...)`. The sequential group inherits its children's requirement (the drivetrain), and the scheduler hands the drivetrain off between legs. `start()` schedules the routine; `end()` cancels it. |
-| [DriveStowDriveOpMode.java](src/main/java/frc/robot/opmodes/DriveStowDriveOpMode.java) | `@Autonomous("3 - Drive Stow Drive")` | **The reference for multi-mechanism autos** — chaining: `sequence` + `.until(arm::atPosition)` (give a hold a finish line) + `Command.race(step, hold)` (do a step while holding a pose). This style is the team's teaching ceiling. |
+| [DriveDistanceOpMode.java](src/main/java/frc/robot/opmodes/DriveDistanceOpMode.java) | `@Autonomous("Drive 2 Meters")` | The simplest auto and the first closed loop: one [DriveDistance](src/main/java/frc/robot/commands/DriveDistance.java) with a `.withTimeout(...)` seatbelt. No field frame, no alliance, no profile. |
 | [UtilityOpMode.java](src/main/java/frc/robot/opmodes/UtilityOpMode.java) | `@Utility("Stow")` | Safe off-field pose (arm vertical, flywheel stopped). `@Utility` is the renamed 2027 "Test" mode. |
-| [BringUpOpMode.java](src/main/java/frc/robot/opmodes/BringUpOpMode.java) | `@Utility("Bring-Up")` | **Moves the mechanisms.** Sweeps the arm through its three presets with a 2.5 s dwell each while the flywheel holds speed, so one run yields gear ratio, magnet offset and kG/kV. See the `device-bringup` skill. |
 
-Add a routine = add another annotated class. `start()` schedules the command, `end()` cancels it.
+One OpMode of each kind ships, as a starting point to copy. Add a routine = add another annotated class. `start()` schedules the command, `end()` cancels it.
 
 ## Subsystems — [src/main/java/frc/robot/subsystems/](src/main/java/frc/robot/subsystems/)
 
@@ -226,9 +223,9 @@ Physics is CTRE's Phoenix 6 swerve plant sim (no maple-sim). Full details in the
 | Drive commands | [commands/](src/main/java/frc/robot/commands/) |
 | v2-style command base | [utils/ClassicCommand.java](src/main/java/frc/robot/utils/ClassicCommand.java) |
 | Swerve constants / IDs / gains | [generated/TunerConstants.java](src/main/java/frc/robot/generated/TunerConstants.java) |
-| Logged device wrappers (replay) | [hardware/](src/main/java/frc/robot/hardware/) — `LoggedTalonFX`, `LoggedCANcoder`, `LoggedCANrange`, `LoggedLimelight`, `LoggedSwerveDrivetrain` |
+| Logged device wrappers (replay) | [hardware/](src/main/java/frc/robot/hardware/) — `LoggedTalonFX`, `LoggedCANcoder`, `LoggedLimelight`, `LoggedSwerveDrivetrain` |
 | Per-loop sensor read + log | [hardware/LoggedHardware.java](src/main/java/frc/robot/hardware/LoggedHardware.java) |
-| Bring-up measurements (ratio, offset, kG/kV) | [hardware/BringUp.java](src/main/java/frc/robot/hardware/BringUp.java) + [opmodes/BringUpOpMode.java](src/main/java/frc/robot/opmodes/BringUpOpMode.java) |
+| Bring-up measurements (ratio, offset, kG/kV) | [hardware/BringUp.java](src/main/java/frc/robot/hardware/BringUp.java) — always on, every run |
 | REAL / SIM / REPLAY mode | [utils/RunMode.java](src/main/java/frc/robot/utils/RunMode.java) |
 | Replay regression check | [ReplayCheck.java](src/test/java/frc/robot/ReplayCheck.java) (`./gradlew replayCheck`) |
 | AdvantageKit opmode base class (delete once upstream) | [org/littletonrobotics/junction/LoggedOpModeRobot.java](src/main/java/org/littletonrobotics/junction/LoggedOpModeRobot.java) |

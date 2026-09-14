@@ -26,7 +26,7 @@ jobs:
 
       # Record a log headlessly. stopAfter makes the sim end on its own instead of running forever.
       - name: Record a simulation log
-        run: ./gradlew simulateJavaAgent -Pmode=auto:"3 - Drive Stow Drive" -PstopAfter=20
+        run: ./gradlew simulateJavaAgent -Pmode=auto:"Drive 2 Meters" -PstopAfter=20
 
       # Replay that log and fail if any output differs from what the robot actually did. This is
       # what catches a sensor read that stopped going through the log.

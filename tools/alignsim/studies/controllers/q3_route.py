@@ -118,7 +118,7 @@ if __name__ == "__main__":
                 rs = [run_move(fac, build(p, es, sw), cfg, 2000 + i) for i, p in enumerate(pts_list)]
             s = summarize_route(rs)
             rows.append((label, s))
-            out[f"{rname}/{label}"] = {"summary": s, "rows": rs}
+            out[f"{rname}/{label}"] = {"summary": s}
         tables.append(md(rows, COLS, f"Q3 route: {rname}, n={n}"))
         print(tables[-1], flush=True)
     save("q3_route", out)

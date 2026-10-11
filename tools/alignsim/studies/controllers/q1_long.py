@@ -38,7 +38,7 @@ if __name__ == "__main__":
                     s["away_over_p95_cm"] = sa["over_p95_cm"]
                     s["away_odo_p95_cm"] = sa["odo_p95_cm"]
                 rows.append((law, s))
-                out[f"{set_name}/{start}/{law}"] = {"summary": s, "rows": r}
+                out[f"{set_name}/{start}/{law}"] = {"summary": s}
             tables.append(md(rows, MOVE_COLS, f"Q1 {set_name} limits, start {start}, n={n}"))
             if start == "moving":
                 tables.append(md(rows, [("away_t_settle", "away: t settle", "{:.2f}"),

@@ -7,6 +7,7 @@ frame velocity command (vx, vy, w), locked(), estimate() -> piece (x, y) in the 
   (c) KalmanPiece    - constant-velocity Kalman filter in the odom frame, intercept + velocity feedforward
   (d) Hybrid         - position-based far away, edge-clipped boxes rejected, commit near the intake,
                        drive through the piece instead of stopping on it
+      BearingMemory  - bearing pursuit in view + odom-frame KF memory once lost (the study's pick)
 """
 
 import math

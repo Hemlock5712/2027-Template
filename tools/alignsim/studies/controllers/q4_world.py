@@ -13,7 +13,7 @@ sys.path.insert(0, __file__.rsplit("/alignsim/", 1)[0])
 from alignsim.params import LoopParams  # noqa: E402
 from alignsim.studies.controllers.approach import APPROACH_COLS, approach_summary, run_approach  # noqa: E402
 from alignsim.studies.controllers.common import Timer, md, save  # noqa: E402
-from alignsim.studies.controllers.q1b_fixes import LAWS as FIXED, VB_TUNED  # noqa: E402
+from alignsim.studies.controllers.q1b_fixes import LAWS as FIXED  # noqa: E402
 from alignsim.studies.controllers.variants import VectorBrakeX  # noqa: E402
 from alignsim.world import Scenario  # noqa: E402
 
@@ -23,8 +23,10 @@ CONDS = {
     "actuation +20 ms": Scenario(loop=replace(LP, actuation_delay=0.022)),
     "100 Hz + 20 ms": Scenario(loop=replace(LP, odom_period=0.01, actuation_delay=0.022)),
 }
+VB_SHIP = partial(VectorBrakeX, vmax=4.0, decel=4.0, accel=5.0, kp=6.0, react=0.05, wmax=6.0, wdecel=6.0,
+                  waccel=8.0, kp_w=5.0, wreact=0.05)
 TOP = {
-    "VB tuned": VB_TUNED,
+    "VB ship (kp 6, rot 6/8, wreact 0.05)": VB_SHIP,
     "PerAxis2026 db 0.5": FIXED["PerAxis2026, deadbands 0.5 cm / 0.5°"],
 }
 VB_T = dict(vmax=4.0, decel=4.0, accel=5.0, wmax=6.0, wdecel=6.0, waccel=8.0)
@@ -34,7 +36,7 @@ EXTRA = {
 }
 
 if __name__ == "__main__":
-    n = int(sys.argv[1]) if len(sys.argv) > 1 else 60
+    n = int(sys.argv[1]) if len(sys.argv) > 1 else 40
     out, rows = {}, []
     for cname, sc in CONDS.items():
         for law, fac in TOP.items():

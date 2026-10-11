@@ -22,8 +22,8 @@ STRATEGIES = {
     "B'": ("B with the gyro now (no latency compensation)", P(BearingPursuit, comp=False)),
     "C": ("constant-velocity Kalman in odom, lead + feedforward", KalmanPiece),
     "D": ("hybrid: KF far, commit at the image edge, heading frozen, drive through", P(Hybrid, reach=0.30, commit=0.3)),
-    "H": ("hybrid: bearing pursuit in view, drive to the odom-frame KF estimate once lost", BearingMemory),
-    "R": ("recommended: C + no 4 m gate + reach 0.40", P(Hybrid, reach=0.40, tracker_kw={"edge_reject": False})),
+    "H": ("RECOMMENDED hybrid: bearing pursuit in view, drive to the odom-frame KF estimate once lost", BearingMemory),
+    "R": ("best DriveToPose-based: C + no 4 m gate + reach 0.40", P(Hybrid, reach=0.40, tracker_kw={"edge_reject": False})),
 }
 
 BASE = PieceScenario()

@@ -15,13 +15,12 @@ sys.path.insert(0, __file__.rsplit("/alignsim/", 1)[0])
 from alignsim.params import LoopParams, RobotParams  # noqa: E402
 from alignsim.studies.controllers.bench import BenchCfg, summarize_moves  # noqa: E402
 from alignsim.studies.controllers.common import Timer, make_moves, md, run_batch, save  # noqa: E402
-from alignsim.studies.controllers.laws import MATCHED  # noqa: E402
 from alignsim.studies.controllers.q1b_fixes import LAWS as FIXED, VB_TUNED  # noqa: E402
 from alignsim.studies.controllers.variants import VectorBrakeX  # noqa: E402
 
 LAWS = {
     "VB tuned": VB_TUNED,
-    "VB matched (kp 4)": MATCHED["VectorBrake"],
+    "PerAxis2026 db 0.5": FIXED["PerAxis2026, deadbands 0.5 cm / 0.5°"],
     "581 fixed": FIXED["581 fixed (both)"],
     "6328 + limit": FIXED["6328 + vector limit"],
 }

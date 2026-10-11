@@ -25,11 +25,11 @@ CONDS = {
 }
 TOP = {
     "VB tuned": VB_TUNED,
-    "581 fixed": FIXED["581 fixed (both)"],
+    "PerAxis2026 db 0.5": FIXED["PerAxis2026, deadbands 0.5 cm / 0.5°"],
 }
 VB_T = dict(vmax=4.0, decel=4.0, accel=5.0, wmax=6.0, wdecel=6.0, waccel=8.0)
 EXTRA = {
-    "VB tuned, kp 12": partial(VectorBrakeX, kp=12.0, **VB_T),
+    "VB tuned but kp 12": partial(VectorBrakeX, kp=12.0, **VB_T),
     "VB sqrt only (kp inf)": partial(VectorBrakeX, kp=1e6, **VB_T),
 }
 

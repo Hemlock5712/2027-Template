@@ -18,7 +18,7 @@ import numpy as np
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
 
 from alignsim.camera import Camera  # noqa: E402
-from alignsim.geom import relative, rot, wrap  # noqa: E402
+from alignsim.geom import relative, rot  # noqa: E402
 from alignsim.odometry import PoseEstimator, SwerveOdometry  # noqa: E402
 from alignsim.params import CameraParams  # noqa: E402
 from alignsim.plant import SwervePlant  # noqa: E402

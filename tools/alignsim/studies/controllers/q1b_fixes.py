@@ -4,6 +4,7 @@
     cd tools && python3 alignsim/studies/controllers/q1b_fixes.py [n]
 """
 
+import math
 import sys
 from functools import partial
 
@@ -15,14 +16,15 @@ from alignsim.studies.controllers.laws import MATCHED  # noqa: E402
 from alignsim.studies.controllers.variants import Trailblazer581X, VecLimited, VectorBrakeX  # noqa: E402
 
 T581 = dict(vmax=4.0, amax=5.0, wmax=6.0, walpha=12.0)
-VB_TUNED = partial(VectorBrakeX, vmax=4.0, decel=4.0, accel=5.0, kp=8.0, wmax=6.0, wdecel=6.0, waccel=8.0)
+VB_TUNED = partial(VectorBrakeX, vmax=4.0, decel=4.0, accel=5.0, kp=6.0, wmax=6.0, wdecel=6.0, waccel=8.0)
 LAWS = {
-    "VectorBrake tuned (kp 8, rot 6/8)": VB_TUNED,
+    "VectorBrake tuned (kp 6, rot 6/8)": VB_TUNED,
     "581, floor 0 only": partial(Trailblazer581X, floor=0.0, **T581),
     "581, vector accel 5 only": partial(Trailblazer581X, vec_accel=5.0, **T581),
     "581 fixed (both)": partial(Trailblazer581X, floor=0.0, vec_accel=5.0, **T581),
     "6328 + vector limit": partial(VecLimited, MATCHED["Rolling6328"]),
     "LinearPathPID + vector limit": partial(VecLimited, MATCHED["LinearPathPID"]),
+    "PerAxis2026, deadbands 0.5 cm / 0.5°": partial(MATCHED["PerAxis2026"], pos_tol=0.005, rot_tol=math.radians(0.5)),
 }
 
 if __name__ == "__main__":

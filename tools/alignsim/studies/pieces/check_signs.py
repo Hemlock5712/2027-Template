@@ -1,6 +1,7 @@
 """End-to-end tx/ty sign check: a piece on the robot's LEFT must give tx < 0 and a floor point with
 y > 0; a nearer piece must give a lower ty. Also checks PieceCamera == core Camera when the box
-model is off. Run: python3 check_signs.py (asserts, prints a small table)."""
+model is off. Run: python3 check_signs.py [--closed-loop] (asserts, prints tables; --closed-loop also drives with
+a flipped tx sign to show what that bug looks like)."""
 
 import math
 import os
@@ -58,5 +59,54 @@ def main():
     print("signs OK: left piece -> tx < 0 -> floor y > 0; nearer -> lower ty; PieceCamera == core")
 
 
+class FlipTx:
+    """Wraps a strategy and flips the sign of every tx it sees (a tx sign bug)."""
+
+    def __init__(self, inner):
+        self.inner = inner
+
+    def __getattr__(self, k):
+        return getattr(self.inner, k)
+
+    def step(self, t, snap, frames, est):
+        for fr in frames:
+            fr.pieces = [(-tx, ty) for tx, ty in fr.pieces]
+        return self.inner.step(t, snap, frames, est)
+
+
+def flipped_demo(n=60):
+    """Closed loop with a sign bug: what it looks like on the robot."""
+    from configs import BASE
+    from piece_world import run_set, summarize as summ
+    from strategies import JavaPiece
+
+    cases = {
+        "correct signs": (BASE, JavaPiece),
+        "tx sign flipped": (BASE, lambda: FlipTx(JavaPiece())),
+        "piece dead ahead only (bearing +-2 deg), tx flipped": (replace(BASE, bearing0_deg=2.0), lambda: FlipTx(JavaPiece())),
+    }
+    print("\n| case (Java A, base stress) | success % | no lock % | median lateral miss cm |")
+    print("|---|---:|---:|---:|")
+    for name, (sc, f) in cases.items():
+        rows = run_set(sc, f, n, seed0=500)
+        s = summ(rows)
+        nolock = 100.0 * sum(1 for r in rows if r["t_lock"] is None) / n
+        print(f"| {name} | {s['success_%']:.0f} | {nolock:.0f} | {s['miss_med_cm']:.1f} |")
+    # pitch sign flipped: the believed camera looks UP, so floor rays rarely hit the floor
+    from piece_world import PieceWorld
+    from alignsim.geom import rot3_rpy
+
+    w = PieceWorld(BASE, 1)
+    mount_up = w.cams[0].mount_believed.copy()
+    mount_up[:3, :3] = rot3_rpy(0.0, math.radians(-25), 0.0)
+    hits = 0
+    for d in (1.0, 1.5, 2.0, 3.0):
+        tx, ty = detect(w.cams[0], (0, 0, 0), (d, 0.0))[0]
+        hits += floor_point(mount_up, tx, ty, 0.10) is not None
+    print(f"pitch sign flipped (25 deg down entered as up): floor point found for {hits}/4 pieces at 1-3 m -> never locks")
+
+
 if __name__ == "__main__":
     main()
+    if "--closed-loop" in sys.argv:
+        flipped_demo()

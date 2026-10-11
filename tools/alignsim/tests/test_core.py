@@ -138,7 +138,7 @@ def test_replay_roundtrip(tmp_path):
 
     path = str(tmp_path / "syn.wpilog")
     truth = write_synthetic(path)
-    obs, _, guesses = load(path, 1)
-    assert len(obs) > 20 and len(guesses) == 1
-    est = replay(obs, guesses, variants())["TagTracker.java (as shipped)"][-1][1]
+    obs, _, resets = load(path, 1)
+    assert len(obs) > 20 and len(resets) == 1
+    est = replay(obs, resets, variants())["TagTracker.java (as shipped)"][-1][1]
     assert math.hypot(est[0] - truth[0], est[1] - truth[1]) < 0.005

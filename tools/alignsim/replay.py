@@ -8,9 +8,8 @@ The robot's TagTracker logs, every loop, one array entry per camera frame of the
     Ambiguity       double[]  per-frame pose ambiguity      (optional)
     Distance        double[]  camera -> tag distance (m)    (optional; derived if missing)
     Camera          double[]  camera index                  (optional)
-    MapGuess        Pose2d    the map's tag pose in the odometry frame, logged at each reset (optional)
+    Approach        int       counts tracker resets; the replay resets wherever it changes (optional)
 plus Drivetrain/OdometryPose. That is everything a tracker needs, so any variant can be re-run.
-Each MapGuess marks a new approach, so the replay resets there.
 
 Usage (from tools/):
     python3 -m alignsim.replay LOG.wpilog --tag 1            # compare tracker variants
@@ -42,7 +41,7 @@ class Obs:
 def load(path, tag):
     pre = f"TagTracker/{tag}/"
     keys = [pre + k for k in ("TagInRobot", "RobotAtCapture", "FrameAgeSeconds", "Ambiguity", "Distance",
-                              "Camera", "MapGuess")] + ["Drivetrain/OdometryPose", "Drivetrain/Pose"]
+                              "Camera", "Approach")] + ["Drivetrain/OdometryPose", "Drivetrain/Pose"]
     d = read(path, keys)
 
     def series(k):
@@ -54,7 +53,11 @@ def load(path, tag):
     tir, rac, age = series(pre + "TagInRobot"), series(pre + "RobotAtCapture"), series(pre + "FrameAgeSeconds")
     amb, dist, cam = series(pre + "Ambiguity"), series(pre + "Distance"), series(pre + "Camera")
     odom = sorted(series("Drivetrain/OdometryPose").items())
-    guesses = sorted(series(pre + "MapGuess").items())
+    resets, last = [], None
+    for t, v in sorted(series(pre + "Approach").items()):
+        if v != last:
+            resets.append((t, None))
+            last = v
     obs = []
     for t in sorted(tir):
         poses = tir[t]
@@ -68,23 +71,25 @@ def load(path, tag):
             cm = cam.get(t, [0.0] * len(poses))
             obs.append(Obs(t, p, r, a[i] if i < len(a) else 0.0, am[i] if i < len(am) else 0.0,
                            ds[i] if i < len(ds) else math.hypot(p[0], p[1]), int(cm[i]) if i < len(cm) else 0))
-    return obs, odom, guesses
+    return obs, odom, resets
 
 
 # ---------------------------------------------------------------------------- tracker variants
 class ReplayKF:
-    """The first TagTracker.java (per-axis Kalman, jump gate), fed directly from logged inputs."""
+    """TagTracker.java as shipped (per-axis Kalman, jump gate, ambiguity cut, per-camera correction),
+    fed directly from logged inputs."""
 
     def __init__(self, xy_floor=0.005, xy_k=0.01, yaw_floor=math.radians(0.5), yaw_k=math.radians(1.5),
-                 drift=(0.002, math.radians(0.1)), gate=0.25, max_amb=1.0, yaw_amb=0.0, cam_corr=None):
+                 drift=(0.002, math.radians(0.1)), gate=0.25, max_amb=0.3, yaw_amb=0.0, max_dist=None,
+                 cam_corr=None):
         self.p = dict(xy_floor=xy_floor, xy_k=xy_k, yaw_floor=yaw_floor, yaw_k=yaw_k, drift=drift, gate=gate,
-                      max_amb=max_amb, yaw_amb=yaw_amb)
+                      max_amb=max_amb, yaw_amb=yaw_amb, max_dist=max_dist)
         self.cam_corr = cam_corr or {}
         self.est, self.var, self.jumps, self.n = None, [0, 0, 0], 0, 0
 
     def update(self, o):
         p = self.p
-        if o.amb > p["max_amb"]:
+        if o.amb > p["max_amb"] or (p["max_dist"] is not None and o.dist > p["max_dist"]):
             return
         tir = o.tag_in_robot
         if o.cam in self.cam_corr:
@@ -117,12 +122,13 @@ class ReplayKF:
 
 
 class ReplayGeo:
-    """TagTracker.java math as shipped: x/y Kalman with depth/side noise along the camera ray, yaw with
-    an ambiguity term and a 4-sigma gate, map guess to start, lock on sigma, per-camera correction."""
+    """The sim's geo filter (studies/tag/geotracker.py): x/y Kalman with depth/side noise along the camera
+    ray, yaw with an ambiguity term and a 4-sigma gate, lock on sigma, per-camera correction. Tied with
+    the per-axis filter in the sim once cameras are calibrated; kept here to compare on real logs."""
 
     def __init__(self, floor=0.004, depth_k=0.006, side_k=0.003, yaw_floor=math.radians(0.3),
                  yaw_k=math.radians(0.45), yaw_amb=math.radians(9.0), q_xy=0.0015, q_yaw=math.radians(0.05),
-                 prior_xy=0.08, prior_yaw=math.radians(1.5), use_prior=True, gate=0.25, yaw_gate=4.0,
+                 prior_xy=0.08, prior_yaw=math.radians(1.5), use_prior=False, gate=0.25, yaw_gate=4.0,
                  lock_frames=3, lock_sigma=0.03, max_dist=None, cam_corr=None):
         self.p = dict(floor=floor, depth_k=depth_k, side_k=side_k, yaw_floor=yaw_floor, yaw_k=yaw_k,
                       yaw_amb=yaw_amb, q_xy=q_xy, q_yaw=q_yaw, prior_xy=prior_xy, prior_yaw=prior_yaw,
@@ -186,19 +192,19 @@ class ReplayGeo:
 def variants(cam_corr=None):
     c = cam_corr or {}
     return {
-        "TagTracker.java (as shipped)": lambda: ReplayGeo(cam_corr=c),
-        "no camera correction": lambda: ReplayGeo(),
-        "no map guess": lambda: ReplayGeo(cam_corr=c, use_prior=False),
-        "no yaw gate": lambda: ReplayGeo(cam_corr=c, yaw_gate=1e9),
-        "ambiguity-blind yaw": lambda: ReplayGeo(cam_corr=c, yaw_amb=0.0),
-        "near frames only (< 1.5 m)": lambda: ReplayGeo(cam_corr=c, max_dist=1.5),
-        "more forgetting (drift x4)": lambda: ReplayGeo(cam_corr=c, q_xy=0.006, q_yaw=math.radians(0.2)),
-        "old per-axis KF (before the sim study)": lambda: ReplayKF(cam_corr=c),
+        "TagTracker.java (as shipped)": lambda: ReplayKF(cam_corr=c),
+        "no camera correction": lambda: ReplayKF(),
+        "keep ambiguous frames": lambda: ReplayKF(cam_corr=c, max_amb=1.0),
+        "keep ambiguous frames, inflate their yaw noise": lambda: ReplayKF(cam_corr=c, max_amb=1.0,
+                                                                          yaw_amb=math.radians(9.0)),
+        "near frames only (< 1.5 m)": lambda: ReplayKF(cam_corr=c, max_dist=1.5),
+        "more forgetting (drift x4)": lambda: ReplayKF(cam_corr=c, drift=(0.008, math.radians(0.4))),
+        "geo filter (sim alternative)": lambda: ReplayGeo(cam_corr=c),
     }
 
 
-def replay(obs, guesses=(), variant_makers=None):
-    """-> {variant: list of (t, estimate)} after each logged loop. Each MapGuess resets the tracker."""
+def replay(obs, resets=(), variant_makers=None):
+    """-> {variant: list of (t, estimate)} after each logged loop. Resets at each (t, prior) in resets."""
     out = {}
     for name, make in (variant_makers or variants()).items():
         tr = make()
@@ -206,8 +212,8 @@ def replay(obs, guesses=(), variant_makers=None):
         last_t = None
         gi = 0
         for o in obs:
-            while gi < len(guesses) and guesses[gi][0] <= o.t:
-                tr.reset(guesses[gi][1])
+            while gi < len(resets) and resets[gi][0] <= o.t:
+                tr.reset(resets[gi][1])
                 gi += 1
             tr.update(o)
             if o.t != last_t and tr.est is not None:
@@ -249,13 +255,8 @@ def write_synthetic(path, seed=3):
     truth = {}
 
     class LoggingTracker(FrameTracker):
-        guessed = False
-
         def update(self, t, snap, frames, est, field):
-            if not self.guessed:
-                self.guessed = True
-                log.pose(f"/RealOutputs/TagTracker/{self.tag_id}/MapGuess", t,
-                         compose(snap["odom"], relative(snap["pose"], field.target.map_pose)))
+            log.double(f"/RealOutputs/TagTracker/{self.tag_id}/Approach", t, 1.0)
             tir, rac, age, amb, dist, cam = [], [], [], [], [], []
             names = sorted({fr.camera for fr in frames})
             for fr, f in self._sightings(t, frames):
@@ -317,9 +318,9 @@ def main(argv=None):
         cam, vals = item.split(":")
         x, y, deg = (float(v) for v in vals.split(","))
         corr[int(cam)] = (x, y, math.radians(deg))
-    obs, _, guesses = load(path, a.tag)
-    print(f"{len(obs)} frames of tag {a.tag}, {len(guesses)} approaches (MapGuess resets)")
-    print(report(replay(obs, guesses, variants(corr)), truth))
+    obs, _, resets = load(path, a.tag)
+    print(f"{len(obs)} frames of tag {a.tag}, {len(resets)} approaches")
+    print(report(replay(obs, resets, variants(corr)), truth))
 
 
 if __name__ == "__main__":

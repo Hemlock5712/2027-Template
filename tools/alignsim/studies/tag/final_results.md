@@ -11,8 +11,9 @@
 - **very hard:** element 8 cm / 4 deg, camera yaw 1.5 deg, pitch 1 deg, PnP yaw 1.5 deg, focal 1%,
   principal point 4 px, clock 15 ms, pixel noise 0.6 px, global pose 15 cm off, 2.5 m/s handoff.
 
-**RECOMMENDED** = geo tracker (now `TagTracker.java`) + per-camera correction from the park-and-back-off
-calibration + the retuned `VectorBrake` (now `DriveToPose.java`).
+**RECOMMENDED** = geo tracker + per-camera correction from the park-and-back-off calibration + the
+retuned `VectorBrake` (now `DriveToPose.java`). The last section shows the simpler per-axis filter ties
+it once cameras are calibrated, so `TagTracker.java` keeps the per-axis filter.
 
 **Reading it:**
 - Only the per-camera-calibrated geo tracker holds up as the world gets worse: 99-100 / 99 / 96-97% (two runs), against
@@ -87,3 +88,48 @@ calibration + the retuned `VectorBrake` (now `DriveToPose.java`).
 | hard / 1 cm, 0.75 deg |  99.0 |   1.0 | 100.0 |  1.58 |   0.70 |   1.28 |   1.11 |   0.69 |  0.02 |    0.0 |   5.0 |
 | very hard / 2 cm, 1.5 deg |  97.0 |   3.0 | 100.0 |  1.49 |   0.87 |   1.86 |   1.78 |   0.60 |  0.00 |    0.0 |   5.0 |
 | very hard / 1 cm, 0.75 deg |  97.0 |   3.0 | 100.0 |  1.49 |   0.87 |   1.86 |   1.78 |   0.60 |  0.00 |    0.0 |   5.0 |
+
+## Which filter, once the cameras are calibrated
+
+`python3 alignsim/studies/tag/which_filter.py 100 4`. All rows use per-camera calibration and the retuned
+controller, with the same 100 seeds per world.
+
+**Reading it:** with calibration, every filter lands at 95-100% in every world, within noise of each
+other (about +-2 points at n=100). The calibration did the work, not the filter. The simplest filter,
+the first `TagTracker.java` (per-axis Kalman, frames with ambiguity > 0.3 dropped), scores
+100 / 99 / 98%, so that is what ships. The geo filter's extras (map guess, yaw gate) add nothing
+measurable. Ignoring ambiguity only hurts the geo filter (83% in very hard), because its yaw noise is
+tight. The geo filter stays in `replay.py` to compare on real logs.
+
+**Which filter, with per-camera calibration: default world, n=100**
+
+| strategy | succ% | false% | fin% | t_done | pos_med | pos_p95 | lat_p95 | yaw_p95 | jitter | slip_ms | pk_acc |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| per-axis KF, keep all frames + per-camera cal |  96.0 |   4.0 | 100.0 |  1.58 |   0.46 |   0.94 |   0.68 |   0.78 |  0.00 |    0.1 |   5.0 |
+| per-axis KF, keep all frames, ambiguity yaw noise (9 deg) + cal |  98.0 |   2.0 | 100.0 |  1.58 |   0.46 |   0.96 |   0.68 |   0.85 |  0.00 |    0.1 |   5.0 |
+| SHIPPED: per-axis KF, drop ambiguity > 0.3 + per-camera cal | 100.0 |   0.0 | 100.0 |  1.58 |   0.46 |   0.97 |   0.67 |   0.77 |  0.00 |    0.1 |   5.0 |
+| geo + per-camera cal (from the gate run) | 100.0 |   0.0 | 100.0 |  1.58 |   0.46 |   0.94 |   0.68 |   0.73 |  0.00 |    0.1 |   5.0 |
+
+**Which filter, with per-camera calibration: hard world, n=100**
+
+| strategy | succ% | false% | fin% | t_done | pos_med | pos_p95 | lat_p95 | yaw_p95 | jitter | slip_ms | pk_acc |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| per-axis KF, keep all frames + per-camera cal | 100.0 |   0.0 | 100.0 |  1.58 |   0.71 |   1.24 |   1.12 |   0.71 |  0.00 |    0.1 |   5.0 |
+| per-axis KF, keep all frames, ambiguity yaw noise (9 deg) + cal | 100.0 |   0.0 | 100.0 |  1.58 |   0.68 |   1.25 |   1.14 |   0.77 |  0.00 |    0.1 |   5.0 |
+| SHIPPED: per-axis KF, drop ambiguity > 0.3 + per-camera cal |  99.0 |   1.0 | 100.0 |  1.58 |   0.70 |   1.26 |   1.07 |   0.64 |  0.00 |    0.1 |   5.0 |
+| geo + per-camera cal |  99.0 |   1.0 | 100.0 |  1.58 |   0.70 |   1.28 |   1.11 |   0.69 |  0.02 |    0.0 |   5.0 |
+| geo, no map guess | 100.0 |   0.0 | 100.0 |  1.58 |   0.70 |   1.28 |   1.12 |   0.74 |  0.00 |    0.0 |   5.0 |
+| geo, ambiguity-blind yaw | 100.0 |   0.0 | 100.0 |  1.58 |   0.71 |   1.27 |   1.05 |   0.61 |  0.00 |    0.0 |   5.0 |
+| geo, no yaw gate | 100.0 |   0.0 | 100.0 |  1.58 |   0.66 |   1.26 |   1.10 |   0.72 |  0.00 |    0.1 |   5.0 |
+
+**Which filter, with per-camera calibration: very hard world, n=100**
+
+| strategy | succ% | false% | fin% | t_done | pos_med | pos_p95 | lat_p95 | yaw_p95 | jitter | slip_ms | pk_acc |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| per-axis KF, keep all frames + per-camera cal |  95.0 |   5.0 | 100.0 |  1.48 |   0.84 |   1.94 |   1.78 |   0.66 |  0.00 |    0.0 |   5.0 |
+| per-axis KF, keep all frames, ambiguity yaw noise (9 deg) + cal |  95.0 |   5.0 | 100.0 |  1.49 |   0.85 |   1.92 |   1.77 |   0.68 |  0.00 |    0.0 |   5.0 |
+| SHIPPED: per-axis KF, drop ambiguity > 0.3 + per-camera cal |  98.0 |   2.0 | 100.0 |  1.48 |   0.86 |   1.90 |   1.67 |   0.66 |  0.00 |    0.0 |   5.0 |
+| geo + per-camera cal |  97.0 |   3.0 | 100.0 |  1.49 |   0.87 |   1.86 |   1.78 |   0.60 |  0.00 |    0.0 |   5.0 |
+| geo, no map guess |  97.0 |   3.0 | 100.0 |  1.48 |   0.84 |   1.91 |   1.76 |   0.65 |  0.00 |    0.0 |   5.0 |
+| geo, ambiguity-blind yaw |  83.0 |  17.0 | 100.0 |  1.49 |   0.91 |   6.46 |   6.43 |   6.68 |  0.00 |    0.0 |   5.0 |
+| geo, no yaw gate |  95.0 |   5.0 | 100.0 |  1.49 |   0.86 |   1.89 |   1.70 |   0.71 |  0.00 |    0.0 |   5.0 |

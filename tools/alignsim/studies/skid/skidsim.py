@@ -64,20 +64,9 @@ class Config:
 
 
 # ---------------------------------------------------------------------------- plant workaround
-class FixedPlant(SwervePlant):
-    """Workaround for a core integration-order bug: plant.py integrates the encoders with the
-    pre-update contact speed (lines 145/152) but the chassis pose with the post-update velocity
-    (lines 162-167), so a rolling wheel's encoder disagrees with true travel by
-    (v_start - v_now) * sim_dt (~5 mm after braking from 2.5 m/s). Here the pose uses the
-    pre-update velocity too, so a wheel that does not slip reads true travel."""
-
-    def step(self, dt):
-        vx, vy, w = self.vx, self.vy, self.w
-        super().step(dt)
-        self.x += (vx - self.vx) * dt
-        self.y += (vy - self.vy) * dt
-        self.th = wrap(self.th + (w - self.w) * dt)
-        self.th_unwrapped += (w - self.w) * dt
+# The core plant now moves the pose with the velocity the encoders integrated (the bug this
+# study found), so the old workaround is just the core plant.
+FixedPlant = SwervePlant
 
 
 # ---------------------------------------------------------------------------- odometry variants

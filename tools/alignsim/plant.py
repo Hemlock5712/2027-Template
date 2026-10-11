@@ -159,13 +159,14 @@ class SwervePlant:
             ffx += self.ext[0]
             ffy += self.ext[1]
             tau += self.ext[2]
-        self.vx += ffx / rp.mass * dt
-        self.vy += ffy / rp.mass * dt
-        self.w += tau / rp.inertia * dt
+        # move with the velocity the encoders just integrated, so a rolling wheel reads true travel
         self.x += self.vx * dt
         self.y += self.vy * dt
         self.th = wrap(self.th + self.w * dt)
         self.th_unwrapped += self.w * dt
+        self.vx += ffx / rp.mass * dt
+        self.vy += ffy / rp.mass * dt
+        self.w += tau / rp.inertia * dt
         self.t += dt
         self.gyro_bias += rp.gyro_drift_rate * dt
         if any_slip:

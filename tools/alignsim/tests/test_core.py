@@ -64,6 +64,19 @@ def test_odometry_matches_truth_without_slip():
     assert math.hypot(odo.pose[0] - p.x, odo.pose[1] - p.y) < 0.01
 
 
+def test_encoders_read_true_travel_while_moving():
+    rp = replace(RobotParams(), steer_noise=0.0, gyro_noise=0.0, gyro_drift_rate=0.0)
+    p = SwervePlant(rp, (0, 0, 0))
+    odo = SwerveOdometry(rp.module_positions, p.read_gyro(), p.read_modules(), (0, 0, 0))
+    # checked while moving: the old integration order lagged by speed * sim dt (5 mm at 2.5 m/s)
+    for k in range(750):
+        p.set_chassis_robot(min(2.5, 3.0 * k * 0.002), 0.0, 0.0)
+        p.step(0.002)
+        odo.update(p.read_gyro(), p.read_modules())
+    assert p.slip_time < 0.01 and p.vx > 2.0
+    assert abs(odo.pose[0] - p.x) < 5e-4
+
+
 def test_camera_noise_free_recovers_truth():
     f = Field(FieldParams())
     rng = np.random.default_rng(0)

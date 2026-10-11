@@ -98,8 +98,9 @@ class World:
         self.rng = rng
         e = sc.errors
         self.field = Field(sc.field, rng)
-        rp = replace(sc.robot, wheel_radius_error=rng.normal(0, e.wheel_radius),
-                     gyro_scale_error=rng.normal(0, e.gyro_scale))
+        # per-trial random errors ADD to any fixed value in RobotParams (so sweeps can pin one)
+        rp = replace(sc.robot, wheel_radius_error=sc.robot.wheel_radius_error + rng.normal(0, e.wheel_radius),
+                     gyro_scale_error=sc.robot.gyro_scale_error + rng.normal(0, e.gyro_scale))
         self.rp = rp
         cams = []
         for cp in sc.cameras:

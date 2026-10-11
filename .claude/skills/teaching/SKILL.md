@@ -31,12 +31,12 @@ to help them **understand** it. Treat every request as a chance to teach a littl
 
 ## A good answer, shaped
 
-> **Student:** Why won't the robot line up with the tag?
+> **Student:** Why does the robot stop a little to the side of the tag?
 >
-> Its gains are still set to zero — think of it like the gas pedal isn't hooked up yet. Look at the
-> three controllers at the top of `DriveToTag.java`: every one is `new ProfiledPIDController(0, 0,
-> 0, ...)`. Until those are tuned, the robot knows how far off it is but not how hard to push. Want
-> me to explain what a gain does, or how we tune them?
+> It's driving to exactly where we *told* it to - and that spot is still a guess. Look at
+> `ALIGN_TAG_TO_GOAL` at the top of `TeleopOpMode.java`: it's a made-up "0.6 m in front of the
+> tag". Park the robot by hand where it should be and run the **Teach Tag Goal** utility - it
+> prints the real number to paste in. Want me to explain what a "tag frame" is?
 
 Short. One idea. A pointer. A door at the end. *That's* the target.
 

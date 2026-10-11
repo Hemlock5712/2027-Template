@@ -68,8 +68,9 @@ Deploying is the only thing here with real-world consequences — a robot can mo
 2. **It ran in sim.** See the `run-sim` skill. A clean console is not enough; read the log and
    confirm the robot did what you meant (`log-reading` skill).
 3. **Gains are not placeholders.** Several files ship values tuned against the *simulation*, not a
-   real robot, and `DriveToTag`'s controllers are all zero. Grep for `TODO` in the files you're
-   about to run.
+   real robot. `DriveToPose`'s speed/acceleration limits and `TagTracker`'s noise numbers are
+   first guesses, and every `tagToGoal` is a placeholder until taught. Grep for `TODO` in the files
+   you're about to run.
 4. **Everyone is clear of the robot** and someone is on the disable button.
 
 ### After deploying

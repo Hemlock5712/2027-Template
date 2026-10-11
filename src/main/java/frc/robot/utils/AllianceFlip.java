@@ -4,10 +4,12 @@
 
 package frc.robot.utils;
 
+import java.util.Optional;
 import org.wpilib.driverstation.Alliance;
 import org.wpilib.driverstation.DriverStationErrors;
 import org.wpilib.driverstation.MatchState;
 import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Pose3d;
 import org.wpilib.math.geometry.Rotation2d;
 import org.wpilib.vision.apriltag.AprilTagFieldLayout;
 import org.wpilib.vision.apriltag.AprilTagFields;
@@ -37,6 +39,17 @@ public final class AllianceFlip {
           "AllianceFlip: no field layout (" + e + ") - red autos will NOT flip", false);
       return null;
     }
+  }
+
+  /**
+   * Where the field map says an AprilTag is (blue-origin, 2D). Tag IDs differ per alliance, so this
+   * is never flipped. Empty if the tag or the map is missing.
+   */
+  public static Optional<Pose2d> getTagPose(int tagId) {
+    if (FIELD == null) {
+      return Optional.empty();
+    }
+    return FIELD.getTagPose(tagId).map(Pose3d::toPose2d);
   }
 
   /** True when the driver station says we are on red. Unknown alliance counts as blue. */

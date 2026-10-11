@@ -7,7 +7,7 @@ Hemlock 5712's robot-code template for the WPILib **2027 alpha** stack:
 - **Java 25**, deploys to **SystemCore** (not roboRIO)
 - **GradleRIO** `2027.0.0-alpha-6`, **Phoenix 6** `26.50.0-alpha-1`
 - Logging via **AdvantageKit** (`27.0.0-alpha-4`, logging-only — no IO layers / replay)
-- Autonomous with CTRE `DriveToPose` / `LinearPath` (no PathPlanner)
+- Drive-to-point (`DriveToPose`) + precise tag/game-piece alignment on a local, latency-compensated pose (no PathPlanner) — see `docs/alignment/`
 
 > `2027-dev` is the default branch. The `main` branch is the older 2026-season template.
 

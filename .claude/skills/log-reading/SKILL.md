@@ -150,6 +150,13 @@ voltage, supply/stator current, closed-loop error/reference, device temperature,
 
 - **"Did `DriveToPose` reach the goal?"** Plot `Drivetrain/Pose` (x, y, theta) over time; compare the
   end pose to the routine's goal in [AutonomousOpMode.java](src/main/java/frc/robot/opmodes/AutonomousOpMode.java).
+  Each drive command also logs `<Name>/Goal`, `<Name>/DistanceMeters`, `<Name>/HeadingErrorDegrees`
+  and `<Name>/CommandedVelocity` (`<Name>` = `DriveToPose`, `DriveToTag`, `DriveToPiece`).
+- **"How good is the tag lock?"** `TagTracker/<id>/TagPose` (odometry frame) should sit still while
+  the robot moves; `Locked`, `SecondsSinceSeen`. Raw per-frame inputs for offline replay:
+  `TagTracker/<id>/TagInRobot`, `RobotAtCapture`, `FrameAgeSeconds` (arrays, one entry per frame
+  used that loop). `Drivetrain/OdometryPose` is the wheel-only pose they are measured in — compare
+  it with `Drivetrain/Pose` to see how much vision moved the global pose.
 - **"Did we stall / saturate?"** `Drivetrain/TranslationSpeedMps` near 0 while a command is active →
   cross-check applied volts / stator current in the `.hoot`.
 - **"Which OpMode ran, and when did it enable?"** `/DriverStation/OpMode` + `/DriverStation/Enabled`.

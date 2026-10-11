@@ -59,19 +59,28 @@ Respect these as project conventions rather than re-deriving them:
   `"limelight-bl"`), via the official **LimelightLib 2** vendordep (`com.limelightvision.Limelight`
   objects owned as fields on `Robot`).
   [Vision.java](src/main/java/frc/robot/subsystems/vision/Vision.java) fuses their AprilTag pose
-  estimates into the drivetrain's pose estimator (`Vision.registerAll` in `Robot`).
-  [DriveToTag](src/main/java/frc/robot/commands/DriveToTag.java) works in the **tag's frame**
-  (`FiducialTarget.getRobotPose_TargetSpace()`) and drives to the Limelight's configured POI
-  standoff — so it is **alliance-agnostic** (it doesn't care about field origin at all).
+  estimates into the drivetrain's pose estimator (`Vision.registerAll` in `Robot`) — the **global**
+  pose.
+- **Global vs local pose.** Field elements are not where the map says (FIRST expects venue error
+  above ~1–3 in), so precise alignment uses a **local** pose:
+  [TagTracker](src/main/java/frc/robot/subsystems/vision/TagTracker.java) tracks the tag in the
+  wheel-odometry frame (latency-compensated), and
+  [DriveToTag](src/main/java/frc/robot/commands/DriveToTag.java) drives to `tag ⊕ tagToGoal` —
+  using the field map only to get close before the cameras lock on. The tag's own frame makes the
+  final goal **alliance-agnostic**; only the tag ID changes per alliance. Measure each `tagToGoal`
+  with the **Teach Tag Goal** utility OpMode. Rationale + test plan:
+  [docs/alignment/README.md](docs/alignment/README.md).
 - **2027 Limelight coordinate convention (breaking vs 2026):** everything is unified NWU
   right-handed. Target space is **+X out of the tag face, +Y to the tag's left, +Z up**, so a robot
-  parked facing the tag has yaw **±180°** in tag space, not 0 — `DriveToTag` drives yaw to π.
-  Camera firmware must be 2027.0+, and camera-side config (mount pitch/side signs, POI z-component)
-  must be re-entered per the migration guide.
+  parked facing the tag has yaw **±180°** in tag space, not 0 — a `tagToGoal` that faces the tag
+  has rotation 180°. Camera firmware must be 2027.0+, and camera-side config (mount pitch/side
+  signs) must be re-entered per the migration guide — `TagTracker`/`PieceTracker` trust the
+  camera's robot-space pose.
 - There is **no vision in simulation** (no PhotonVision sim), so tag-based behavior can only be
   validated on real hardware. See the `run-sim` skill.
-- For canonical tag IDs / poses, use the season's WPILib `AprilTagFieldLayout` (not yet loaded in
-  code) and the Limelight's field map. Don't assume a prior season's tag layout.
+- For canonical tag IDs / poses, use the season's WPILib `AprilTagFieldLayout`
+  (`AllianceFlip.getTagPose(id)`, still the 2026 field) and the Limelight's field map. Don't assume
+  a prior season's tag layout.
 
 ## Field zones / scoring locations
 

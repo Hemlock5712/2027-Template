@@ -16,6 +16,9 @@ code and explanations over cleverness.
   - `build-and-deploy` — compiling from the CLI and putting code on the robot.
   - `log-reading` — finding and reading `.wpilog` / `.hoot` logs after a run.
   - `teaching` — **teacher mode** (see below).
+- **`docs/alignment/README.md`** — drive-to-point and precise tag/game-piece alignment: research,
+  decisions (global vs local pose), and the robot test plan. Read it before changing
+  `DriveToPose`, `DriveToTag`, `TagTracker` or vision timing.
 
 ## Code style: comments say WHAT, the website says WHY
 

@@ -6,15 +6,18 @@ package frc.robot.utils;
 
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import org.littletonrobotics.junction.Logger;
+import org.wpilib.math.geometry.Pose2d;
 
 /**
  * Logs the swerve drivetrain state with AdvantageKit under {@code Drivetrain/*}. Called once per
  * loop from {@link frc.robot.subsystems.DriveMechanism}. See the log-reading skill.
  */
 public class Telemetry {
-  /** Logs one drivetrain state. */
-  public void telemeterize(SwerveDriveState state) {
+  /** Logs one drivetrain state plus the wheel-only odometry pose. */
+  public void telemeterize(SwerveDriveState state, Pose2d odometryPose) {
     Logger.recordOutput("Drivetrain/Pose", state.Pose);
+    Logger.recordOutput("Drivetrain/OdometryPose", odometryPose);
+    Logger.recordOutput("Drivetrain/Timestamp", state.Timestamp);
     Logger.recordOutput("Drivetrain/Velocity", state.Velocity);
     Logger.recordOutput("Drivetrain/RawHeading", state.RawHeading);
 

@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import frc.robot.generated.TunerConstants;
 import frc.robot.utils.Telemetry;
+import java.util.Optional;
 import java.util.function.Supplier;
 import org.wpilib.command3.Command;
 import org.wpilib.command3.Mechanism;
@@ -27,14 +28,20 @@ public class DriveMechanism extends Mechanism {
   // IDs/gains - regenerate it for your robot.
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
+  // Wheels + gyro only, never corrected by vision - the frame precise alignment uses.
+  private final WheelOdometry wheelOdometry = new WheelOdometry(drivetrain.getKinematics());
+
   // Logs the drivetrain state with AdvantageKit - see the log-reading skill.
   private final Telemetry telemetry = new Telemetry();
 
   public DriveMechanism() {
     super("Drivetrain");
+    // Runs on the odometry thread for every sample (~250 Hz).
+    drivetrain.registerTelemetry(wheelOdometry::update);
     Scheduler.getDefault().addPeriodic(drivetrain::applyOperatorPerspective);
     // Log once per loop - AdvantageKit logging must run on the main loop.
-    Scheduler.getDefault().addPeriodic(() -> telemetry.telemeterize(drivetrain.getState()));
+    Scheduler.getDefault()
+        .addPeriodic(() -> telemetry.telemeterize(drivetrain.getState(), wheelOdometry.getPose()));
   }
 
   /** Returns a command that continuously applies the supplied control request to the drivetrain. */
@@ -50,6 +57,23 @@ public class DriveMechanism extends Mechanism {
   /** The robot's field pose from odometry, blue-origin (the origin never flips with alliance). */
   public Pose2d getPose() {
     return drivetrain.getState().Pose;
+  }
+
+  /**
+   * The robot's pose from wheels + gyro only - it never jumps when vision corrects {@link
+   * #getPose()}, but slowly drifts away from it. Only compare it to other wheel-odometry poses.
+   */
+  public Pose2d getOdometryPose() {
+    return wheelOdometry.getPose();
+  }
+
+  /**
+   * The wheel-only pose at a past time, e.g. when a camera took its picture.
+   *
+   * @param timestampSeconds time in the Phoenix timebase ({@code Utils.getCurrentTimeSeconds()})
+   */
+  public Optional<Pose2d> getOdometryPoseAt(double timestampSeconds) {
+    return wheelOdometry.getPoseAt(timestampSeconds);
   }
 
   /** The robot's field-relative velocity from odometry (rotated out of the robot frame). */

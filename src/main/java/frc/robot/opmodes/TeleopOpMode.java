@@ -11,10 +11,13 @@ import static org.wpilib.units.Units.RotationsPerSecond;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import frc.robot.Robot;
+import frc.robot.commands.DriveToPiece;
 import frc.robot.commands.DriveToTag;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.DriveMechanism;
 import org.wpilib.command3.button.CommandNiDsXboxController;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.geometry.Transform2d;
 import org.wpilib.opmode.PeriodicOpMode;
 import org.wpilib.opmode.Teleop;
 
@@ -25,9 +28,13 @@ import org.wpilib.opmode.Teleop;
  */
 @Teleop(name = "Teleop")
 public class TeleopOpMode extends PeriodicOpMode {
-  // Which AprilTag to auto-align to. TODO: pick the real camera and tag ID (flipped per
-  // alliance) once the game is wired - see game-info.
+  // Which AprilTag to auto-align to. TODO: pick the real tag ID (it differs per alliance) once
+  // the game is wired - see game-info.
   private static final int ALIGN_TAG_ID = 1;
+  // Where to stop, in the tag's frame: 0.6 m out from the tag face, facing it. TODO: measure the
+  // real one with the "Teach Tag Goal" utility OpMode.
+  private static final Transform2d ALIGN_TAG_TO_GOAL =
+      new Transform2d(0.6, 0.0, Rotation2d.fromDegrees(180));
 
   private final double maxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
   private final double maxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
@@ -57,8 +64,15 @@ public class TeleopOpMode extends PeriodicOpMode {
     driver.rightBumper().whileTrue(robot.score());
     driver.rightTrigger().whileTrue(robot.stow());
 
-    // Hold A: vision-only auto-align to the tag standoff.
-    driver.a().whileTrue(new DriveToTag(drivetrain, robot.limelightBR, ALIGN_TAG_ID));
+    // Hold A: drive to the spot in front of the tag - field map first, then the tag itself.
+    driver
+        .a()
+        .whileTrue(
+            new DriveToTag(
+                drivetrain, ALIGN_TAG_ID, ALIGN_TAG_TO_GOAL, robot.limelightBR, robot.limelightBL));
+
+    // Hold B: drive onto the nearest game piece. TODO: use your object-detection camera.
+    driver.b().whileTrue(new DriveToPiece(drivetrain, robot.limelightBL, -1));
 
     // Hold Y: auto-score prep. Letting go stops the flywheel via its default command, so no
     // "stop" binding is needed here.

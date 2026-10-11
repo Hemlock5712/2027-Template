@@ -51,7 +51,11 @@ profiling, coordinate frames, and vision all at once. Come back once the pattern
 comfortable:
 
 - `subsystems/DriveMechanism.java` — the swerve wrapper.
-- `commands/DriveToPose.java`, `commands/DriveToTag.java` — drive to a field pose / to an AprilTag.
+- `commands/DriveToPose.java` — the one drive-to-point controller; `DriveToTag.java` and
+  `DriveToPiece.java` reuse it with a goal that moves as the cameras refine it.
+- `subsystems/vision/TagTracker.java`, `PieceTracker.java`, `subsystems/WheelOdometry.java` — the
+  "local pose": where the tag/piece really is, measured from the robot (see
+  `docs/alignment/README.md` for why the field pose alone isn't precise enough).
 - `subsystems/vision/Vision.java` — feeds AprilTag pose estimates from the cameras (LimelightLib
   vendordep) into the drivetrain's pose estimator.
 - `subsystems/CommandSwerveDrivetrain.java`, `generated/TunerConstants.java`,

@@ -103,14 +103,17 @@ class World:
         self.rp = rp
         cams = []
         for cp in sc.cameras:
+            # per-trial random errors ADD to anything fixed in the CameraParams (so sweeps can pin one)
+            draw = (rng.normal(0, e.cam_xy), rng.normal(0, e.cam_xy), rng.normal(0, e.cam_z),
+                    rng.normal(0, e.cam_roll), rng.normal(0, e.cam_pitch), rng.normal(0, e.cam_yaw))
             cp = replace(
                 cp,
-                mount_error=(rng.normal(0, e.cam_xy), rng.normal(0, e.cam_xy), rng.normal(0, e.cam_z),
-                             rng.normal(0, e.cam_roll), rng.normal(0, e.cam_pitch), rng.normal(0, e.cam_yaw)),
-                fx_error=rng.normal(0, e.fx),
-                center_error=(rng.normal(0, e.center_px), rng.normal(0, e.center_px)),
-                clock_bias=rng.normal(0, e.clock_bias),
-                pnp_yaw_bias=rng.normal(0, e.pnp_yaw) if e.pnp_yaw else 0.0)
+                mount_error=tuple(a + b for a, b in zip(cp.mount_error, draw)),
+                fx_error=cp.fx_error + rng.normal(0, e.fx),
+                center_error=(cp.center_error[0] + rng.normal(0, e.center_px),
+                              cp.center_error[1] + rng.normal(0, e.center_px)),
+                clock_bias=cp.clock_bias + rng.normal(0, e.clock_bias),
+                pnp_yaw_bias=cp.pnp_yaw_bias + (rng.normal(0, e.pnp_yaw) if e.pnp_yaw else 0.0))
             cams.append(Camera(cp, rng))
         self.cams = cams
         # where the robot should truly end up: nominal goal on the REAL element

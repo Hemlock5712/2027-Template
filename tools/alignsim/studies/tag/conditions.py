@@ -42,8 +42,10 @@ SWEEPS = {
     "camera layout": {k: Scenario(cameras=cams_layout(k)) for k in (
         "2 corners, toe-in 10deg (default)", "2 corners, toe-in 25deg", "2 corners, parallel",
         "1 center camera", "1 corner camera")},
-    "clock bias (timestamp error)": {f"{int(b * 1000)} ms": Scenario(errors=Errors(clock_bias=0.0), cameras=tuple(
-        replace(c, clock_bias=b) for c in front_cameras())) for b in (0.0, 0.010, 0.020, 0.040)},
+    "clock bias (timestamp error)": {f"{int(b * 1000)} ms @ {v} m/s": Scenario(
+        errors=Errors(clock_bias=0.0), start_speed=v,
+        cameras=tuple(replace(c, clock_bias=b) for c in front_cameras()))
+        for v in (1.5, 3.0) for b in (0.0, 0.020, 0.050, 0.100)},
     "frame rate": {f"{f} fps": Scenario(cameras=tuple(replace(c, fps=f) for c in front_cameras()))
                    for f in (20, 30, 60, 120)},
     "pixel noise": {f"{px} px": Scenario(cameras=tuple(replace(c, pixel_noise=px) for c in front_cameras()))

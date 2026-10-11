@@ -31,7 +31,8 @@ public class PieceTracker {
   // Height of the piece's center above the carpet. TODO: set for the real game piece.
   private static final double PIECE_HEIGHT_METERS = 0.05;
   private static final double MIN_CONFIDENCE = 0.5;
-  private static final double MAX_DISTANCE_METERS = 4.0;
+  // Loose on purpose: a slightly wrong camera pitch makes floor range read meters long.
+  private static final double MAX_DISTANCE_METERS = 8.0;
   private static final double MAX_FRAME_AGE_SECONDS = 0.25;
   // A detection farther than this from the estimate is a different piece.
   private static final double SAME_PIECE_METERS = 0.4;

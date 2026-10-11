@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix6.Utils;
 import com.limelightvision.Limelight;
 import frc.robot.subsystems.DriveMechanism;
 import frc.robot.subsystems.vision.PieceTracker;
@@ -14,18 +15,21 @@ import org.wpilib.math.geometry.Translation2d;
 
 /**
  * Drive up to a game piece, facing it, with the intake on top of it. Uses {@link DriveToPose} with
- * the piece from a {@link PieceTracker}; holds still until a piece is locked.
+ * the piece from a {@link PieceTracker}; stops where it is until a piece is locked, and gives up if
+ * none locks within half a second.
  *
  * <p>End it with your intake's sensor at the call site: {@code new DriveToPiece(...).until(intake::
- * hasPiece)}.
+ * hasPiece).withTimeout(Seconds.of(2.5))}. See docs/alignment/studies/game-pieces.md.
  */
 public class DriveToPiece extends DriveToPose {
-  // Robot center stops this far behind the piece. TODO: set from the real intake.
-  private static final double INTAKE_REACH_METERS = 0.45;
+  // Robot center aims this far behind the piece: bumper + piece radius - 0.12 m, so the goal is
+  // past first touch and the robot drives into the piece. TODO: set from the real intake.
+  private static final double INTAKE_REACH_METERS = 0.40;
+  private static final double NO_LOCK_TIMEOUT_SECONDS = 0.5;
 
   private final DriveMechanism drivetrain;
   private final PieceTracker tracker;
-  private Pose2d holdPose;
+  private double startTime;
 
   /**
    * @param camera the object-detection camera
@@ -40,7 +44,7 @@ public class DriveToPiece extends DriveToPose {
   @Override
   protected void initialize() {
     tracker.reset();
-    holdPose = drivetrain.getPose();
+    startTime = Utils.getCurrentTimeSeconds();
     super.initialize();
   }
 
@@ -54,7 +58,7 @@ public class DriveToPiece extends DriveToPose {
   protected Pose2d goal() {
     Optional<Translation2d> piece = tracker.getFieldPosition();
     if (piece.isEmpty()) {
-      return holdPose;
+      return drivetrain.getPose(); // brake here; never back up to where the button was pressed
     }
     Translation2d toPiece = piece.get().minus(drivetrain.getPose().getTranslation());
     if (toPiece.getNorm() < 1e-3) {
@@ -66,6 +70,9 @@ public class DriveToPiece extends DriveToPose {
 
   @Override
   protected boolean isFinished() {
-    return tracker.hasLock() && super.isFinished();
+    if (!tracker.hasLock()) {
+      return Utils.getCurrentTimeSeconds() - startTime > NO_LOCK_TIMEOUT_SECONDS;
+    }
+    return super.isFinished();
   }
 }

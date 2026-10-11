@@ -50,10 +50,11 @@ def twist_log(t):
     """WPILib Transform2d.log(): inverse of twist_exp."""
     dth = t[2]
     half = dth / 2.0
-    if abs(dth) < 1e-9:
+    cos_minus_one = math.cos(dth) - 1.0
+    if abs(cos_minus_one) < 1e-9:  # WPILib's guard: 1 - cos underflows long before dth is tiny
         hcot = 1.0 - dth * dth / 12.0
     else:
-        hcot = half * math.sin(dth) / (1.0 - math.cos(dth))
+        hcot = -half * math.sin(dth) / cos_minus_one
     x, y = t[0], t[1]
     # rotate (x, y) by -half and scale by hypot(hcot, half)
     c, s = math.cos(-half), math.sin(-half)

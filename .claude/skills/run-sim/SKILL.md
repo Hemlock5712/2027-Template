@@ -101,8 +101,9 @@ the id wasn't set with its mode bits — that's the bug `SimStartup.setRobotMode
   (the **A** / **B** teleop bindings, auto "4 - Drive Then Align") never lock: `DriveToTag` drives to
   the field-map spot and waits there, `DriveToPiece` holds still. Exercise vision on real hardware;
   use `DriveToPose` / autonomous routines for sim testing. Wheel odometry (`Drivetrain/OdometryPose`)
-  does run in sim. For alignment *strategy* experiments without a robot, see
-  [tools/alignment-sim](tools/alignment-sim/README.md).
+  does run in sim. For alignment *strategy* experiments without a robot (cameras, wheel slip,
+  field error, all simulated), see the Python simulator [tools/alignsim](tools/alignsim/README.md);
+  its `replay.py` re-runs `TagTracker` on a real robot log.
 - **Physics is CTRE Phoenix 6 swsim only** (no maple-sim rigid-body). The 4 ms sim `Notifier` lives
   in [CommandSwerveDrivetrain](src/main/java/frc/robot/subsystems/CommandSwerveDrivetrain.java).
   The arm and flywheel have their own WPILib plants (see the "Simulation only" block at the bottom

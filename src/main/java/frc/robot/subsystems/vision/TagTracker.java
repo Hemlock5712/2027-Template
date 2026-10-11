@@ -109,7 +109,7 @@ public class TagTracker {
       lastFrameIndex[i] = frame.frameIndex;
 
       FiducialTarget tag = findTag(frame);
-      if (tag == null || tag.ambiguity > MAX_AMBIGUITY) {
+      if (tag == null) {
         continue;
       }
       Pose3d tagInRobot3d = tag.getTargetPose_RobotSpace();
@@ -134,7 +134,9 @@ public class TagTracker {
       Pose2d rawTagInRobot = tagInRobot3d.toPose2d();
       // This camera's calibration fix first, then place the tag where the robot was.
       Pose2d tagInRobot = Pose2d.kZero.plus(corrections[i]).plus(asTransform(rawTagInRobot));
-      fuse(robotAtCapture.get().plus(asTransform(tagInRobot)), distance);
+      if (tag.ambiguity <= MAX_AMBIGUITY) { // logged either way, so replay can try keeping them
+        fuse(robotAtCapture.get().plus(asTransform(tagInRobot)), distance);
+      }
 
       tagInRobotLog.add(rawTagInRobot);
       robotAtCaptureLog.add(robotAtCapture.get());

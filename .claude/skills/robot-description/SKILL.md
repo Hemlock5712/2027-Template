@@ -63,10 +63,10 @@ constructor taking `(Robot robot)` (or no args). Selecting a mode prints
 | [StateMachineTeleop.java](src/main/java/frc/robot/opmodes/StateMachineTeleop.java) | `@Teleop("State Machine (no driving)")` | The superstructure as a Commands-v3 `StateMachine`: named states (stowed/pickup/prep/scoring), `when(...)` / `whenComplete()` transitions, enter/exit hooks. No drive controls — a superstructure showcase. |
 | [DriveDistanceOpMode.java](src/main/java/frc/robot/opmodes/DriveDistanceOpMode.java) | `@Autonomous("1 - Drive 2 Meters")` | The simplest auto and the first closed loop: one [DriveDistance](src/main/java/frc/robot/commands/DriveDistance.java) with a `.withTimeout(...)` seatbelt. No field frame, no alliance, no profile. |
 | [AutonomousOpMode.java](src/main/java/frc/robot/opmodes/AutonomousOpMode.java) | `@Autonomous("2 - Drive To Pose")` | Sequences two `DriveToPose` legs with `Command.sequence(...).named(...)`. The sequential group inherits its children's requirement (the drivetrain), and the scheduler hands the drivetrain off between legs. `start()` schedules the routine; `end()` cancels it. |
-| [DriveThenAlignOpMode.java](src/main/java/frc/robot/opmodes/DriveThenAlignOpMode.java) | `@Autonomous("4 - Drive Then Align")` | Global → local in one coroutine: `fork` the arm to scoring, `await` a pass-through `DriveToPose` waypoint (`withEndSpeed`), then `await` a `DriveToTag` (with timeout). Advanced — the `fork`/`await` example. |
+| [DriveThenAlignOpMode.java](src/main/java/frc/robot/opmodes/DriveThenAlignOpMode.java) | `@Autonomous("4 - Drive Then Align")` | Global → local in one coroutine: `fork` the arm to scoring, `await` a pass-through `DriveToPose` waypoint (`passingThrough(next)`), then `await` a `DriveToTag` (with timeout). Advanced — the `fork`/`await` example. |
 | [DriveStowDriveOpMode.java](src/main/java/frc/robot/opmodes/DriveStowDriveOpMode.java) | `@Autonomous("3 - Drive Stow Drive")` | **The reference for multi-mechanism autos** — chaining: `sequence` + `.until(isAtTarget)` (give a hold a finish line) + `Command.race(step, hold)` (do a step while holding a pose). This style is the team's teaching ceiling. |
 | [UtilityOpMode.java](src/main/java/frc/robot/opmodes/UtilityOpMode.java) | `@Utility("Stow")` | Safe off-field pose (arm vertical, flywheel stopped). `@Utility` is the renamed 2027 "Test" mode. |
-| [TeachTagGoalOpMode.java](src/main/java/frc/robot/opmodes/TeachTagGoalOpMode.java) | `@Utility("Teach Tag Goal")` | Robot parked by hand at the perfect scoring spot → prints the `tagToGoal` `Transform2d` for `DriveToTag` (same cameras + math, so mounting errors cancel). |
+| [CalibrateCamerasOpMode.java](src/main/java/frc/robot/opmodes/CalibrateCamerasOpMode.java) | `@Utility("Calibrate Cameras")` | Robot parked exactly on a scoring spot → backs away 0.6 m while the cameras watch the tag → prints one `Transform2d` per camera for `CameraCorrections` (removes camera mount / pose-solve yaw error). |
 
 Add a routine = add another annotated class. `start()` schedules the command, `end()` cancels it.
 
@@ -135,8 +135,9 @@ The drivetrain uses CTRE's `SwerveRequest` types directly (`FieldCentric`, `Appl
   This is the **global** pose; precise alignment does not use it.
 - [vision/TagTracker.java](src/main/java/frc/robot/subsystems/vision/TagTracker.java) — the
   **local** pose: one tag's pose in the wheel-odometry frame. Each frame = odometry pose at the
-  capture time (`getAgeSeconds()` + LL latency) ⊕ `FiducialTarget.getTargetPose_RobotSpace()`,
-  fused with a per-axis Kalman filter + jump gate; `getFieldGoal(tagToGoal)` re-anchors the goal
+  capture time (`getAgeSeconds()` + LL latency) ⊕ camera correction ⊕
+  `FiducialTarget.getTargetPose_RobotSpace()`, fused with a per-axis Kalman filter + jump gate
+  (frames with ambiguity > 0.3 skipped but still logged); `getFieldGoal(tagToGoal)` re-anchors the goal
   onto the field pose so vision jumps cancel. Reads `getLatestResults()` (never the queue, which
   `Vision` owns).
 - [vision/PieceTracker.java](src/main/java/frc/robot/subsystems/vision/PieceTracker.java) — same
@@ -162,9 +163,9 @@ Two authoring styles coexist; pick whichever reads better. Both are Commands v3.
 
 | Command | Style | What it does |
 | --- | --- | --- |
-| [DriveToPose.java](src/main/java/frc/robot/commands/DriveToPose.java) | classic | The one drive-to-point controller. Each loop: head at the goal at `min(MAX_SPEED, sqrt(v_end² + 2·DECEL·d), KP·d)`, same shape for heading, then a vector acceleration limit seeded from the measured velocity. Blue-origin `Pose2d` (flipped for red) **or** a `Supplier<Pose2d>` / overridden `goal()` that may move every loop. `withEndSpeed(v)` = pass-through waypoint; `withTolerance(m, deg)`. Closed-loop `Velocity` drive requests. |
+| [DriveToPose.java](src/main/java/frc/robot/commands/DriveToPose.java) | classic | The one drive-to-point controller. Each loop: head at the goal at `min(MAX_SPEED, sqrt(v_end² + 2·DECEL·d), KP·d)`, same shape for heading, then a vector acceleration limit seeded from the measured velocity. Blue-origin `Pose2d` (flipped for red) **or** a `Supplier<Pose2d>` / overridden `goal()` that may move every loop. `passingThrough(next)` = pass-through waypoint (corner rule sets the hand-over radius and speed), `withEndSpeed(v, r)` to set them by hand; `withTolerance(m, deg)`. Limits tuned in `tools/alignsim` (docs/alignment/studies/controllers.md). Closed-loop `Velocity` drive requests. |
 | [DriveToTag.java](src/main/java/frc/robot/commands/DriveToTag.java) | classic | `DriveToPose` whose goal is the field-map spot until `TagTracker` locks, then the spot measured from the tag itself (`tagToGoal`, in the 2027 tag frame: +X out of the tag face, +Y tag-left, facing the tag = 180°). Finishes only once locked. |
-| [DriveToPiece.java](src/main/java/frc/robot/commands/DriveToPiece.java) | classic | `DriveToPose` onto a `PieceTracker` piece, facing it, stopping `INTAKE_REACH_METERS` short. Holds still until locked; end it with an intake sensor `.until(...)`. |
+| [DriveToPiece.java](src/main/java/frc/robot/commands/DriveToPiece.java) | classic | `DriveToPose` onto a `PieceTracker` piece, facing it, aiming `INTAKE_REACH_METERS` short (past first touch). Stops in place until locked and gives up after 0.5 s with no lock; end it with an intake sensor `.until(...)`. |
 | [DriveDistance.java](src/main/java/frc/robot/commands/DriveDistance.java) | classic | Drive forward a signed distance with one P controller, measured from the start pose. No profile, no field frame — the teaching rung below `DriveToPose`. |
 
 ## Hardware constants — [generated/TunerConstants.java](src/main/java/frc/robot/generated/TunerConstants.java)

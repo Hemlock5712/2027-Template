@@ -67,8 +67,9 @@ Respect these as project conventions rather than re-deriving them:
   wheel-odometry frame (latency-compensated), and
   [DriveToTag](src/main/java/frc/robot/commands/DriveToTag.java) drives to `tag ⊕ tagToGoal` —
   using the field map only to get close before the cameras lock on. The tag's own frame makes the
-  final goal **alliance-agnostic**; only the tag ID changes per alliance. Measure each `tagToGoal`
-  with the **Teach Tag Goal** utility OpMode. Rationale + test plan:
+  final goal **alliance-agnostic**; only the tag ID changes per alliance. Take each `tagToGoal`
+  from CAD, and run the **Calibrate Cameras** utility OpMode once (robot parked on a real scoring
+  spot) so each camera's mounting error is removed (`CameraCorrections`). Rationale + test plan:
   [docs/alignment/README.md](docs/alignment/README.md).
 - **2027 Limelight coordinate convention (breaking vs 2026):** everything is unified NWU
   right-handed. Target space is **+X out of the tag face, +Y to the tag's left, +Z up**, so a robot

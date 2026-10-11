@@ -16,6 +16,7 @@ import frc.robot.Robot;
 import frc.robot.subsystems.DriveMechanism;
 import java.util.Arrays;
 import java.util.Optional;
+import org.littletonrobotics.junction.Logger;
 import org.wpilib.command3.Command;
 import org.wpilib.command3.Scheduler;
 import org.wpilib.math.geometry.Pose2d;
@@ -139,6 +140,10 @@ public class CalibrateCamerasOpMode extends PeriodicOpMode {
     sums[i][2] += correction.getRotation().getSin();
     sums[i][3] += correction.getRotation().getCos();
     sums[i][4] += 1.0;
+    // Per-frame samples: if they drift with distance, one correction can't fix that camera.
+    String key = "CalibrateCameras/" + cameras[i].getName() + "/";
+    Logger.recordOutput(key + "Sample", correction);
+    Logger.recordOutput(key + "Distance", measured.getTranslation().getNorm());
   }
 
   private void printCorrections() {

@@ -62,6 +62,30 @@ Strategy pieces:
 - **`slip_ms`**: time any wheel was sliding.
 - **`pk_acc`**: peak commanded acceleration.
 
+## Replaying robot logs
+
+`replay.py` re-runs `TagTracker.java`'s filter, and alternatives to it, on a real `.wpilog`. It reads
+the per-frame inputs `TagTracker` logs (`TagInRobot`, `RobotAtCapture`, `Ambiguity`, `Distance`,
+`Camera`, `Approach`), so any filter can be tried on the same frames.
+
+```bash
+python3 -m alignsim.replay robot.wpilog --tag 7                       # compare filter variants
+python3 -m alignsim.replay robot.wpilog --tag 7 --corr 0:0.004,-0.002,0.6 1:0,0.003,-0.4
+python3 -m alignsim.replay --synthetic out.wpilog                      # sim run in the same format
+```
+
+`--corr` takes each camera's `CameraCorrections` entry (camera index: x m, y m, yaw deg). With
+`--synthetic` the truth is known, so the report adds each variant's error.
+
+## Studies
+
+| Folder | Report |
+| --- | --- |
+| `studies/tag/` | [tag-tracking.md](../../docs/alignment/studies/tag-tracking.md): global vs local, camera calibration, filters, cameras, timestamps |
+| `studies/controllers/` | [controllers.md](../../docs/alignment/studies/controllers.md): which drive-to-point law, its tune, waypoints |
+| `studies/pieces/` | [game-pieces.md](../../docs/alignment/studies/game-pieces.md): driving to and picking up a game piece |
+| `studies/skid/` | [skid-odometry.md](../../docs/alignment/studies/skid-odometry.md): wheel slip, collisions, IMU skid detection |
+
 ## Adding a study
 
 Put a script in `studies/`. Build `Scenario`/`Strategy` variants and call `run_many`. Write results

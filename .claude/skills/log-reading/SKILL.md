@@ -154,9 +154,13 @@ voltage, supply/stator current, closed-loop error/reference, device temperature,
   and `<Name>/CommandedVelocity` (`<Name>` = `DriveToPose`, `DriveToTag`, `DriveToPiece`).
 - **"How good is the tag lock?"** `TagTracker/<id>/TagPose` (odometry frame) should sit still while
   the robot moves; `Locked`, `SecondsSinceSeen`. Raw per-frame inputs for offline replay:
-  `TagTracker/<id>/TagInRobot`, `RobotAtCapture`, `FrameAgeSeconds` (arrays, one entry per frame
-  used that loop). `Drivetrain/OdometryPose` is the wheel-only pose they are measured in — compare
-  it with `Drivetrain/Pose` to see how much vision moved the global pose.
+  `TagTracker/<id>/TagInRobot` (before the camera correction), `RobotAtCapture`, `FrameAgeSeconds`,
+  `Ambiguity`, `Distance`, `Camera` (arrays, one entry per frame seen that loop) and `Approach`
+  (counts resets). `Drivetrain/OdometryPose` is the wheel-only pose they are measured in — compare
+  it with `Drivetrain/Pose` to see how much vision moved the global pose. To re-run the tracker and
+  its alternatives on a log: `cd tools && python3 -m alignsim.replay robot.wpilog --tag <id>`.
+- **"Is a camera calibrated?"** After "Calibrate Cameras": `CalibrateCameras/<camera>/Sample` vs
+  `Distance` should be flat; a slope means one correction can't fix that camera.
 - **"Did we stall / saturate?"** `Drivetrain/TranslationSpeedMps` near 0 while a command is active →
   cross-check applied volts / stator current in the `.hoot`.
 - **"Which OpMode ran, and when did it enable?"** `/DriverStation/OpMode` + `/DriverStation/Enabled`.

@@ -33,10 +33,10 @@ to help them **understand** it. Treat every request as a chance to teach a littl
 
 > **Student:** Why does the robot stop a little to the side of the tag?
 >
-> It's driving to exactly where we *told* it to - and that spot is still a guess. Look at
-> `ALIGN_TAG_TO_GOAL` at the top of `TeleopOpMode.java`: it's a made-up "0.6 m in front of the
-> tag". Park the robot by hand where it should be and run the **Teach Tag Goal** utility - it
-> prints the real number to paste in. Want me to explain what a "tag frame" is?
+> Usually it's the camera, not the code: a camera turned just 1 degree makes every tag look a
+> couple of centimeters to the side. Park the robot exactly on the scoring spot and run the
+> **Calibrate Cameras** utility - it prints a fix for each camera to paste into
+> `CameraCorrections.java`. Want me to explain why 1 degree turns into centimeters?
 
 Short. One idea. A pointer. A door at the end. *That's* the target.
 

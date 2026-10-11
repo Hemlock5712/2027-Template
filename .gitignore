@@ -189,3 +189,7 @@ compile_commands.json
 # Claude Code local tooling/config (but DO track shared skills so teammates get them)
 .claude/*
 !.claude/skills/
+
+# Python (tools/alignsim)
+__pycache__/
+.pytest_cache/

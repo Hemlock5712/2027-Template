@@ -53,6 +53,11 @@ HEADLINE = {
     "RECOMMENDED: + retuned VectorBrake": (RECOMMENDED, "percam"),
 }
 
+GATES = {
+    "2 cm / 1.5 deg done gate (default)": RECOMMENDED,
+    "1 cm / 0.75 deg done gate": replace(RECOMMENDED, pos_tol=0.01, yaw_tol=math.radians(0.75)),
+}
+
 if __name__ == "__main__":
     if WHICH in ("all", "approach"):
         out = []
@@ -69,3 +74,7 @@ if __name__ == "__main__":
                 out.append((label, summarize(run_many(sc, st, N, mode, P))))
                 print(f"  {wname}/{label}: {time.time() - t0:.0f}s", flush=True)
             print(table(out, f"Headline: {wname} world, n={N}"), flush=True)
+    if WHICH in ("all", "gate"):
+        for wname, sc in (("default", Scenario()), ("hard", HARD), ("very hard", VERY_HARD)):
+            out = [(label, summarize(run_many(sc, st, N, "percam", P))) for label, st in GATES.items()]
+            print(table(out, f"Done gate: {wname} world, n={N}"), flush=True)

@@ -45,7 +45,8 @@ SWEEPS = {
     "clock bias (timestamp error)": {f"{int(b * 1000)} ms @ {v} m/s": Scenario(
         errors=Errors(clock_bias=0.0), start_speed=v,
         cameras=tuple(replace(c, clock_bias=b) for c in front_cameras()))
-        for v in (1.5, 3.0) for b in (0.0, 0.020, 0.050, 0.100)},
+        # + = computed capture time too late (beyond the real latency it clamps to "no compensation")
+        for v in (1.5, 3.0) for b in (-0.100, -0.050, -0.020, 0.0, 0.020, 0.050, 0.100)},
     "frame rate": {f"{f} fps": Scenario(cameras=tuple(replace(c, fps=f) for c in front_cameras()))
                    for f in (20, 30, 60, 120)},
     "pixel noise": {f"{px} px": Scenario(cameras=tuple(replace(c, pixel_noise=px) for c in front_cameras()))
@@ -63,7 +64,6 @@ if __name__ == "__main__":
         for cond, sc in scens.items():
             for sl, st in STRATS.items():
                 t0 = time.time()
-                # the clock-bias sweep sets the bias directly, so zero the random part
                 out.append((f"{cond} / {sl}", summarize(run_many(sc, st, n=N, processes=P))))
                 print(f"  {sweep}: {cond}/{sl} {time.time() - t0:.0f}s", flush=True)
         print(table(out, f"{sweep}, n={N}"), flush=True)

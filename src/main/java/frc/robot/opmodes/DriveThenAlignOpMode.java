@@ -39,16 +39,19 @@ public class DriveThenAlignOpMode extends PeriodicOpMode {
   private final Command routine;
 
   public DriveThenAlignOpMode(Robot robot) {
-    // Blue-origin point about 1 m in front of the target. TODO: real pose.
+    // Blue-origin point about 1 m in front of the target, and where the field map puts the
+    // scoring spot (only used to shape the corner). TODO: real poses.
     final Pose2d staging = new Pose2d(2.0, 1.0, Rotation2d.fromDegrees(0));
+    final Pose2d scoringGuess = new Pose2d(3.0, 1.0, Rotation2d.fromDegrees(0));
 
     routine =
         Command.noRequirements(
                 coroutine -> {
                   // The arm rises while we drive.
                   coroutine.fork(robot.arm.scoring());
-                  // Global: pass through the staging point at 1 m/s instead of stopping.
-                  coroutine.await(new DriveToPose(robot.drivetrain, staging).withEndSpeed(1.0));
+                  // Global: pass through the staging point toward the scoring spot, no stop.
+                  coroutine.await(
+                      new DriveToPose(robot.drivetrain, staging).passingThrough(scoringGuess));
                   // Local: lock onto the tag and finish on it.
                   coroutine.await(
                       new DriveToTag(

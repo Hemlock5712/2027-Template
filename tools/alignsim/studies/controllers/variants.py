@@ -28,8 +28,9 @@ class VectorBrakeX(VectorBrake):
     name = "VectorBrakeX"
 
     def __init__(self, budget=None, radius=0.41, lat_brake=False, switch_radius=0.0, perp_first=False,
-                 wreact=0.0, **kw):
+                 wreact=0.0, deadband=0.0, wdeadband=0.0, **kw):
         super().__init__(**kw)
+        self.deadband, self.wdeadband = deadband, wdeadband  # command zero inside these (kills the kS limit cycle)
         self.wreact = wreact  # heading: brake this many seconds early, like react for translation
         self.perp_first = perp_first  # spend the accel limit on sideways speed before speeding up
         self.budget, self.radius, self.lat_brake = budget, radius, lat_brake
@@ -57,9 +58,13 @@ class VectorBrakeX(VectorBrake):
         if self.rotation_cap and abs(eth) > math.radians(2):
             t_rot = abs(eth) / self.wmax
             v = min(v, max(d / t_rot, 0.4))
+        if d < self.deadband:
+            v = 0.0
         vx, vy = (ex / d * v, ey / d * v) if d > 1e-6 else (0.0, 0.0)
         brake_th = max(0.0, abs(eth) - abs(cw) * self.wreact)
         w = math.copysign(min(self.wmax, math.sqrt(2 * self.wdecel * brake_th), self.kp_w * abs(eth)), eth)
+        if abs(eth) < self.wdeadband:
+            w = 0.0
         dvx, dvy, dw = vx - cvx, vy - cvy, w - cw
         if self.perp_first and d > 1e-6:
             ux, uy = ex / d, ey / d

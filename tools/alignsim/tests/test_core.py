@@ -131,3 +131,14 @@ def test_time_buffer_interpolates():
     b.add(0.0, (0, 0, 0))
     b.add(1.0, (1, 0, 0))
     assert np.allclose(b.sample(0.25), (0.25, 0, 0))
+
+
+def test_replay_roundtrip(tmp_path):
+    from alignsim.replay import load, replay, variants, write_synthetic
+
+    path = str(tmp_path / "syn.wpilog")
+    truth = write_synthetic(path)
+    obs, _, guesses = load(path, 1)
+    assert len(obs) > 20 and len(guesses) == 1
+    est = replay(obs, guesses, variants())["TagTracker.java (as shipped)"][-1][1]
+    assert math.hypot(est[0] - truth[0], est[1] - truth[1]) < 0.005

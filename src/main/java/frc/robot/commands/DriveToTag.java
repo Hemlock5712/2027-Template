@@ -35,8 +35,8 @@ public class DriveToTag extends DriveToPose {
    * @param tagId the AprilTag on the field element (tag IDs differ per alliance - pick the right
    *     one)
    * @param tagToGoal where the robot should stop, in the tag's frame: +X out of the tag face, +Y to
-   *     the tag's left, rotation 180 degrees = facing the tag. Measure it with the "Teach Tag Goal"
-   *     utility OpMode.
+   *     the tag's left, rotation 180 degrees = facing the tag. Take it from CAD; the "Calibrate
+   *     Cameras" utility OpMode removes the camera errors around it.
    * @param cameras every camera that might see the tag
    */
   public DriveToTag(

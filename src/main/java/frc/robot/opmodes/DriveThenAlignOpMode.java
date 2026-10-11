@@ -32,7 +32,7 @@ import org.wpilib.opmode.PeriodicOpMode;
 public class DriveThenAlignOpMode extends PeriodicOpMode {
   // TODO: the real tag for the scoring spot (it differs per alliance).
   private static final int TAG_ID = 1;
-  // Where to stop, in the tag's frame. TODO: measure with the "Teach Tag Goal" utility OpMode.
+  // Where to stop, in the tag's frame, from CAD. TODO: real value; then run "Calibrate Cameras".
   private static final Transform2d TAG_TO_GOAL =
       new Transform2d(0.6, 0.0, Rotation2d.fromDegrees(180));
 

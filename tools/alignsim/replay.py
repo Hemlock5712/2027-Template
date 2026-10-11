@@ -2,16 +2,20 @@
 
 The robot's TagTracker logs, every loop, one array entry per camera frame of the target tag
 (AdvantageKit puts them under /RealOutputs/TagTracker/<id>/):
-    TagInRobot      Pose2d[]  tag pose in the robot frame from the camera (believed mount)
+    TagInRobot      Pose2d[]  tag pose in the robot frame from the camera, BEFORE the camera correction
     RobotAtCapture  Pose2d[]  wheel-odometry pose at the frame's capture time
     FrameAgeSeconds double[]  capture -> now
     Ambiguity       double[]  per-frame pose ambiguity      (optional)
     Distance        double[]  camera -> tag distance (m)    (optional; derived if missing)
     Camera          double[]  camera index                  (optional)
+    MapGuess        Pose2d    the map's tag pose in the odometry frame, logged at each reset (optional)
 plus Drivetrain/OdometryPose. That is everything a tracker needs, so any variant can be re-run.
+Each MapGuess marks a new approach, so the replay resets there.
 
-Usage:
+Usage (from tools/):
     python3 -m alignsim.replay LOG.wpilog --tag 1            # compare tracker variants
+    python3 -m alignsim.replay LOG.wpilog --corr 0:0.004,-0.002,0.6 1:0,0.003,-0.4
+                                       # camera index: x m, y m, yaw deg from CameraCorrections.java
     python3 -m alignsim.replay --synthetic out.wpilog          # write a sim run in the same format
 
 With --synthetic the sim knows the truth, so the replay also reports each variant's error.
@@ -38,7 +42,7 @@ class Obs:
 def load(path, tag):
     pre = f"TagTracker/{tag}/"
     keys = [pre + k for k in ("TagInRobot", "RobotAtCapture", "FrameAgeSeconds", "Ambiguity", "Distance",
-                              "Camera")] + ["Drivetrain/OdometryPose", "Drivetrain/Pose"]
+                              "Camera", "MapGuess")] + ["Drivetrain/OdometryPose", "Drivetrain/Pose"]
     d = read(path, keys)
 
     def series(k):
@@ -50,6 +54,7 @@ def load(path, tag):
     tir, rac, age = series(pre + "TagInRobot"), series(pre + "RobotAtCapture"), series(pre + "FrameAgeSeconds")
     amb, dist, cam = series(pre + "Ambiguity"), series(pre + "Distance"), series(pre + "Camera")
     odom = sorted(series("Drivetrain/OdometryPose").items())
+    guesses = sorted(series(pre + "MapGuess").items())
     obs = []
     for t in sorted(tir):
         poses = tir[t]
@@ -63,12 +68,12 @@ def load(path, tag):
             cm = cam.get(t, [0.0] * len(poses))
             obs.append(Obs(t, p, r, a[i] if i < len(a) else 0.0, am[i] if i < len(am) else 0.0,
                            ds[i] if i < len(ds) else math.hypot(p[0], p[1]), int(cm[i]) if i < len(cm) else 0))
-    return obs, odom
+    return obs, odom, guesses
 
 
 # ---------------------------------------------------------------------------- tracker variants
 class ReplayKF:
-    """TagTracker.java math (per-axis Kalman, jump gate), fed directly from logged inputs."""
+    """The first TagTracker.java (per-axis Kalman, jump gate), fed directly from logged inputs."""
 
     def __init__(self, xy_floor=0.005, xy_k=0.01, yaw_floor=math.radians(0.5), yaw_k=math.radians(1.5),
                  drift=(0.002, math.radians(0.1)), gate=0.25, max_amb=1.0, yaw_amb=0.0, cam_corr=None):
@@ -107,36 +112,103 @@ class ReplayKF:
         self.est = (self.est[0] + k[0] * dx, self.est[1] + k[1] * dy, wrap(self.est[2] + k[2] * dth))
         self.n += 1
 
-
-VARIANTS = {
-    "TagTracker.java (as shipped)": lambda: ReplayKF(),
-    "+ ambiguity-aware yaw": lambda: ReplayKF(yaw_amb=math.radians(9.0), yaw_k=math.radians(0.45),
-                                              yaw_floor=math.radians(0.3)),
-    "+ reject amb > 0.3": lambda: ReplayKF(max_amb=0.3),
-    "near frames only (< 1.5 m)": lambda: _near_only(1.5),
-    "more forgetting (drift x4)": lambda: ReplayKF(drift=(0.008, math.radians(0.4))),
-}
+    def reset(self, prior=None):
+        self.est, self.var, self.jumps, self.n = None, [0, 0, 0], 0, 0
 
 
-def _near_only(dmax):
-    kf = ReplayKF()
-    orig = kf.update
+class ReplayGeo:
+    """TagTracker.java math as shipped: x/y Kalman with depth/side noise along the camera ray, yaw with
+    an ambiguity term and a 4-sigma gate, map guess to start, lock on sigma, per-camera correction."""
 
-    def upd(o):
-        if o.dist <= dmax:
-            orig(o)
-    kf.update = upd
-    return kf
+    def __init__(self, floor=0.004, depth_k=0.006, side_k=0.003, yaw_floor=math.radians(0.3),
+                 yaw_k=math.radians(0.45), yaw_amb=math.radians(9.0), q_xy=0.0015, q_yaw=math.radians(0.05),
+                 prior_xy=0.08, prior_yaw=math.radians(1.5), use_prior=True, gate=0.25, yaw_gate=4.0,
+                 lock_frames=3, lock_sigma=0.03, max_dist=None, cam_corr=None):
+        self.p = dict(floor=floor, depth_k=depth_k, side_k=side_k, yaw_floor=yaw_floor, yaw_k=yaw_k,
+                      yaw_amb=yaw_amb, q_xy=q_xy, q_yaw=q_yaw, prior_xy=prior_xy, prior_yaw=prior_yaw,
+                      use_prior=use_prior, gate=gate, yaw_gate=yaw_gate, lock_frames=lock_frames,
+                      lock_sigma=lock_sigma, max_dist=max_dist)
+        self.cam_corr = cam_corr or {}
+        self.reset()
+
+    def reset(self, prior=None):
+        p = self.p
+        self.est, self.Pxy, self.Pyaw, self.n, self.jumps = None, None, None, 0, 0
+        if prior is not None and p["use_prior"]:
+            self.est = tuple(prior)
+            self.Pxy = np.eye(2) * p["prior_xy"] ** 2
+            self.Pyaw = p["prior_yaw"] ** 2
+
+    def locked(self):
+        return (self.est is not None and self.n >= self.p["lock_frames"]
+                and math.sqrt(max(self.Pxy[0, 0], self.Pxy[1, 1])) < self.p["lock_sigma"])
+
+    def update(self, o):
+        p = self.p
+        if p["max_dist"] is not None and o.dist > p["max_dist"]:
+            return
+        tir = o.tag_in_robot
+        if o.cam in self.cam_corr:
+            tir = compose(self.cam_corr[o.cam], tir)
+        r = o.robot_at_capture
+        m = compose(r, tir)
+        depth = p["floor"] + p["depth_k"] * o.dist ** 2
+        side = p["floor"] + p["side_k"] * o.dist
+        ray = math.atan2(m[1] - r[1], m[0] - r[0])
+        rot = np.array([[math.cos(ray), -math.sin(ray)], [math.sin(ray), math.cos(ray)]])
+        Rxy = rot @ np.diag([depth ** 2, side ** 2]) @ rot.T
+        Ryaw = (p["yaw_floor"] + p["yaw_k"] * o.dist + p["yaw_amb"] * o.amb) ** 2
+        if self.est is None:
+            self.est, self.Pxy, self.Pyaw, self.n, self.jumps = m, Rxy, Ryaw, 1, 0
+            return
+        self.Pxy = self.Pxy + np.eye(2) * p["q_xy"] ** 2
+        self.Pyaw += p["q_yaw"] ** 2
+        innov = np.array([m[0] - self.est[0], m[1] - self.est[1]])
+        dyaw = wrap(m[2] - self.est[2])
+        if math.hypot(*innov) > p["gate"] and self.n >= p["lock_frames"]:
+            self.jumps += 1
+            if self.jumps >= 3:
+                self.est, self.Pxy, self.Pyaw, self.n, self.jumps = m, Rxy, Ryaw, 1, 0
+            return
+        self.jumps = 0
+        K = self.Pxy @ np.linalg.inv(self.Pxy + Rxy)
+        step = K @ innov
+        self.Pxy = (np.eye(2) - K) @ self.Pxy
+        ystep = 0.0
+        if abs(dyaw) < p["yaw_gate"] * math.sqrt(self.Pyaw + Ryaw):
+            k = self.Pyaw / (self.Pyaw + Ryaw)
+            ystep = k * dyaw
+            self.Pyaw *= 1 - k
+        self.est = (self.est[0] + step[0], self.est[1] + step[1], wrap(self.est[2] + ystep))
+        self.n += 1
 
 
-def replay(obs, variants=VARIANTS):
-    """-> {variant: list of (t, estimate)} after each logged loop."""
+def variants(cam_corr=None):
+    c = cam_corr or {}
+    return {
+        "TagTracker.java (as shipped)": lambda: ReplayGeo(cam_corr=c),
+        "no camera correction": lambda: ReplayGeo(),
+        "no map guess": lambda: ReplayGeo(cam_corr=c, use_prior=False),
+        "no yaw gate": lambda: ReplayGeo(cam_corr=c, yaw_gate=1e9),
+        "ambiguity-blind yaw": lambda: ReplayGeo(cam_corr=c, yaw_amb=0.0),
+        "near frames only (< 1.5 m)": lambda: ReplayGeo(cam_corr=c, max_dist=1.5),
+        "more forgetting (drift x4)": lambda: ReplayGeo(cam_corr=c, q_xy=0.006, q_yaw=math.radians(0.2)),
+        "old per-axis KF (before the sim study)": lambda: ReplayKF(cam_corr=c),
+    }
+
+
+def replay(obs, guesses=(), variant_makers=None):
+    """-> {variant: list of (t, estimate)} after each logged loop. Each MapGuess resets the tracker."""
     out = {}
-    for name, make in variants.items():
+    for name, make in (variant_makers or variants()).items():
         tr = make()
         hist = []
         last_t = None
+        gi = 0
         for o in obs:
+            while gi < len(guesses) and guesses[gi][0] <= o.t:
+                tr.reset(guesses[gi][1])
+                gi += 1
             tr.update(o)
             if o.t != last_t and tr.est is not None:
                 hist.append((o.t, tr.est))
@@ -177,7 +249,13 @@ def write_synthetic(path, seed=3):
     truth = {}
 
     class LoggingTracker(FrameTracker):
+        guessed = False
+
         def update(self, t, snap, frames, est, field):
+            if not self.guessed:
+                self.guessed = True
+                log.pose(f"/RealOutputs/TagTracker/{self.tag_id}/MapGuess", t,
+                         compose(snap["odom"], relative(snap["pose"], field.target.map_pose)))
             tir, rac, age, amb, dist, cam = [], [], [], [], [], []
             names = sorted({fr.camera for fr in frames})
             for fr, f in self._sightings(t, frames):
@@ -222,6 +300,8 @@ def main(argv=None):
     ap.add_argument("log", nargs="?")
     ap.add_argument("--tag", type=int, default=1)
     ap.add_argument("--synthetic", metavar="OUT")
+    ap.add_argument("--corr", nargs="*", default=[], metavar="CAM:X,Y,DEG",
+                    help="per-camera correction from CameraCorrections.java, by camera index")
     a = ap.parse_args(argv)
     truth = None
     path = a.log
@@ -232,9 +312,14 @@ def main(argv=None):
               f"({truth[0]:.3f}, {truth[1]:.3f}, {math.degrees(truth[2]):.2f} deg)")
     if not path:
         ap.error("give a log file or --synthetic OUT")
-    obs, _ = load(path, a.tag)
-    print(f"{len(obs)} frames of tag {a.tag}")
-    print(report(replay(obs), truth))
+    corr = {}
+    for item in a.corr:
+        cam, vals = item.split(":")
+        x, y, deg = (float(v) for v in vals.split(","))
+        corr[int(cam)] = (x, y, math.radians(deg))
+    obs, _, guesses = load(path, a.tag)
+    print(f"{len(obs)} frames of tag {a.tag}, {len(guesses)} approaches (MapGuess resets)")
+    print(report(replay(obs, guesses, variants(corr)), truth))
 
 
 if __name__ == "__main__":

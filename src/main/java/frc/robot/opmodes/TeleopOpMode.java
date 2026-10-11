@@ -31,8 +31,8 @@ public class TeleopOpMode extends PeriodicOpMode {
   // Which AprilTag to auto-align to. TODO: pick the real tag ID (it differs per alliance) once
   // the game is wired - see game-info.
   private static final int ALIGN_TAG_ID = 1;
-  // Where to stop, in the tag's frame: 0.6 m out from the tag face, facing it. TODO: measure the
-  // real one with the "Teach Tag Goal" utility OpMode.
+  // Where to stop, in the tag's frame: 0.6 m out from the tag face, facing it. TODO: the real
+  // one from CAD; run the "Calibrate Cameras" utility OpMode on that spot.
   private static final Transform2d ALIGN_TAG_TO_GOAL =
       new Transform2d(0.6, 0.0, Rotation2d.fromDegrees(180));
 

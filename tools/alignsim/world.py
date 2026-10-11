@@ -309,8 +309,9 @@ def _shape_6328(robot, goal, face_len=0.8):
     """6328 getDriveTarget: slide the target back along the normal / sideways from where we are."""
     off = relative(goal, robot)
     shift_x = max(0.0, min(1.0, abs(off[1]) / (2 * face_len) + (abs(off[0]) - 0.3) / (4 * face_len)))
-    # goal frame: +x is the way the robot faces at the goal (toward the tag), so "out" is -x
-    shift_y = max(0.0, min(1.0, 0.0 if abs(off[1]) <= 0.2 else -off[0] / face_len))
+    # goal frame: +x is the way the robot faces at the goal (toward the tag), so "out" is -x.
+    # The side shift only acts once the robot is past the goal line (off x > 0), as in 6328's code.
+    shift_y = max(0.0, min(1.0, 0.0 if abs(off[1]) <= 0.2 else off[0] / face_len))
     return compose(goal, (-shift_x * 1.0, math.copysign(shift_y * 1.2, off[1]), 0.0))
 
 

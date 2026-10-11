@@ -14,6 +14,12 @@ from alignsim.studies.tag.bias import HARD, CorrSpec, run_many  # noqa: E402
 from alignsim.studies.tag.geotracker import GeoTracker  # noqa: E402
 from alignsim.trackers import GlobalVision, RawTargetSpace, TxTy6328  # noqa: E402
 from alignsim.world import Errors, Scenario, Strategy, TrackerSpec, default_tracker  # noqa: E402
+from alignsim.studies.controllers.variants import VectorBrakeX  # noqa: E402
+from functools import partial  # noqa: E402
+
+# Controller study's ship parameters (docs/alignment/studies/controllers.md)
+SHIP = partial(VectorBrakeX, vmax=4.0, decel=4.0, accel=5.0, kp=6.0, react=0.05, wmax=6.0, wdecel=6.0,
+               waccel=8.0, kp_w=5.0, wreact=0.05, deadband=0.003, wdeadband=math.radians(0.3))
 
 N = int(sys.argv[1]) if len(sys.argv) > 1 else 100
 P = int(sys.argv[2]) if len(sys.argv) > 2 else 2
@@ -27,7 +33,7 @@ VERY_HARD = Scenario(
     cameras=tuple(replace(c, pixel_noise=0.6) for c in front_cameras()))
 
 REC = dict(resolve_flip=False)
-RECOMMENDED = Strategy(tracker=CorrSpec(GeoTracker, **REC), teach=True)
+RECOMMENDED = Strategy(controller=SHIP, tracker=CorrSpec(GeoTracker, **REC), teach=True)
 
 APPROACH = {
     "handoff (direct)": RECOMMENDED,
@@ -43,7 +49,8 @@ HEADLINE = {
     "6328 txTy (map yaw)": (Strategy(tracker=TrackerSpec(TxTy6328, needs_cams=True)), "goal"),
     "fused history (2026 samplePoseAt style)": (Strategy(tracker=default_tracker(frame="fused", max_amb=1.0)), "goal"),
     "odom KF (current TagTracker.java)": (Strategy(tracker=default_tracker(frame="odom", max_amb=1.0)), "goal"),
-    "RECOMMENDED: geo KF + per-camera cal": (RECOMMENDED, "percam"),
+    "geo KF + per-camera cal, old controller tune": (Strategy(tracker=CorrSpec(GeoTracker, **REC), teach=True), "percam"),
+    "RECOMMENDED: + retuned VectorBrake": (RECOMMENDED, "percam"),
 }
 
 if __name__ == "__main__":

@@ -118,23 +118,32 @@ class World:
 
     # ------------------------------------------------------------------ teaching
     def teach(self, strategy_goal):
-        """Robot parked by hand at the true goal; average what the cameras say robot-in-tag is."""
+        """Teach Tag Goal, as a human would do it: park the robot at the true goal (the tag may be
+        out of view there), remember that pose, then pull the robot straight back 0.1-0.6 m while
+        the cameras watch. taught goal = parked pose relative to the averaged tag pose."""
         e = self.sc.errors
         rng = self.rng
         park = compose(self.true_goal, (rng.normal(0, e.teach_xy), rng.normal(0, e.teach_xy),
                                         rng.normal(0, e.teach_yaw)))
-        samples = []
-        for k in range(90):
+        scale = 1.0 + rng.normal(0, 0.01)  # odometry scale error over the short pull-back
+        tags, weights = [], []
+        frames = 120
+        for k in range(frames):
+            back = 0.10 + 0.50 * k / (frames - 1)
+            true_pose = compose(park, (-back, 0.0, 0.0))
+            odom_pose = compose(park, (-back * scale, 0.0, 0.0))  # what wheel odometry reports
             for cam in self.cams:
-                fr = cam.capture(k / 60.0, park, (0, 0, 0), self.field, park[2])
+                fr = cam.capture(k / 60.0, true_pose, (0, 0, 0), self.field, true_pose[2])
                 for f in fr.fiducials:
                     if f.id == self.field.TARGET_ID:
-                        samples.append(inverse(f.tag_in_robot))
-        if not samples:
+                        tags.append(compose(odom_pose, f.tag_in_robot))
+                        weights.append(1.0 / max(0.1, f.distance) ** 2)
+        if not tags:
             return strategy_goal
-        a = np.array(samples)
-        return (float(a[:, 0].mean()), float(a[:, 1].mean()),
-                math.atan2(np.sin(a[:, 2]).mean(), np.cos(a[:, 2]).mean()))
+        a, w = np.array(tags), np.array(weights)
+        tag = (float(np.dot(w, a[:, 0]) / w.sum()), float(np.dot(w, a[:, 1]) / w.sum()),
+               math.atan2(np.dot(w, np.sin(a[:, 2])), np.dot(w, np.cos(a[:, 2]))))
+        return relative(tag, park)
 
     # ------------------------------------------------------------------ run
     def run(self, st: Strategy, record=False):

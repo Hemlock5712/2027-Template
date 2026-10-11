@@ -19,7 +19,7 @@ import numpy as np
 sys.path.insert(0, __file__.rsplit("/alignsim/", 1)[0])
 
 from alignsim.experiment import summarize, table  # noqa: E402
-from alignsim.geom import compose, inverse  # noqa: E402
+from alignsim.geom import compose, inverse, relative  # noqa: E402
 from alignsim.params import FieldParams  # noqa: E402
 from alignsim.studies.tag.geotracker import GeoTracker  # noqa: E402
 from alignsim.world import Errors, Scenario, Strategy, TrackerSpec, World  # noqa: E402
@@ -37,30 +37,29 @@ class CalWorld(World):
     mode = "goal"  # "goal" (taught goal) or "percam"
 
     def teach(self, nominal_goal):
+        """Back-off teach (see World.teach) + a per-camera correction A_c so that
+        A_c (+) measured = what the camera should see if the parked pose were the nominal goal."""
+        taught = super().teach(nominal_goal)
         e = self.sc.errors
         rng = self.rng
         park = compose(self.true_goal, (rng.normal(0, e.teach_xy), rng.normal(0, e.teach_xy),
                                         rng.normal(0, e.teach_yaw)))
+        tag_expected = compose(park, inverse(nominal_goal))  # odom frame, parked = nominal goal
+        scale = 1.0 + rng.normal(0, 0.01)
         per = {c.cp.name: [] for c in self.cams}
-        for k in range(90):
+        for k in range(120):
+            back = 0.10 + 0.50 * k / 119
+            true_pose = compose(park, (-back, 0.0, 0.0))
+            odom_pose = compose(park, (-back * scale, 0.0, 0.0))
             for cam in self.cams:
-                fr = cam.capture(k / 60.0, park, (0, 0, 0), self.field, park[2])
+                fr = cam.capture(k / 60.0, true_pose, (0, 0, 0), self.field, true_pose[2])
                 for f in fr.fiducials:
                     if f.id == self.field.TARGET_ID:
-                        per[cam.cp.name].append(f.tag_in_robot)
-        expected = inverse(nominal_goal)  # tag in robot frame when exactly at the nominal goal
-        allm = []
+                        expected = relative(odom_pose, tag_expected)
+                        per[cam.cp.name].append(compose(expected, inverse(f.tag_in_robot)))
         for cam in self.cams:
-            ms = per[cam.cp.name]
-            if ms:
-                m = _mean_pose(ms)
-                cam.correction = compose(expected, inverse(m))
-                allm += [inverse(x) for x in ms]
-            else:
-                cam.correction = None
-        if self.mode == "percam" or not allm:
-            return nominal_goal
-        return _mean_pose(allm)
+            cam.correction = _mean_pose(per[cam.cp.name]) if per[cam.cp.name] else None
+        return nominal_goal if self.mode == "percam" else taught
 
 
 class CorrectedGeo(GeoTracker):

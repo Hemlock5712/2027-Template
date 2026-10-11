@@ -411,6 +411,42 @@ class BearingPursuit:
         return self.slew(speed * math.cos(self.bearing), speed * math.sin(self.bearing), w, dt)
 
 
+class BearingMemory(BearingPursuit):
+    """(d') Bearing pursuit while the piece is in view; a KF keeps the piece in the odom frame, and once
+    the piece is lost the robot drives at v_near toward the KF's predicted position (for up to
+    `memory_time`) instead of the last bearing."""
+
+    name = "bearing+memory"
+
+    def __init__(self, memory_time=1.0, tracker_kw=None, **kw):
+        super().__init__(**kw)
+        self.memory_time = memory_time
+        self.tk = {"q_acc": 0.3, "max_dist": 8.0, **(tracker_kw or {})}
+
+    def reset(self, ctx, snap):
+        super().reset(ctx, snap)
+        self.tracker = KalmanTracker(**self.tk)
+        self.tracker.reset(ctx)
+
+    def estimate(self):
+        return self.tracker.position(self._t)[0] if hasattr(self, "_t") else None
+
+    def step(self, t, snap, frames, est):
+        self._t = t
+        self.tracker.update(t, frames, est)
+        lost = t - self.last_seen
+        if self.bearing is None or lost <= self.lost_time or not self.tracker.locked() or lost > self.memory_time:
+            return super().step(t, snap, frames, est)
+        for fr in frames:  # a new sighting hands control back to the bearing servo next loop
+            if fr.pieces and t - fr.t_capture_est <= 0.25:
+                return super().step(t, snap, frames, est)
+        p, _ = self.tracker.position(t)
+        pose = snap["pose"]
+        b = math.atan2(p[1] - pose[1], p[0] - pose[0])
+        w = heading_rate(wrap(b - pose[2]))
+        return self.slew(self.v_near * math.cos(b), self.v_near * math.sin(b), w, self.ctx["dt"])
+
+
 class Strafe2026:
     """(b0) 2026-AutoTesting: the driver drives forward, code adds -kP * tx strafe. Heading held."""
 

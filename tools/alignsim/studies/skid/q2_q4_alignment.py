@@ -1,7 +1,7 @@
 """Q2 collisions vs the odom-frame tracker + Q4 mitigations + Q5 (100 Hz odometry).
 
     python3 alignsim/studies/skid/q2_q4_alignment.py BLOCK [n]
-BLOCK: pilot | phases | accel | radius | rate. Results are cached in $SKID_OUT (pickles).
+BLOCK: pilot | phases | accel | radius | gate | rate. Results are cached in $SKID_OUT (pickles).
 """
 
 import functools
@@ -10,6 +10,7 @@ import os
 import pickle
 import sys
 import time
+from dataclasses import replace
 
 import numpy as np
 
@@ -191,6 +192,15 @@ if __name__ == "__main__":
             st, over = VARIANTS["baseline (odom frame)"]
             rows = run_block(_fname(f"radius_{rad}"), scenario(), st, Config(radius_error=rad), n)
             out.append((f"wheel radius error {rad * 100:+.0f}% (no push)", summary(rows)))
+        print(table(out))
+    elif block == "gate":
+        out = []
+        for phase in ("none", "coast"):
+            for lab in ("baseline (odom frame)", "(f)+(a)+(c)"):
+                st, over = VARIANTS[lab]
+                st = replace(st, pos_tol=0.01)
+                rows = run_block(_fname(f"gate1cm_{phase}__{lab}"), scenario(), st, Config(pushes=PHASES[phase], **over), n)
+                out.append((f"{phase}: {lab}, done tolerance 1 cm", summary(rows)))
         print(table(out))
     elif block == "rate":
         keep = ["baseline (odom frame)", "(a)+(c)", "(f)+(a)+(c)"]

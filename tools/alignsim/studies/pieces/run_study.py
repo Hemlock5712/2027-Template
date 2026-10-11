@@ -111,6 +111,7 @@ if __name__ == "__main__":
     abl_st["R, static KF"] = P(Hybrid, reach=0.40, tracker_kw={"edge_reject": False, "static": True})
     abl_st["R + edge reject"] = P(Hybrid, reach=0.40)
     abl_st["C, 4 m gate"] = KalmanPiece
+    abl_st["R, decel 4.5"] = P(Hybrid, reach=0.40, tracker_kw={"edge_reject": False}, vb={"decel": 4.5})
     abl = run_block("ablation", abl_sc, abl_st, n)
 
     # camera mount: how much does seeing the piece into the intake matter (R and A)
@@ -123,7 +124,7 @@ if __name__ == "__main__":
         "cam 0.6 m, 5 deg down, 30 fps -> 15 fps": replace(SCENARIOS["blind last 0.5 m"],
                                                             cameras=(piece_camera(x=0.20, z=0.60, pitch_down_deg=5.0, fps=15.0),)),
     }
-    camres = run_block("camera", cams, {k: strat[k] for k in ("A", "B", "C", "R")}, n)
+    camres = run_block("camera", cams, {k: strat[k] for k in ("A", "A*", "B", "H", "C", "R")}, n)
 
     keys = list(STRATEGIES)
     print("\n## success % (W = 0.4 m)\n")
@@ -144,5 +145,5 @@ if __name__ == "__main__":
     print("\n## camera mount\n")
     for metric, f in (("succ_W40", "{:.0f}"), ("succ_W20", "{:.0f}"), ("t_med", "{:.2f}")):
         print(f"\n{metric}\n")
-        print(matrix(camres, cams, ["A", "B", "C", "R"], metric, f))
+        print(matrix(camres, cams, ["A", "A*", "B", "H", "C", "R"], metric, f))
     print(f"\ntotal {time.time() - t0:.0f}s")

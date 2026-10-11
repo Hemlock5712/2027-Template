@@ -8,7 +8,7 @@ from dataclasses import replace
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from piece_world import PieceScenario, piece_camera  # noqa: E402
-from strategies import BearingPursuit, Hybrid, JavaPiece, KalmanPiece, Strafe2026  # noqa: E402
+from strategies import BearingMemory, BearingPursuit, Hybrid, JavaPiece, KalmanPiece, Strafe2026  # noqa: E402
 
 P = functools.partial
 
@@ -16,11 +16,13 @@ STRATEGIES = {
     "A": ("Java PieceTracker + DriveToPiece, as written", JavaPiece),
     "A'": ("A, placed with the odometry pose now (no latency compensation)", P(JavaPiece, tracker_kw={"at_capture": False})),
     "A+": ("A with reach 0.35 (goal past the bumper)", P(JavaPiece, reach=0.35)),
+    "A*": ("minimal Java fix: A with an 8 m range gate and reach 0.40", P(JavaPiece, reach=0.40, tracker_kw={"max_dist": 8.0})),
     "B0": ("2026: driver forward + (-kP * tx) strafe", Strafe2026),
     "B": ("bearing pursuit: gyro at capture - tx, speed from ty", BearingPursuit),
     "B'": ("B with the gyro now (no latency compensation)", P(BearingPursuit, comp=False)),
     "C": ("constant-velocity Kalman in odom, lead + feedforward", KalmanPiece),
     "D": ("hybrid: KF far, commit at the image edge, heading frozen, drive through", P(Hybrid, reach=0.30, commit=0.3)),
+    "H": ("hybrid: bearing pursuit in view, drive to the odom-frame KF estimate once lost", BearingMemory),
     "R": ("recommended: C + no 4 m gate + reach 0.40", P(Hybrid, reach=0.40, tracker_kw={"edge_reject": False})),
 }
 

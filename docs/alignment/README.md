@@ -27,8 +27,8 @@ AprilTag or a game piece. It includes:
 | 4 | **Use the tag's measured yaw**, not the map's: the map's yaw inherits the element's rotation error (31% in the hard world). Camera yaw bias is handled by decision 3. | Medium-high (sim) | Test plan step 5 |
 | 5 | **Keep the simple per-axis Kalman filter** in `TagTracker`, dropping frames with ambiguity > 0.3. Once cameras are calibrated it ties a geometry-aware filter (100/99/98% vs 100/99/97%). | Medium-high (sim) | Replay on real logs prefers the geo filter |
 | 6 | **Two cameras at the front corners.** One center camera sees the tag head-on, where the yaw solve is ambiguous: 73–78%. | High (sim) | — |
-| 7 | **Drive-to-point law: keep `VectorBrake`, retuned** (`DriveToPose`): speed = `min(vmax, √(v_end² + 2·decel·d'), kP·d)` with a vector accel limit, plus a heading reaction time and stop deadbands. **ACCEL 10, DECEL 6 m/s²**: accelerate near the tires' limit, brake moderately so the last frames of a tag approach are taken slowly. Pass-through waypoints use the **corner rule** (`passingThrough(next)`). | High (sim) | Real drivetrain limits differ |
-| 8 | **Rules for any limits you pick:** `ACCEL > DECEL`; **keep the drive slip current high** (~2× the real grip, 120 A) and limit acceleration in the command, because weight transfer loads some wheels far more than others; brake early by the actuation delay. | High (sim + 2026 experience) | — |
+| 7 | **Drive-to-point law: keep `VectorBrake`, retuned** (`DriveToPose`): speed = `min(vmax, √(v_end² + 2·decel·d'), kP·d)` with a vector accel limit, plus a heading reaction time and stop deadbands. **Acceleration limited from physics each loop** (as in 2026): a friction circle of 10 m/s² shared by driving and turning, plus the motors' torque-speed limit at a 150 A model current; **DECEL 6 m/s²** so the last frames of a tag approach are taken slowly. Pass-through waypoints use the **corner rule** (`passingThrough(next)`). | High (sim) | Real drivetrain limits differ |
+| 8 | **Rules for any limits you pick:** `ACCEL > DECEL`; **keep the drive slip current high** (360 A, a hardware ceiling) and limit acceleration in the command, because weight transfer loads some wheels far more than others; brake early by the actuation delay. | High (sim + 2026 experience) | — |
 | 9 | **Timestamps:** capture time = now − (frame age + Limelight latency), on the Phoenix clock. A straight approach is forgiving (no compensation at all still gets 98%); turning while viewing is not. | High | Spin test shows the tag pose swinging |
 | 10 | **Global fusion: add frames oldest-first.** The estimator throws away stored updates newer than the one being added. | High (read in source) | — |
 | 11 | **Collisions are the open risk** (32% false "done" after a 300–800 N push near the target). Next: an IMU-vs-wheels skid detector, and treat the lock as suspect after a skid (back off 30 cm, re-lock). Not in code yet. | Medium (sim) | IMU logs from pushes |
@@ -328,10 +328,11 @@ the keys are listed in the `log-reading` skill.
 2. **Odometry and grip.**
    - Push the robot 3 m along a tape measure and compare with `OdometryPose`.
    - Measure the grip: ramp drive current on carpet until a wheel spins. Keep `kSlipCurrent` at about
-     2× that (120 A ships); the limit belongs in `DriveToPose`'s `ACCEL`.
+     360 A (a ceiling); the real limit belongs in `DriveToPose`'s `TRACTION_ACCEL`.
    - Measure the CG height (or balance the robot on a rod) for the weight-transfer math.
    - Check acceleration: from rest, command a hard 3 m move and compare `OdometryPose` with a tape
-     measure. More than ~2 cm off means the wheels slipped; lower `ACCEL`.
+     measure. More than ~2 cm off means the wheels slipped; lower `TRACTION_ACCEL`.
+   - Weigh the robot for `ROBOT_MASS` (it sets the motor torque limit).
 3. **Camera noise and bias vs distance.** Park still, facing a tag, at 1, 2 and 3 m, head-on and at
    30°, for 10 s each. The spread of `TagTracker/<id>/TagInRobot` gives the real noise; the mean vs a
    tape measure shows whether the yaw bias changes with distance or angle.

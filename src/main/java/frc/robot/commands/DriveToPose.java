@@ -7,6 +7,7 @@ package frc.robot.commands;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.DriveMechanism;
 import frc.robot.utils.AllianceFlip;
 import frc.robot.utils.ClassicCommand;
@@ -15,6 +16,7 @@ import org.littletonrobotics.junction.Logger;
 import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Translation2d;
 import org.wpilib.math.kinematics.ChassisVelocities;
+import org.wpilib.math.system.DCMotor;
 
 /**
  * Drive to a field pose by commanding velocity directly: each loop, head straight at the goal at
@@ -24,12 +26,21 @@ import org.wpilib.math.kinematics.ChassisVelocities;
  * <p>Classic-style Commands v3 command on {@link ClassicCommand}.
  */
 public class DriveToPose extends ClassicCommand {
-  // Tuned in tools/alignsim (docs/alignment/studies/controllers.md). Keep ACCEL > DECEL and
-  // ANGULAR_ACCEL > ANGULAR_DECEL (or it overshoots).
-  // ACCEL is the traction limit; kSlipCurrent stays high so weight-shifted wheels aren't starved.
+  // Tuned in tools/alignsim (docs/alignment/studies/controllers.md). Keep TRACTION_ACCEL > DECEL
+  // and ANGULAR_ACCEL > ANGULAR_DECEL (or it overshoots).
   private static final double MAX_SPEED = 4.0; // m/s
   private static final double DECEL = 6.0; // m/s^2; braking harder costs tag accuracy at the end
-  private static final double ACCEL = 10.0; // m/s^2, hard limit on any change of velocity
+
+  // Acceleration limits from physics (like 2026's AccelerationLimiter). kSlipCurrent in
+  // TunerConstants is only the hardware ceiling; these decide how hard we actually push.
+  private static final double TRACTION_ACCEL = 10.0; // m/s^2 (~1 g), shared by driving and turning
+  private static final double MODEL_CURRENT = 150.0; // A per drive motor, for the torque limit
+  private static final double ROBOT_MASS = 60.0; // kg with battery and bumpers. TODO: weigh it
+  private static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60Foc(1);
+  private static final double GEAR_RATIO = TunerConstants.FrontLeft.DriveMotorGearRatio;
+  private static final double WHEEL_RADIUS = TunerConstants.FrontLeft.WheelRadius; // m
+  private static final double BASE_RADIUS = // m, robot center to a wheel
+      Math.hypot(TunerConstants.FrontLeft.LocationX, TunerConstants.FrontLeft.LocationY);
   // Close to the goal, speed = KP * distance instead of the braking curve (no chatter at the end).
   private static final double KP = 6.0; // (m/s) per m
   // Brake this much early to cover sensor + CAN delay. Use 0.10 with 100 Hz odometry (no CANivore).
@@ -188,18 +199,34 @@ public class DriveToPose extends ClassicCommand {
     double omega =
         Math.abs(headingError) < HEADING_DEADBAND ? 0.0 : Math.copySign(turnSpeed, headingError);
 
-    // Limit the change as one vector, so the direction of travel never bends while speeding up.
-    double dvx = vx - commanded.vx;
-    double dvy = vy - commanded.vy;
-    double dv = Math.hypot(dvx, dvy);
-    if (dv > ACCEL * dt) {
-      dvx *= ACCEL * dt / dv;
-      dvy *= ACCEL * dt / dv;
+    // The acceleration this loop asks for, then the limits: heading cap, motors, traction.
+    double ax = (vx - commanded.vx) / dt;
+    double ay = (vy - commanded.vy) / dt;
+    double alpha =
+        Math.max(-ANGULAR_ACCEL, Math.min(ANGULAR_ACCEL, (omega - commanded.omega) / dt));
+    // Motors: only speeding up is limited; less torque is left as the wheels near free speed.
+    if (ax * commanded.vx + ay * commanded.vy > 0.0) {
+      double wheelSpeed =
+          Math.hypot(commanded.vx, commanded.vy) + Math.abs(commanded.omega) * BASE_RADIUS;
+      double motorLimit = motorAccel(wheelSpeed);
+      double a = Math.hypot(ax, ay);
+      if (a > motorLimit) {
+        ax *= motorLimit / a;
+        ay *= motorLimit / a;
+      }
     }
-    double dOmega =
-        Math.max(-ANGULAR_ACCEL * dt, Math.min(ANGULAR_ACCEL * dt, omega - commanded.omega));
+    // Traction: driving and turning share the tread's grip. Scaled as one vector, so paths stay
+    // straight.
+    double total = Math.hypot(Math.hypot(ax, ay), alpha * BASE_RADIUS);
+    if (total > TRACTION_ACCEL) {
+      double scale = TRACTION_ACCEL / total;
+      ax *= scale;
+      ay *= scale;
+      alpha *= scale;
+    }
     commanded =
-        new ChassisVelocities(commanded.vx + dvx, commanded.vy + dvy, commanded.omega + dOmega);
+        new ChassisVelocities(
+            commanded.vx + ax * dt, commanded.vy + ay * dt, commanded.omega + alpha * dt);
 
     drivetrain.setControl(driveRequest.withVelocity(commanded));
 
@@ -207,6 +234,14 @@ public class DriveToPose extends ClassicCommand {
     Logger.recordOutput(name() + "/DistanceMeters", distance);
     Logger.recordOutput(name() + "/HeadingErrorDegrees", Math.toDegrees(headingError));
     Logger.recordOutput(name() + "/CommandedVelocity", commanded);
+  }
+
+  /** Most acceleration the four drive motors can still add at this wheel speed (m/s^2). */
+  private static double motorAccel(double wheelSpeed) {
+    double motorSpeed = wheelSpeed / WHEEL_RADIUS * GEAR_RATIO; // rad/s
+    double amps = Math.min(MODEL_CURRENT, DRIVE_MOTOR.getCurrent(motorSpeed, 12.0));
+    double wheelForce = DRIVE_MOTOR.getTorque(Math.max(0.0, amps)) * GEAR_RATIO / WHEEL_RADIUS;
+    return 4.0 * wheelForce / ROBOT_MASS;
   }
 
   /** Waypoints finish when close; otherwise at the goal, facing the right way, and stopped. */

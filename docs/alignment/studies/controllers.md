@@ -464,7 +464,14 @@ Full tables: [`results/q5_accel.md`](../../../tools/alignsim/studies/controllers
 - **Any slip current above ~2× grip is the same** for driving: 120 A and 360 A give identical results,
   because the motors never need more than ~120 A to break the tires loose.
 
-**Ships:** `ACCEL` 10, `DECEL` 6, slip current 120 A. The heading limits stay at 6 / 8.
+**Q7, the 2026-style physics limiter** ([`results/q7_limiter.md`](../../../tools/alignsim/studies/controllers/results/q7_limiter.md)):
+the current limit is only a hardware ceiling (360 A), and `DriveToPose` computes the acceleration limit
+each loop: a friction circle (`TRACTION_ACCEL` 10, shared by driving and turning) and, when speeding
+up, the motors' torque-speed curve at a 150 A model current. Against a fixed accel 10 it leaves 15–30%
+less odometry error, costs ~0.09 s on moves from rest that also turn, and doesn't change tag alignment.
+
+**Ships:** `TRACTION_ACCEL` 10, `MODEL_CURRENT` 150 A, `DECEL` 6, heading limits 6 / 8; `kSlipCurrent`
+360 A (hardware ceiling).
 
 ## The law to ship, in full
 
@@ -479,7 +486,9 @@ each loop (dt = 0.02):
   commanded velocity moves toward speed·dir by at most ACCEL·dt (as one vector)
   commanded ω moves toward ω_target by at most WACCEL·dt
 
-VMAX 4.0  DECEL 6.0  ACCEL 10.0  KP 6  REACT 0.05 (0.10 at 100 Hz)   (slip current high, ~2x grip)
+VMAX 4.0  DECEL 6.0  KP 6  REACT 0.05 (0.10 at 100 Hz)
+accel limit (Q7): |heading change| <= WACCEL; when speeding up, |a| <= motor torque at wheel speed (150 A);
+                  sqrt(|a|^2 + (alpha*r)^2) <= TRACTION 10      (kSlipCurrent 360 A = hardware ceiling)
 WMAX 6.0  WDECEL 6.0 WACCEL 8.0 KP_W 5 WREACT 0.05
 waypoint: r = min(0.4, 0.4·shorter leg);  endSpeed = √(DECEL·r / tan(turn/2));  hand over inside r
 ```

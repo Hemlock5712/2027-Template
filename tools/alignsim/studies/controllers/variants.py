@@ -257,3 +257,49 @@ class VecLimited:
         self.cmd = (vx, vy, w)
         return self.cmd
 
+
+
+# ---------------------------------------------------------------------------- 2026-style physics limiter
+class VectorBrakePhys(VectorBrakeX):
+    """VectorBrakeX whose acceleration limit is computed from physics each loop, like 5712's 2026
+    AccelerationLimiter (and DriveToPose.java):
+      * heading change capped at waccel (heading steps are what slip the wheels);
+      * motors: when speeding up, at most what four drive motors can add at the current wheel speed,
+        modeled at `model_current` (well under the hardware current limit);
+      * traction: sqrt(a_lin^2 + (alpha*r)^2) <= traction (friction circle, shared with turning).
+    """
+
+    name = "VectorBrakePhys"
+
+    def __init__(self, traction=10.0, model_current=150.0, rp=None, **kw):
+        super().__init__(**kw)
+        from alignsim.params import RobotParams
+        self.traction, self.model_current, self.rp = traction, model_current, rp or RobotParams()
+        mx, my = self.rp.module_positions[0]
+        self.base_r = math.hypot(mx, my)
+
+    def motor_accel(self, wheel_speed):
+        rp = self.rp
+        motor_speed = wheel_speed / rp.wheel_radius * rp.drive_gear  # rad/s
+        amps = min(self.model_current, (12.0 - motor_speed / rp.motor_kv) / rp.motor_r)
+        force = rp.motor_kt * max(0.0, amps) * rp.drive_gear / rp.wheel_radius
+        return 4.0 * force / rp.mass
+
+    def step(self, pose, goal, meas_vel, dt):
+        cvx, cvy, cw = self.cmd
+        accel = self.accel
+        self.accel = 1e9  # brake law + heading cap only; the physics limits come next
+        tx, ty, tw = super().step(pose, goal, meas_vel, dt)
+        self.accel = accel
+        ax, ay, al = (tx - cvx) / dt, (ty - cvy) / dt, (tw - cw) / dt
+        if ax * cvx + ay * cvy > 0:
+            lim = self.motor_accel(math.hypot(cvx, cvy) + abs(cw) * self.base_r)
+            a = math.hypot(ax, ay)
+            if a > lim:
+                ax, ay = ax * lim / a, ay * lim / a
+        tot = math.hypot(math.hypot(ax, ay), al * self.base_r)
+        if tot > self.traction:
+            k = self.traction / tot
+            ax, ay, al = ax * k, ay * k, al * k
+        self.cmd = (cvx + ax * dt, cvy + ay * dt, cw + al * dt)
+        return self.cmd

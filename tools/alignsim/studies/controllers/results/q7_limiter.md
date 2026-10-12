@@ -63,3 +63,7 @@ hardware current limit is 360 A in every row; CG 0.2 m rows include weight trans
   but raising MAX_SPEED to 4.4 gains nothing on 1-6 m moves.
 - **1.1 g (the 2026 value) is no faster than 1.0 g and leaves more odometry error** (9.4-22 cm), so
   `TRACTION_ACCEL` is 10.
+- **Counting spin-up in the motor check too, as the 2026 code did, was slower.** With the worst-case wheel
+  speed `|v| + |omega|*r`, driving fast while turning reads past free speed, so spin-up is blocked until the
+  robot slows: moves took 0.08-0.12 s longer (from rest 1.65 vs 1.57 s, moving starts 1.73 vs 1.61 s)
+  with the same odometry error. `AccelerationLimiter` counts only the driving part.

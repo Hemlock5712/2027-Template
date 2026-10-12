@@ -48,6 +48,7 @@ public final class AccelerationLimiter {
         Math.max(-ANGULAR_ACCEL, Math.min(ANGULAR_ACCEL, (wanted.omega - current.omega) / dt));
 
     // Motors: only speeding up is limited; less torque is left as the wheels near free speed.
+    // Spin-up isn't counted: using the worst-case wheel speed, it slowed turns while driving (Q7).
     if (ax * current.vx + ay * current.vy > 0.0) {
       double wheelSpeed =
           Math.hypot(current.vx, current.vy) + Math.abs(current.omega) * BASE_RADIUS;

@@ -1,6 +1,7 @@
-# Video brief: "How a robot hits a 2 cm target"
+# Video 0 (trailer): "How a robot hits a 2 cm target"
 
-A ready-made brief for the [animate](https://github.com/cth9191/animate) Claude Code skill. Copy this
+The one-minute overview of the series: it touches every idea that videos 1-3 explain in depth. A
+ready-made brief for the [animate](https://github.com/cth9191/animate) Claude Code skill. Copy this
 folder into the animate project, then run:
 
 ```

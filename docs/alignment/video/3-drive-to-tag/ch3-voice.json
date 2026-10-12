@@ -1,0 +1,10 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c3-1", "text": "A camera photo takes time: take it, process it, send it over the network. A few hundredths of a second.", "after": 0.6},
+    {"id": "c3-2", "text": "At driving speed, the robot moves about five centimeters in that time. Draw the tag from where the robot is now, and it lands five centimeters wrong.", "after": 0.6},
+    {"id": "c3-3", "text": "So every photo carries its age. The robot rewinds its memory to the moment the photo was taken, and draws the tag from there.", "after": 0.6},
+    {"id": "c3-4", "text": "Photos older than a quarter of a second are thrown away.", "after": 0.3}
+  ]
+}

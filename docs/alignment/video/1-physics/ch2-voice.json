@@ -1,0 +1,11 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c2-1", "text": "When a bus pulls away, you lean back. Robots do too. Our robot's weight sits about twenty centimeters up.", "after": 0.6},
+    {"id": "c2-2", "text": "Speed up, and weight slides to the back wheels. At six meters per second squared, each front wheel carries seventy-six newtons. Each back wheel, two hundred eighteen.", "after": 0.6},
+    {"id": "c2-3", "text": "But all four motors push the same. The light front wheels slip first, while the heavy back wheels still have grip to spare.", "after": 0.6},
+    {"id": "c2-4", "text": "Push to ten, and the front wheels carry almost nothing.", "after": 0.6},
+    {"id": "c2-5", "text": "A low current limit would choke the back wheels too, right when they could help. So we keep the limit high, and plan the push with physics.", "after": 0.3}
+  ]
+}

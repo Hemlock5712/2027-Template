@@ -1,0 +1,11 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c5-1", "text": "All of this runs fifty times a second, in one small class.", "after": 0.6},
+    {"id": "c5-2", "text": "The velocity we want goes in. First, cap how fast the spin may change.", "after": 0.6},
+    {"id": "c5-3", "text": "Second, if we're speeding up, cut the push to what the motors can still give.", "after": 0.6},
+    {"id": "c5-4", "text": "Third, fit driving and turning inside the tires' grip.", "after": 0.6},
+    {"id": "c5-5", "text": "What comes out is the fastest change the robot can really make. Next: deciding where to go.", "after": 0.3}
+  ]
+}

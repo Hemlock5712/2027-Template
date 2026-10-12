@@ -1,0 +1,10 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c6-1", "text": "Far away, drive to the map. As soon as the cameras lock on, switch to the spot measured from the tag.", "after": 0.6},
+    {"id": "c6-2", "text": "Every photo is rewound to when it was taken, combined with the others, and corrected for its camera.", "after": 0.6},
+    {"id": "c6-3", "text": "The same driving loop brings the robot in, and the wheels finish the last few centimeters.", "after": 0.6},
+    {"id": "c6-4", "text": "That's how a robot hits a two centimeter target.", "after": 0.3}
+  ]
+}

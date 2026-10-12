@@ -1,0 +1,11 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c1-1", "text": "Our robot weighs sixty kilograms. To speed up at ten meters per second squared, something has to push it with six hundred newtons.", "after": 0.6},
+    {"id": "c1-2", "text": "That push only comes from the floor, through four tires. About one hundred fifty newtons each.", "after": 0.6},
+    {"id": "c1-3", "text": "A tire can only grip so hard. On carpet, about as hard as the robot's weight presses it down. Push past that, and the wheel just spins.", "after": 0.6},
+    {"id": "c1-4", "text": "And a spinning wheel lies. It counts distance the robot never moved, so the robot thinks it's somewhere it isn't.", "after": 0.6},
+    {"id": "c1-5", "text": "Each wheel reaches its grip at about fifty-seven amps. Our motors could pull three hundred sixty. So the current limit is only a ceiling. The code has to plan with physics.", "after": 0.3}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c5-1", "text": "One more problem. If a camera is mounted just one degree crooked, every photo puts the tag almost two centimeters off. Averaging can't fix that, because every photo is wrong the same way.", "after": 0.6},
+    {"id": "c5-2", "text": "So we calibrate each camera once. Park the robot exactly on the scoring spot, then let it back away slowly. It knows where the tag should appear, so each camera learns its own small fix.", "after": 0.6},
+    {"id": "c5-3", "text": "On a messy field in our simulator, that took the robot from sixty six percent to a hundred.", "after": 0.6},
+    {"id": "c5-4", "text": "And use two cameras on the front corners. Straight on, a tag can look tilted either way. From the sides, there's only one answer.", "after": 0.3}
+  ]
+}

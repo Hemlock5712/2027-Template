@@ -1,0 +1,10 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c3-1", "text": "Each tire has one grip budget. Picture it as a circle.", "after": 0.6},
+    {"id": "c3-2", "text": "Driving forward uses some. Spinning the robot uses some too. They add like the sides of a right triangle, so spinning up costs a little forward push.", "after": 0.6},
+    {"id": "c3-3", "text": "When the two together are too much, we shrink both by the same amount. That way the robot keeps heading the same direction, just a little slower.", "after": 0.6},
+    {"id": "c3-4", "text": "And quick changes in spin are the worst: in our simulator, most wheel slip came from turning, not driving. So spin may only change by eight radians per second squared.", "after": 0.3}
+  ]
+}

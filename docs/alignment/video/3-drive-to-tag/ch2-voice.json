@@ -1,0 +1,10 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c2-1", "text": "The robot keeps two answers to \"where am I\". The field pose uses every tag it sees, so it's right, but it jumps whenever a camera corrects it.", "after": 0.6},
+    {"id": "c2-2", "text": "The wheel pose only uses the wheels and the gyro. It drifts a little over a long drive, but over the last few seconds it's smooth and steady.", "after": 0.6},
+    {"id": "c2-3", "text": "So we place the tag in the smooth wheel world. Then, every loop, we measure the goal from the robot, so if the field pose jumps, the robot and the goal jump together.", "after": 0.6},
+    {"id": "c2-4", "text": "And the wheel pose remembers where the robot was for the last second and a half. That's about to matter.", "after": 0.3}
+  ]
+}

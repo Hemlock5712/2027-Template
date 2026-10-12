@@ -12,7 +12,7 @@ AprilTag or a game piece. It includes:
 | Where | What |
 | --- | --- |
 | [research/](research/) | Raw notes from each research thread (teams, libraries, industry, SystemCore) |
-| [video/](video/brief.md) | A narrated explainer brief for the animate video tool, with its voice-over script |
+| [video/](video/README.md) | Briefs for an animated video series (trailer + physics, drive to point, drive to tag) for the animate tool, with voice-over scripts |
 | [studies/](studies/) | The four simulation studies: [tag tracking](studies/tag-tracking.md), [drive-to-point controller](studies/controllers.md), [game pieces](studies/game-pieces.md), [skids and collisions](studies/skid-odometry.md) |
 | [tools/alignsim](../../tools/alignsim/README.md) | The simulator, and `replay.py` for re-running trackers on robot logs |
 

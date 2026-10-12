@@ -1,0 +1,11 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c2-1", "text": "To answer \"how fast\", the robot works out three speeds and picks the smallest.", "after": 0.6},
+    {"id": "c2-2", "text": "One: its top speed, four meters per second.", "after": 0.6},
+    {"id": "c2-3", "text": "Two: the fastest speed it can still stop from in the distance left. From four meters per second, stopping takes one point three meters. It even brakes a twentieth of a second early, to cover its own reaction time.", "after": 0.6},
+    {"id": "c2-4", "text": "Three: near the end, slow down gently, in a straight line, so it doesn't wobble.", "after": 0.6},
+    {"id": "c2-5", "text": "Smallest of the three, every loop. And inside three millimeters, it just stops.", "after": 0.3}
+  ]
+}

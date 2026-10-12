@@ -67,3 +67,8 @@ hardware current limit is 360 A in every row; CG 0.2 m rows include weight trans
   speed `|v| + |omega|*r`, driving fast while turning reads past free speed, so spin-up is blocked until the
   robot slows: moves took 0.08-0.12 s longer (from rest 1.65 vs 1.57 s, moving starts 1.73 vs 1.61 s)
   with the same odometry error. `AccelerationLimiter` counts only the driving part.
+- **Motor model from CTRE's dyno data** (later): `AccelerationLimiter` builds its Kraken X60 FOC from the
+  dyno numbers (9.362 N·m and 476.1 A at stall, 5785 rpm free; WPILib's built-in is 9.37 / 483 / 5800).
+  Trap: leave the free current at 0. `DCMotor` treats all current as torque, so the dyno's 10.4 A free
+  current would overstate the push near top speed (11.4 instead of 9.7 m/s^2 at 4 m/s). With 0, the model
+  matches the dyno torque line: 26 / 19 / 10 / 4 / 0 m/s^2 at 3 / 3.5 / 4 / 4.3 / 4.53 m/s.

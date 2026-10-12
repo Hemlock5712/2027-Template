@@ -7,6 +7,7 @@ package frc.robot.utils;
 import frc.robot.generated.TunerConstants;
 import org.wpilib.math.kinematics.ChassisVelocities;
 import org.wpilib.math.system.DCMotor;
+import org.wpilib.math.util.Units;
 
 /**
  * How fast the robot's velocity may change, from physics. Give it the velocity you have and the one
@@ -28,7 +29,10 @@ public final class AccelerationLimiter {
   private static final double ANGULAR_ACCEL = 8.0; // rad/s^2
   private static final double MODEL_CURRENT = 150.0; // A per drive motor, for the torque limit
   private static final double ROBOT_MASS = 60.0; // kg with battery and bumpers. TODO: weigh it
-  private static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60Foc(1);
+  // Kraken X60 FOC, CTRE dyno data: 9.362 Nm and 476.1 A at stall, 5785 rpm free. Free current
+  // stays 0 so torque hits zero at the real free speed (DCMotor counts friction as push).
+  private static final DCMotor DRIVE_MOTOR =
+      new DCMotor(12.0, 9.362, 476.1, 0.0, Units.rotationsPerMinuteToRadiansPerSecond(5785), 1);
   private static final double GEAR_RATIO = TunerConstants.FrontLeft.DriveMotorGearRatio;
   private static final double WHEEL_RADIUS = TunerConstants.FrontLeft.WheelRadius; // m
   private static final double BASE_RADIUS = // m, robot center to a wheel

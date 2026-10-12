@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c05-1", "text": "Each camera can send up to fifty photos a second. Every photo puts the tag in a slightly different place.", "after": 0.6},
+    {"id": "c05-2", "text": "In our simulator, far photos scatter by a couple of centimeters, and close photos by a couple of millimeters.", "after": 0.6},
+    {"id": "c05-3", "text": "If two friends guessed where a door is, you'd trust the one standing next to it. Same idea here.", "after": 0.6},
+    {"id": "c05-4", "text": "So the robot keeps one best guess and nudges it toward each new photo: a big nudge for a sharp photo, a small one for a fuzzy one.", "after": 0.6},
+    {"id": "c05-5", "text": "As photos agree, the guess gets surer, and each new photo moves it less. It's a smart average.", "after": 0.6},
+    {"id": "c05-6", "text": "A photo more than twenty five centimeters from the guess is ignored. After three jumps in a row, the robot decides it was wrong, and starts over.", "after": 0.6},
+    {"id": "c05-7", "text": "Some photos are unsure. Seen straight on, a tag can look tilted either way. Those photos are skipped.", "after": 0.6},
+    {"id": "c05-8", "text": "Three good photos, and the robot is locked on. Now its goal comes from the tag.", "after": 0.6},
+    {"id": "c05-9", "text": "In the last few centimeters, the tag leaves the cameras' view. Its place in the wheel world is known, so the wheels finish the job.", "after": 0.3}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c03-1", "text": "Here's a surprise. The robot keeps two different answers to the question: where am I?", "after": 0.6},
+    {"id": "c03-2", "text": "The field pose uses the wheels, the gyro, and every tag the cameras see. It's right, but it jumps whenever a camera corrects it.", "after": 0.6},
+    {"id": "c03-3", "text": "The wheel pose only counts wheel turns and reads the gyro. It's like counting your steps in the dark: smooth, but slowly drifting.", "after": 0.6},
+    {"id": "c03-4", "text": "In our simulator, it drifted about two millimeters over a whole four meter approach. Rock steady.", "after": 0.6},
+    {"id": "c03-5", "text": "Engineers call this wheel pose odometry, and its world the odometry frame.", "after": 0.6},
+    {"id": "c03-6", "text": "So where should the tag live? Drawn in the field world, every jump would drag the tag around with it.", "after": 0.6},
+    {"id": "c03-7", "text": "Drawn in the wheel world, where nothing jumps, the tag sits perfectly still, photo after photo.", "after": 0.6},
+    {"id": "c03-8", "text": "Every loop, we measure the goal from the robot in the wheel world, then hang that measurement on the field pose.", "after": 0.6},
+    {"id": "c03-9", "text": "If the field pose jumps, the robot and its goal jump together. The steering doesn't flinch.", "after": 0.3}
+  ]
+}

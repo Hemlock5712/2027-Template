@@ -1,0 +1,13 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c09-1", "text": "Next: how much should we trust one photo? We use sigma, the spread: how far off a photo might be.", "after": 0.6},
+    {"id": "c09-2", "text": "For x and y, the code uses zero point zero zero five, plus zero point zero one times d squared, where d is the distance.", "after": 0.6},
+    {"id": "c09-3", "text": "At one meter that's one point five centimeters. At two meters, four point five. At three, nine point five.", "after": 0.6},
+    {"id": "c09-4", "text": "Why squared? Twice as far, the tag looks half as big, and depth comes from its size. So far errors grow fast.", "after": 0.6},
+    {"id": "c09-5", "text": "For heading, the spread is zero point five degrees, plus one point five degrees per meter. Two degrees at one meter, three point five at two.", "after": 0.6},
+    {"id": "c09-6", "text": "These are cautious first guesses, much bigger than our simulated camera's scatter. The team will tune them from robot logs.", "after": 0.6},
+    {"id": "c09-7", "text": "The maths uses sigma squared, called the variance: four point five centimeters becomes zero point zero zero two zero two five. Our guess has one too.", "after": 0.3}
+  ]
+}

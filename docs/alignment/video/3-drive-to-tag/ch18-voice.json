@@ -1,0 +1,17 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c18-1", "text": "Lines one twenty two to one twenty four compute the frame age: time since it arrived, plus the camera's own milliseconds.", "after": 0.6},
+    {"id": "c18-2", "text": "That's zero point zero three five seconds, like the board. Line one twenty five skips anything older than a quarter second.", "after": 0.6},
+    {"id": "c18-3", "text": "Lines one twenty eight and one twenty nine rewind: the wheel pose at now minus frame age, twelve point four six five seconds.", "after": 0.6},
+    {"id": "c18-4", "text": "That lands in Wheel Odometry. Lines twenty three and twenty four create its history buffer, one and a half seconds long.", "after": 0.6},
+    {"id": "c18-5", "text": "Its update runs two hundred fifty times a second; line forty two stores each pose with its timestamp.", "after": 0.6},
+    {"id": "c18-6", "text": "Get pose at, line fifty seven, blends the two samples around our time: one, zero point five, zero degrees.", "after": 0.6},
+    {"id": "c18-7", "text": "Each method is synchronized, because the wheel thread writes while the main loop reads.", "after": 0.6},
+    {"id": "c18-8", "text": "Back in Tag Tracker, line one thirty skips the photo if the memory has no answer yet.", "after": 0.6},
+    {"id": "c18-9", "text": "Line one thirty four flattens the 3D pose onto the floor: two point zero zero, zero point one zero, one eighty degrees.", "after": 0.6},
+    {"id": "c18-10", "text": "Line one thirty six applies the camera's fix, A composed with measured. Our fix is still zero, so nothing changes yet.", "after": 0.6},
+    {"id": "c18-11", "text": "Line one thirty seven checks ambiguity, zero point one, fine. Line one thirty eight composes robot and tag, three, zero point six, and calls fuse.", "after": 0.3}
+  ]
+}

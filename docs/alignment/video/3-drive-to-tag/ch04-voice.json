@@ -1,0 +1,13 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c04-1", "text": "Now, timing. A photo is never fresh. It has to be taken, processed, and sent to the robot's brain.", "after": 0.6},
+    {"id": "c04-2", "text": "That trip takes a few hundredths of a second, say thirty five thousandths. The robot keeps driving the whole time.", "after": 0.6},
+    {"id": "c04-3", "text": "At one point five meters per second, that's about five centimeters of driving.", "after": 0.6},
+    {"id": "c04-4", "text": "Draw the tag from where the robot is now, and it lands five centimeters in the wrong place.", "after": 0.6},
+    {"id": "c04-5", "text": "So every photo carries its age. And the wheel pose keeps a trail: two hundred fifty dots a second, for one and a half seconds.", "after": 0.6},
+    {"id": "c04-6", "text": "We rewind the trail to the moment the photo was taken, stand a ghost robot there, and draw the tag from the ghost. Right on target.", "after": 0.6},
+    {"id": "c04-7", "text": "Photos older than a quarter of a second are thrown away. Too stale to trust.", "after": 0.3}
+  ]
+}

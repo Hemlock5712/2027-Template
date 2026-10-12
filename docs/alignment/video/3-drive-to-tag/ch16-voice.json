@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c16-1", "text": "Now the real Java. Drive To Tag, line twenty seven, extends Drive To Pose, so it inherits the whole driving loop from video two.", "after": 0.6},
+    {"id": "c16-2", "text": "It keeps the drivetrain, the tag's ID, tag to goal, one tag tracker, and the map goal.", "after": 0.6},
+    {"id": "c16-3", "text": "The constructor saves them; line forty eight builds a tag tracker fed by every camera that might see it.", "after": 0.6},
+    {"id": "c16-4", "text": "Initialize runs once at the start. Line fifty three forgets any old estimate, so every approach starts fresh.", "after": 0.6},
+    {"id": "c16-5", "text": "Lines fifty five to fifty eight: the map goal is the tag's map pose composed with tag to goal. Here, thirteen point six seven, four point one seven.", "after": 0.6},
+    {"id": "c16-6", "text": "No map entry? The goal is wherever the robot is, so it holds still until the cameras lock.", "after": 0.6},
+    {"id": "c16-7", "text": "Execute runs fifty times a second: line sixty four feeds new photos to the tracker first, then line sixty five drives.", "after": 0.6},
+    {"id": "c16-8", "text": "Goal, line seventy, is the whole handoff: the tag's goal if the tracker has one, otherwise the map goal. After the lock, the goal hops four centimeters.", "after": 0.6},
+    {"id": "c16-9", "text": "And line seventy five: finished only when locked and arrived. The robot never finishes on the map's guess.", "after": 0.3}
+  ]
+}

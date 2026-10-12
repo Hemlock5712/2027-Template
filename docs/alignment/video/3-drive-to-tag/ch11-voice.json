@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c11-1", "text": "Back to our story. A passing robot blocks the view while ours drives on, to one meter from the tag.", "after": 0.6},
+    {"id": "c11-2", "text": "Photo three comes from one meter. Sigma is just one point five centimeters, so its noise is zero point zero zero zero two two eight.", "after": 0.6},
+    {"id": "c11-3", "text": "Our variance plus drift is zero point zero zero one zero two one, so K is zero point eight two. From two meters, only zero point three three.", "after": 0.6},
+    {"id": "c11-4", "text": "The guess jumps to two point nine nine seven, zero point five nine seven: about four millimeters from the true tag. Three good photos: locked.", "after": 0.6},
+    {"id": "c11-5", "text": "Over a whole approach, the gain falls as photos pile up, to about zero point zero five, then climbs as photos sharpen near the tag.", "after": 0.6},
+    {"id": "c11-6", "text": "The little drift we add with every photo keeps the gain above zero, so the filter never stops listening.", "after": 0.6},
+    {"id": "c11-7", "text": "Before voting, a photo must pass some rules: no farther than three point five meters, no older than a quarter second.", "after": 0.6},
+    {"id": "c11-8", "text": "Ambiguity at most zero point three: zero is sure, one is a coin flip. Skipped photos still go in the log.", "after": 0.6},
+    {"id": "c11-9", "text": "No jump: the square root of dx squared plus dy squared must stay within zero point two five meters. Three jumps in a row restart the guess.", "after": 0.6},
+    {"id": "c11-10", "text": "Photo two passed them all: two meters, thirty five thousandths old, ambiguity zero point one, four centimeters from the guess.", "after": 0.3}
+  ]
+}

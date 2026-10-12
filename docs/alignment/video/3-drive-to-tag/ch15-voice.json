@@ -1,0 +1,14 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c15-1", "text": "Here's what our simulator says. Every run starts two point eight meters back, a bit to the side, already moving.", "after": 0.6},
+    {"id": "c15-2", "text": "A success means the robot says it's done, and it's truly within two centimeters and one degree.", "after": 0.6},
+    {"id": "c15-3", "text": "Driving to the map: fifty seven, thirty one, fifteen percent, as the simulated world gets messier.", "after": 0.6},
+    {"id": "c15-4", "text": "Tracking the tag in the wheel world, without calibration: one hundred, seventy two, forty six.", "after": 0.6},
+    {"id": "c15-5", "text": "Add per-camera calibration and the retuned drive loop: one hundred, ninety nine, ninety eight.", "after": 0.6},
+    {"id": "c15-6", "text": "On the hard world: no calibration, sixty six. Teaching the goal spot instead, sixty four. Fixing each camera, one hundred.", "after": 0.6},
+    {"id": "c15-7", "text": "One center camera: seventy three to seventy eight percent. Two corner cameras: one hundred.", "after": 0.6},
+    {"id": "c15-8", "text": "Frame rate, pixel noise, and handoff speed barely mattered. These are simulator numbers with guessed errors. Robot tests will replace them.", "after": 0.3}
+  ]
+}

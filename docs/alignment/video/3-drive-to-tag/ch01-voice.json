@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c01-1", "text": "Every FRC field comes with a map. It says exactly where each field element, and each AprilTag on it, should be.", "after": 0.6},
+    {"id": "c01-2", "text": "But real fields are built by people, at every event. The real element usually sits a little off its spot on the map.", "after": 0.6},
+    {"id": "c01-3", "text": "The field drawings allow half an inch and one degree, and FIRST has warned that real events can be worse.", "after": 0.6},
+    {"id": "c01-4", "text": "Our robot's job: stop on the real scoring spot, within two centimeters and one degree. About the width of your thumb.", "after": 0.6},
+    {"id": "c01-5", "text": "Here's the catch. Even a robot that knows exactly where it is would drive to where the element should be, not where it is.", "after": 0.6},
+    {"id": "c01-6", "text": "In our simulator, driving to the map spot hits the target fifty seven percent of the time. On messier fields, thirty one, then fifteen.", "after": 0.6},
+    {"id": "c01-7", "text": "So near the target, our robot stops trusting the map. It measures the target itself, using the AprilTag stuck on it.", "after": 0.6},
+    {"id": "c01-8", "text": "With everything in this video switched on, the same simulator scores one hundred, ninety nine, and ninety eight percent.", "after": 0.6},
+    {"id": "c01-9", "text": "We'll go in five steps: the goal, the idea in plain words, the maths with real numbers, the Java code, and a recap.", "after": 0.3}
+  ]
+}

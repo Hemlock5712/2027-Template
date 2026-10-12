@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c12-1", "text": "The tag lives in the wheel world, but the drive loop steers by the field pose. We need a bridge.", "after": 0.6},
+    {"id": "c12-2", "text": "Step one: goal equals tag, composed with tag to goal. Rotate zero point six by one eighty degrees, and it points back at the robot.", "after": 0.6},
+    {"id": "c12-3", "text": "With our tag, rounded, the goal is two point four, zero point six, facing zero degrees: right in front of the tag.", "after": 0.6},
+    {"id": "c12-4", "text": "Step two: measure the goal from the wheel pose now, two point zero four, zero point five. Thirty six centimeters ahead, ten left.", "after": 0.6},
+    {"id": "c12-5", "text": "Step three: hang that tape on the field pose, thirteen point three four, four point one. The field goal is thirteen point seven, four point two.", "after": 0.6},
+    {"id": "c12-6", "text": "Together: the field goal is the field pose now, composed with the goal seen from the robot now.", "after": 0.6},
+    {"id": "c12-7", "text": "Now a camera nudges the field pose three centimeters, to four point one three. The goal moves to four point two three. The gap is unchanged.", "after": 0.6},
+    {"id": "c12-8", "text": "The drive loop only looks at that gap, so the jump cancels and the robot doesn't twitch.", "after": 0.6},
+    {"id": "c12-9", "text": "And the map's goal? Thirteen point six seven, four point one seven. Four centimeters from the real spot: twice our whole budget.", "after": 0.3}
+  ]
+}

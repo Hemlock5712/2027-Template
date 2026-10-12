@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c23-1", "text": "Try it. From the tools folder, run the replay tool with dash dash synthetic. It simulates one approach and writes a robot-style log.", "after": 0.6},
+    {"id": "c23-2", "text": "Then it replays those photos through Tag Tracker and six other filter versions, and compares each one with the truth.", "after": 0.6},
+    {"id": "c23-3", "text": "Compare more forgetting with the shipped filter. In our run, four times the drift made the estimate wobble about twice as much.", "after": 0.6},
+    {"id": "c23-4", "text": "On the real robot, try the spin test. Turn in place at about one radian per second with a tag in view, and watch Tag Pose.", "after": 0.6},
+    {"id": "c23-5", "text": "It should stay still. If it swings back and forth, the timestamps are off. If it traces a circle, the camera's mounting pose is off.", "after": 0.6},
+    {"id": "c23-6", "text": "What's next? Collisions. A push that slides all four wheels together fools the wheel pose, so the tag's place is suddenly wrong.", "after": 0.6},
+    {"id": "c23-7", "text": "In our simulator, a hard push near the target fooled the robot into a false done thirty two percent of the time.", "after": 0.6},
+    {"id": "c23-8", "text": "The plan: compare the gyro chip's accelerometer with the wheels. In our simulator, that caught ninety five percent of skids. Not in the code yet.", "after": 0.6},
+    {"id": "c23-9", "text": "After a skid, the robot would stop trusting its lock, back off thirty centimeters, and lock on again.", "after": 0.6},
+    {"id": "c23-10", "text": "That's how a robot hits a two centimeter target. The lessons behind it are at f r c fifty seven twelve dot com.", "after": 0.3}
+  ]
+}

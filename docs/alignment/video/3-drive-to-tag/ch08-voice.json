@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c08-1", "text": "Now the timing maths. Every time is on one clock. Say now is twelve point five zero zero seconds.", "after": 0.6},
+    {"id": "c08-2", "text": "The photo's age has three parts: zero point zero one five since it arrived, plus the camera's capture and processing time, eight and twelve thousandths.", "after": 0.6},
+    {"id": "c08-3", "text": "Together, zero point zero three five seconds. So the photo was taken at twelve point four six five.", "after": 0.6},
+    {"id": "c08-4", "text": "Ignore the age, and the error is v, the speed, times the age. One point five times zero point zero three five: about five centimeters.", "after": 0.6},
+    {"id": "c08-5", "text": "The wheel memory stores a dot every four thousandths of a second. Our capture time falls between two dots.", "after": 0.6},
+    {"id": "c08-6", "text": "At twelve point four six four, x was zero point nine nine eight five. At twelve point four six eight, it was one point zero zero four five.", "after": 0.6},
+    {"id": "c08-7", "text": "Our moment is a quarter of the way from one to the other.", "after": 0.6},
+    {"id": "c08-8", "text": "So x is zero point nine nine eight five, plus a quarter of six millimeters: exactly one. A straight line blend between the dots.", "after": 0.6},
+    {"id": "c08-9", "text": "In our simulator, timing mistakes barely hurt a straight approach. Turning while looking at the tag is where they really matter.", "after": 0.3}
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c10-1", "text": "Here's the whole trick. Photo one, from two meters, started our guess at x equals two point nine seven.", "after": 0.6},
+    {"id": "c10-2", "text": "Photo two says three. How far should we move? The gain, K, decides: our variance, over our variance plus the photo's noise.", "after": 0.6},
+    {"id": "c10-3", "text": "First, widen our guess a hair for two millimeters of drift. Its variance becomes zero point zero zero two zero three three.", "after": 0.6},
+    {"id": "c10-4", "text": "Photo two is also from two meters. Its noise is zero point zero zero two zero three four. Almost the same.", "after": 0.6},
+    {"id": "c10-5", "text": "So K is zero point five. Equal trust, so we move halfway.", "after": 0.6},
+    {"id": "c10-6", "text": "New guess equals old guess, plus K times the difference. Two point nine seven, plus half of three centimeters: two point nine eight five.", "after": 0.6},
+    {"id": "c10-7", "text": "The same for y, now zero point five eight five, and for heading, now one seventy nine point five degrees.", "after": 0.6},
+    {"id": "c10-8", "text": "Then the variance shrinks, times one minus K. We're surer: sigma drops from four point five to three point two centimeters.", "after": 0.6},
+    {"id": "c10-9", "text": "With equally sharp photos, this is the ordinary average. The first counts fully, the second gets a half, the third a third.", "after": 0.6},
+    {"id": "c10-10", "text": "This smart average is called a Kalman filter. Ours is tiny: one for x, one for y, and one for heading.", "after": 0.3}
+  ]
+}

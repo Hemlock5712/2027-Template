@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c07-1", "text": "The floor tilts into a graph. A pose is three numbers: x, y, and theta, the heading.", "after": 0.6},
+    {"id": "c07-2", "text": "This is the robot when photo two was taken, from the rewound wheel memory: x one, y zero point five, facing zero degrees.", "after": 0.6},
+    {"id": "c07-3", "text": "The camera gives the tag in the robot's own frame: two ahead, zero point one left, turned one eighty to face us.", "after": 0.6},
+    {"id": "c07-4", "text": "To chain them, we compose, written as a plus in a circle. Tag in the world equals robot, composed with tag in robot.", "after": 0.6},
+    {"id": "c07-5", "text": "Composing has two steps. First, rotate the second arrow by the robot's heading. Our heading is zero, so nothing turns.", "after": 0.6},
+    {"id": "c07-6", "text": "Second, add. One plus two is three. Zero point five plus zero point one is zero point six. Headings add to one eighty.", "after": 0.6},
+    {"id": "c07-7", "text": "So photo two puts the tag at three, zero point six, facing us. The code will make exactly these numbers.", "after": 0.6},
+    {"id": "c07-8", "text": "Why rotate? If the robot faced thirty degrees, ahead points another way. The arrow turns to one point six eight, one point zero nine.", "after": 0.6},
+    {"id": "c07-9", "text": "Add, and the tag lands at two point six eight, one point five nine. Skip the rotation, and you'd be about a meter wrong.", "after": 0.6},
+    {"id": "c07-10", "text": "Two more tools. The inverse, a small minus one, is the trip backwards. And seen from measures one pose from another.", "after": 0.3}
+  ]
+}

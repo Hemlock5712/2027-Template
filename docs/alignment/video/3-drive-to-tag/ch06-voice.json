@@ -1,0 +1,14 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c06-1", "text": "One more problem, and it's sneaky. What if a camera is mounted just one degree crooked?", "after": 0.6},
+    {"id": "c06-2", "text": "Then every tag it sees looks shifted sideways, about one point seven centimeters for every meter of distance.", "after": 0.6},
+    {"id": "c06-3", "text": "Every photo is wrong the same way, so averaging a thousand of them still gives the same wrong answer.", "after": 0.6},
+    {"id": "c06-4", "text": "It's like a bathroom scale that always reads one kilogram heavy. Weighing ten times won't fix it. Zeroing it once will.", "after": 0.6},
+    {"id": "c06-5", "text": "So we calibrate each camera once. The robot is pushed onto a real scoring spot with a jig, so its position is known exactly.", "after": 0.6},
+    {"id": "c06-6", "text": "Then it backs straight away, slowly, for zero point six meters. It knows where the tag should appear in every photo.", "after": 0.6},
+    {"id": "c06-7", "text": "Each camera compares what it saw with what it should have seen, and learns its own small fix, good for every tag.", "after": 0.6},
+    {"id": "c06-8", "text": "And we use two cameras on the front corners. They see the tag from the sides, where its tilt is clear.", "after": 0.3}
+  ]
+}

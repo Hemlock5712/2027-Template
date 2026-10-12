@@ -1,0 +1,21 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c22-1", "text": "Let's put it all together, with every idea switched on.", "after": 0.6},
+    {"id": "c22-2", "text": "One. Far away, use the map. Near the target, measure the target's own tag.", "after": 0.6},
+    {"id": "c22-3", "text": "Two. Place every photo where the robot was when it was taken, in the smooth wheel world.", "after": 0.6},
+    {"id": "c22-4", "text": "Three. Blend photos into a smart average that trusts close photos, and ignores jumps and unsure photos.", "after": 0.6},
+    {"id": "c22-5", "text": "Four. Fix each camera once, because a crooked camera is wrong the same way every time.", "after": 0.6},
+    {"id": "c22-6", "text": "Check yourself. Question one: why does the tag live in the wheel world? Pause and think.", "after": 4.0},
+    {"id": "c22-7", "text": "The wheel pose never jumps, so the tag stays still. And the goal is measured from the robot each loop, so jumps cancel.", "after": 0.6},
+    {"id": "c22-8", "text": "Question two: the robot drives two meters per second, and a photo is zero point zero five seconds old. Without the rewind, how far off?", "after": 4.0},
+    {"id": "c22-9", "text": "Speed times age: two times zero point zero five. Ten centimeters.", "after": 0.6},
+    {"id": "c22-10", "text": "Question three: our variance equals the photo's noise. What's the gain, and how far does the guess move?", "after": 4.0},
+    {"id": "c22-11", "text": "The gain is one half, so the guess moves halfway to the photo.", "after": 0.6},
+    {"id": "c22-12", "text": "Question four: a camera is turned two degrees, and the tag is one and a half meters away. How far sideways does it look?", "after": 4.0},
+    {"id": "c22-13", "text": "One and a half times the tangent of two degrees. About five centimeters.", "after": 0.6},
+    {"id": "c22-14", "text": "Question five: why can't averaging more photos fix that error?", "after": 4.0},
+    {"id": "c22-15", "text": "Every photo is off the same way. The average of the same mistake is the same mistake. Calibrate instead.", "after": 0.3}
+  ]
+}

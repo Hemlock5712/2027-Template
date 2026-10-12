@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c17-1", "text": "Tag Tracker opens with the rules: three point five meters, ambiguity zero point three, a quarter second, twenty five centimeters, three to restart, three to lock.", "after": 0.6},
+    {"id": "c17-2", "text": "Lines forty seven to fifty three hold the sigma formula's numbers and the drift: two millimeters and a tenth of a degree.", "after": 0.6},
+    {"id": "c17-3", "text": "Lines sixty two to sixty six are its memory: the tag pose, three variances, good photos, and jumps in a row.", "after": 0.6},
+    {"id": "c17-4", "text": "Reset, lines eighty five to ninety one, forgets the tag pose and the counts.", "after": 0.6},
+    {"id": "c17-5", "text": "Update runs every loop. Line one oh four loops over the cameras; we follow camera zero.", "after": 0.6},
+    {"id": "c17-6", "text": "Line one oh five grabs its newest frame, one photo. Lines one oh six to one oh nine skip a frame number we've already seen.", "after": 0.6},
+    {"id": "c17-7", "text": "Line one eleven calls find tag, at line one ninety seven, which looks through every tag in the photo for ours.", "after": 0.6},
+    {"id": "c17-8", "text": "Line one fifteen gets the tag's 3D pose in robot space. Line one sixteen takes its floor distance: two point zero zero two five meters.", "after": 0.6},
+    {"id": "c17-9", "text": "Line one seventeen skips the photo if that distance is almost zero, meaning no 3D answer, or beyond three point five meters.", "after": 0.3}
+  ]
+}

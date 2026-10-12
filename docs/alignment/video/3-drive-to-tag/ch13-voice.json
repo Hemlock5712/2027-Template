@@ -1,0 +1,13 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c13-1", "text": "Back to the crooked camera. Call its angle error epsilon. The tag is d meters away.", "after": 0.6},
+    {"id": "c13-2", "text": "The sideways error is the far side of a thin triangle: d times the tangent of epsilon.", "after": 0.6},
+    {"id": "c13-3", "text": "The tangent of one degree is zero point zero one seven five. So one point seven centimeters per meter, and three and a half at two meters.", "after": 0.6},
+    {"id": "c13-4", "text": "The tag also looks turned one degree, so the goal swings about a centimeter and the robot faces one degree wrong.", "after": 0.6},
+    {"id": "c13-5", "text": "Write each photo as truth plus bias plus noise. Averaging shrinks the noise toward zero, but the bias stays, every single time.", "after": 0.6},
+    {"id": "c13-6", "text": "In our simulator, a misplaced element no longer hurts. But a camera turned zero point eight degrees drops success to about ninety three percent.", "after": 0.6},
+    {"id": "c13-7", "text": "And a one degree bias in the camera's own tag solve drops it to about eighty. Now the camera is the error.", "after": 0.3}
+  ]
+}

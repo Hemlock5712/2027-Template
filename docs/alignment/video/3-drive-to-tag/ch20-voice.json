@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c20-1", "text": "Restart, line two forty four: the estimate becomes this photo, its variance this photo's noise, and the count goes back to one.", "after": 0.6},
+    {"id": "c20-2", "text": "A restart also drops the lock, so Drive To Tag falls back to the map goal until three photos agree again.", "after": 0.6},
+    {"id": "c20-3", "text": "Has lock, line one sixty four: an estimate exists, and at least three good photos. After photo three, it's true.", "after": 0.6},
+    {"id": "c20-4", "text": "It stays true when the tag leaves view. The wheels carry the estimate the rest of the way.", "after": 0.6},
+    {"id": "c20-5", "text": "Get field goal, line one eighty one, returns nothing until we're locked.", "after": 0.6},
+    {"id": "c20-6", "text": "Line one eighty five is step one: tag pose, composed with tag to goal. Two point three nine seven, zero point five nine nine.", "after": 0.6},
+    {"id": "c20-7", "text": "Line one eighty six is step two: goal minus the wheel pose now, meaning seen from the robot. Thirty six centimeters ahead, ten left.", "after": 0.6},
+    {"id": "c20-8", "text": "Line one eighty seven is step three: hang it on the field pose. Thirteen point six nine seven, four point one nine nine.", "after": 0.6},
+    {"id": "c20-9", "text": "For contrast, Vision dot java feeds the field pose. Lines one fourteen to one sixteen add its photos oldest first, since adding one discards newer ones.", "after": 0.6},
+    {"id": "c20-10", "text": "Tag Tracker never touches that estimator. It only borrows the field pose at the very last step.", "after": 0.3}
+  ]
+}

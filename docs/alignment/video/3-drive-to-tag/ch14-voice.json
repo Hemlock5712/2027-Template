@@ -1,0 +1,17 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c14-1", "text": "Calibration maths. The robot is parked exactly on the scoring spot. Its wheels say four, one, facing zero.", "after": 0.6},
+    {"id": "c14-2", "text": "Tag to goal, run backwards, is the trip from robot to tag. So the tag must be at four point six, one, facing back.", "after": 0.6},
+    {"id": "c14-3", "text": "After backing off thirty centimeters, the tag should appear zero point nine meters straight ahead, facing the robot.", "after": 0.6},
+    {"id": "c14-4", "text": "A camera turned one degree reports zero point eight nine six four, minus zero point zero one one three, one seventy nine: a centimeter off.", "after": 0.6},
+    {"id": "c14-5", "text": "We want a fix, A, so that A composed with measured equals expected. Undo measured on both sides: A equals expected, composed with measured inverse.", "after": 0.6},
+    {"id": "c14-6", "text": "Here A is three and a half millimeters, minus four point three millimeters, and one degree. The one degree undoes the camera's turn.", "after": 0.6},
+    {"id": "c14-7", "text": "Work it out anywhere along the back-off: A comes out the same. A flat line is what a good calibration log looks like.", "after": 0.6},
+    {"id": "c14-8", "text": "A is averaged over every photo. Angles use sine and cosine, so one seventy nine and minus one seventy nine average to one eighty, not zero.", "after": 0.6},
+    {"id": "c14-9", "text": "Then every photo from that camera gets the same fix: A, composed with measured.", "after": 0.6},
+    {"id": "c14-10", "text": "It absorbs the camera's mounting error, the solve's yaw bias at those distances, and small lens errors.", "after": 0.6},
+    {"id": "c14-11", "text": "But it also absorbs any parking mistake, and the calibration tag's own error. So park with a jig, on a well-built element.", "after": 0.3}
+  ]
+}

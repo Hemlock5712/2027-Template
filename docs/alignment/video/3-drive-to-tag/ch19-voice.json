@@ -1,0 +1,17 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c19-1", "text": "Lines one forty one to one fifty nine log the raw inputs, even unsure photos, so other filters can be replayed later.", "after": 0.6},
+    {"id": "c19-2", "text": "Remember the log key Tag Pose. You'll watch it in the spin test.", "after": 0.6},
+    {"id": "c19-3", "text": "Now fuse, line two oh seven: the smart average, with our measured pose and the distance.", "after": 0.6},
+    {"id": "c19-4", "text": "Lines two oh eight to two ten: the sigma formulas, squared into noise. Zero point zero zero two zero three four for x and y.", "after": 0.6},
+    {"id": "c19-5", "text": "Lines two twelve to two fifteen restart from this photo if there's no estimate yet. Photo one did that. This time we go on.", "after": 0.6},
+    {"id": "c19-6", "text": "Lines two sixteen to two eighteen measure the differences: dx zero point zero three, dy zero point zero three, and one degree.", "after": 0.6},
+    {"id": "c19-7", "text": "Line two nineteen is the jump check. Four centimeters is well inside twenty five, so the jump branch is skipped.", "after": 0.6},
+    {"id": "c19-8", "text": "Line two twenty six clears the jump counter, and line two twenty eight builds the drift, squared.", "after": 0.6},
+    {"id": "c19-9", "text": "Lines two thirty to two thirty four run the board formulas per axis: add drift, compute the gain, shrink the variance. Gain: zero point five.", "after": 0.6},
+    {"id": "c19-10", "text": "Lines two thirty five to two thirty nine move the estimate by gain times difference, to two point nine eight five, zero point five eight five.", "after": 0.6},
+    {"id": "c19-11", "text": "Line two forty counts one more good photo, now two. Line two forty one notes when we last saw the tag.", "after": 0.3}
+  ]
+}

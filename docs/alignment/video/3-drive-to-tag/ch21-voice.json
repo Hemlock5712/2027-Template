@@ -1,0 +1,18 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c21-1", "text": "Camera Corrections is tiny. Lines nineteen to twenty two map each camera's name to its fix. Right now, all zero.", "after": 0.6},
+    {"id": "c21-2", "text": "Line twenty eight returns the fix, or no change for a camera never calibrated.", "after": 0.6},
+    {"id": "c21-3", "text": "The calibration op mode sets the tag, the parked spot, and a straight back-off from the tag, at zero point one five meters per second for four seconds.", "after": 0.6},
+    {"id": "c21-4", "text": "Start, line eighty seven: the parked pose, composed with tag to parked inverted. Four point six, one, one eighty.", "after": 0.6},
+    {"id": "c21-5", "text": "Then it backs off. Periodic adds a frame from each camera every loop, stops the robot at four seconds, and prints at four and a half.", "after": 0.6},
+    {"id": "c21-6", "text": "Add frame, line one twenty one, starts with Tag Tracker's checks: a new frame, with our tag.", "after": 0.6},
+    {"id": "c21-7", "text": "Lines one thirty six to one forty six get the measured pose, its age, and the rewound wheel pose.", "after": 0.6},
+    {"id": "c21-8", "text": "Line one forty eight: the tag seen from the robot at capture. Zero point nine, zero, one eighty.", "after": 0.6},
+    {"id": "c21-9", "text": "Lines one forty nine to one fifty one: expected, composed with measured inverse. The fix: three and a half millimeters, minus four point three, one degree.", "after": 0.6},
+    {"id": "c21-10", "text": "Lines one fifty two to one fifty six add it to the sums, using sine and cosine for the angle. Then each sample is logged.", "after": 0.6},
+    {"id": "c21-11", "text": "Print corrections averages the sums; line one seventy eight turns sine and cosine back into an angle. Paste the printed line into Camera Corrections.", "after": 0.6},
+    {"id": "c21-12", "text": "From then on, line one thirty six in Tag Tracker fixes every photo from that camera. Under twenty photos? It warns instead.", "after": 0.3}
+  ]
+}

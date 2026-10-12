@@ -1,0 +1,13 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c02-1", "text": "Think about driving to a friend's house. The map app gets you to the right street, fast.", "after": 0.6},
+    {"id": "c02-2", "text": "But to park, you stop looking at the map and look at the curb. You measure the real thing.", "after": 0.6},
+    {"id": "c02-3", "text": "Our robot does the same. Far away, it drives to the map's spot. Close up, its cameras find the tag.", "after": 0.6},
+    {"id": "c02-4", "text": "A camera reports the tag relative to the robot. Something like: two meters ahead, ten centimeters left, and facing me.", "after": 0.6},
+    {"id": "c02-5", "text": "The scoring spot is measured from the tag too: zero point six meters straight out of its face, turned to face it.", "after": 0.6},
+    {"id": "c02-6", "text": "The robot only switches when it's sure: three photos have to agree first. We'll see how soon.", "after": 0.6},
+    {"id": "c02-7", "text": "Chain those two arrows, and the robot knows where to stop, measured from the real element. The map's mistake drops out.", "after": 0.3}
+  ]
+}

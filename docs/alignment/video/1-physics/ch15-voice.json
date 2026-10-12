@@ -1,0 +1,21 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c15-1", "text": "Here's the real file: Acceleration Limiter dot java, in the utils folder. Eighty-seven lines.", "after": 0.6},
+    {"id": "c15-2", "text": "Lines one to ten: license, package and imports, including Tuner Constants and the D C Motor model.", "after": 0.6},
+    {"id": "c15-3", "text": "Lines twelve to twenty-four are the Javadoc. It lists the three checks, and says k slip current is only the hardware ceiling.", "after": 0.6},
+    {"id": "c15-4", "text": "Line twenty-five: public final class. Final means no class can extend it.", "after": 0.6},
+    {"id": "c15-5", "text": "Lines twenty-six and twenty-seven warn: keep these limits above Drive To Pose's braking numbers, or the robot overshoots.", "after": 0.6},
+    {"id": "c15-6", "text": "Line twenty-eight: traction accel, ten. The grip budget, shared by driving and turning.", "after": 0.6},
+    {"id": "c15-7", "text": "Line twenty-nine: angular accel, eight. Check one's turning cap.", "after": 0.6},
+    {"id": "c15-8", "text": "Line thirty: model current, one hundred fifty amps, only for the motor check.", "after": 0.6},
+    {"id": "c15-9", "text": "Line thirty-one: robot mass, sixty kilograms, with a to-do to weigh it.", "after": 0.6},
+    {"id": "c15-10", "text": "Lines thirty-four and thirty-five build the motor model from C T R E's dyno numbers.", "after": 0.6},
+    {"id": "c15-11", "text": "The free current is zero on purpose. The real motor draws about ten amps spinning free, just fighting its own friction.", "after": 0.6},
+    {"id": "c15-12", "text": "W P I lib would count those amps as push, and promise eleven point four, not nine point seven, at four meters per second.", "after": 0.6},
+    {"id": "c15-13", "text": "Lines thirty-six and thirty-seven read gear ratio and wheel radius from Tuner Constants, so they always match.", "after": 0.6},
+    {"id": "c15-14", "text": "Lines thirty-eight and thirty-nine: base radius, center to wheel, by Pythagoras. Zero point three five nine meters.", "after": 0.6},
+    {"id": "c15-15", "text": "Line forty-one: a private constructor, so nobody can make an Acceleration Limiter object. It's a toolbox, like Java's Math.", "after": 0.3}
+  ]
+}

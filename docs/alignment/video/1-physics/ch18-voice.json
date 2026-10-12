@@ -1,0 +1,17 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c18-1", "text": "Line eighty-one: motor accel takes a wheel speed and returns the acceleration the four motors can still add.", "after": 0.6},
+    {"id": "c18-2", "text": "Line eighty-two: over the wheel radius, times the gear ratio, gives the motor's speed. About five hundred thirty radians per second.", "after": 0.6},
+    {"id": "c18-3", "text": "Line eighty-three: get current uses twelve volts and the back E M F: fifty-nine point eight amps. Math dot min caps it at one hundred fifty.", "after": 0.6},
+    {"id": "c18-4", "text": "Line eighty-four: get torque turns amps into newton meters. Times gear ratio, over wheel radius: one hundred fifty-seven point four newtons at the tire.", "after": 0.6},
+    {"id": "c18-5", "text": "Math dot max with zero matters past top speed, where the current would go negative.", "after": 0.6},
+    {"id": "c18-6", "text": "Line eighty-five: four wheels times that force, over the mass. F equals m a, turned around. Ten point four nine.", "after": 0.6},
+    {"id": "c18-7", "text": "Who calls limit? Exactly one line: Drive To Pose, line one ninety-seven.", "after": 0.6},
+    {"id": "c18-8", "text": "Drive To Pose passes in the velocity it wants, and, as current, last loop's command. So each command is a small step from the last.", "after": 0.6},
+    {"id": "c18-9", "text": "Line one fifty-two seeds it with the measured velocity when Drive To Pose starts, so the first step starts from reality.", "after": 0.6},
+    {"id": "c18-10", "text": "Line one sixty-one measures d t each loop, about zero point zero two seconds.", "after": 0.6},
+    {"id": "c18-11", "text": "Line one ninety-nine sends the result to the drivetrain. Fifty times a second, one small, safe step at a time.", "after": 0.3}
+  ]
+}

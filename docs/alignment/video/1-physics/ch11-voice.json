@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c11-1", "text": "Here's the problem. Our modules are speed-controlled, so they all push about the same.", "after": 0.6},
+    {"id": "c11-2", "text": "Equal push means each wheel pushes a quarter of m times a.", "after": 0.6},
+    {"id": "c11-3", "text": "A front wheel slips when that's more than mu times its load.", "after": 0.6},
+    {"id": "c11-4", "text": "Put in the front load, solve for a, and you get mu g over one plus mu h over x.", "after": 0.6},
+    {"id": "c11-5", "text": "With our numbers, that's five point five meters per second squared.", "after": 0.6},
+    {"id": "c11-6", "text": "So above five point five, the light front wheels slip, though the whole robot could grip ten.", "after": 0.6},
+    {"id": "c11-7", "text": "The heavy back wheels have grip to spare: at ten, two hundred sixty-five newtons each. That takes about one hundred one amps.", "after": 0.6},
+    {"id": "c11-8", "text": "When a front wheel slips, the robot falls behind its command, and the back modules push harder, if the current limit lets them.", "after": 0.6},
+    {"id": "c11-9", "text": "Sixty amps caps every wheel at one hundred fifty-eight newtons, so the back wheels can't help. That's the twenty twenty-six lesson.", "after": 0.6},
+    {"id": "c11-10", "text": "Our code still plans with ten. In our simulator, some wheels slipped, but tag alignment still succeeded ninety-six to ninety-nine percent.", "after": 0.3}
+  ]
+}

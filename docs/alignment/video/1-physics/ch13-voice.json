@@ -1,0 +1,19 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c13-1", "text": "Last: how much can the motors still add at a given speed?", "after": 0.6},
+    {"id": "c13-2", "text": "C T R E's dyno says a stalled Kraken X sixty makes nine point three six two newton meters, at four hundred seventy-six point one amps.", "after": 0.6},
+    {"id": "c13-3", "text": "Spinning free, it reaches five thousand seven hundred eighty-five r p m. In between, torque falls in a straight line.", "after": 0.6},
+    {"id": "c13-4", "text": "Why a line? Current is twelve volts minus the back E M F, divided by the motor's resistance, R.", "after": 0.6},
+    {"id": "c13-5", "text": "Stalled, there's no back E M F, so R is twelve over four seventy-six point one: zero point zero two five two ohms.", "after": 0.6},
+    {"id": "c13-6", "text": "Back E M F is motor speed over K v, fifty point four eight. At free speed it reaches twelve volts.", "after": 0.6},
+    {"id": "c13-7", "text": "Torque, written tau, is K t times current, so it follows the same line, down to zero.", "after": 0.6},
+    {"id": "c13-8", "text": "Our planning current caps it at one hundred fifty amps: a flat two point nine five newton meters.", "after": 0.6},
+    {"id": "c13-9", "text": "Times gear ratio, over wheel radius, is wheel force. Times four, over sixty kilograms, is acceleration.", "after": 0.6},
+    {"id": "c13-10", "text": "The flat part is twenty-six point three meters per second squared, up to about three point one meters per second.", "after": 0.6},
+    {"id": "c13-11", "text": "Then it falls. Nineteen point oh at three point five. Nine point seven at four. Four point two at four point three. Zero at four point five three.", "after": 0.6},
+    {"id": "c13-12", "text": "Draw the grip line at ten. Below about four meters per second, grip limits. Above, the motors do.", "after": 0.6},
+    {"id": "c13-13", "text": "Braking skips this curve: back E M F helps there, so only grip limits braking.", "after": 0.3}
+  ]
+}

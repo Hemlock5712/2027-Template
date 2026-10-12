@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c17-1", "text": "Lines sixty-seven and sixty-eight: driving and turning share the grip, scaled as one, so paths stay straight.", "after": 0.6},
+    {"id": "c17-2", "text": "Line sixty-nine: total. The inner hypot is driving. Alpha times base radius is turning. The outer hypot is the long side.", "after": 0.6},
+    {"id": "c17-3", "text": "Here, ten point four nine and two point eight seven make ten point eight eight.", "after": 0.6},
+    {"id": "c17-4", "text": "Line seventy: is that more than traction accel? Yes.", "after": 0.6},
+    {"id": "c17-5", "text": "Line seventy-one: scale is traction accel over total. Zero point nine one nine.", "after": 0.6},
+    {"id": "c17-6", "text": "Lines seventy-two to seventy-four multiply a x, a y and alpha by that one scale: nine point six four, zero, seven point three five. Check three.", "after": 0.6},
+    {"id": "c17-7", "text": "Lines seventy-six and seventy-seven build the answer: current, plus acceleration times d t.", "after": 0.6},
+    {"id": "c17-8", "text": "V x: three point six plus nine point six four times zero point zero two. Three point seven nine.", "after": 0.6},
+    {"id": "c17-9", "text": "Omega: one plus seven point three five times zero point zero two. One point one five. V y stays zero.", "after": 0.6},
+    {"id": "c17-10", "text": "That's the fastest change the robot can really make this loop. The next loop starts from here.", "after": 0.3}
+  ]
+}

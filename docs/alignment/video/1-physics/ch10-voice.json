@@ -1,0 +1,19 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c10-1", "text": "Why does weight move? Look at the robot from the side.", "after": 0.6},
+    {"id": "c10-2", "text": "Its balance point, the center of mass, sits at height h. We'll use twenty centimeters as an example.", "after": 0.6},
+    {"id": "c10-3", "text": "The wheels sit a distance x in front and behind. Our modules are ten inches out: zero point two five four meters.", "after": 0.6},
+    {"id": "c10-4", "text": "Speeding up, the floor pushes the tires forward with m times a, h below the balance point.", "after": 0.6},
+    {"id": "c10-5", "text": "A push below the balance point makes a turning effect, a moment: force times lever arm, here m times a times h.", "after": 0.6},
+    {"id": "c10-6", "text": "It tries to tip the robot back, nose up. The robot doesn't tip, so something balances it.", "after": 0.6},
+    {"id": "c10-7", "text": "The wheel loads do. Each back wheel gains an amount, delta N. Each front wheel loses the same.", "after": 0.6},
+    {"id": "c10-8", "text": "Four wheels, each delta N, each x from the middle: a balancing moment of four times delta N times x.", "after": 0.6},
+    {"id": "c10-9", "text": "Set the moments equal: delta N equals m a h, over four x.", "after": 0.6},
+    {"id": "c10-10", "text": "So each wheel carries m g over four, plus delta N at the back, minus delta N at the front.", "after": 0.6},
+    {"id": "c10-11", "text": "At six meters per second squared, delta N is seventy-one newtons. Front wheels carry seventy-six, back wheels two hundred eighteen.", "after": 0.6},
+    {"id": "c10-12", "text": "At ten, the front wheels carry only twenty-nine newtons. Their budget is almost gone.", "after": 0.6},
+    {"id": "c10-13", "text": "At zero front load, the robot tips: g x over h, twelve point five meters per second squared.", "after": 0.3}
+  ]
+}

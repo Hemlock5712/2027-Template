@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c08-1", "text": "Let's start with the most famous rule in physics: F equals m times a.", "after": 0.6},
+    {"id": "c08-2", "text": "F is force, in newtons. m is mass, in kilograms. a is acceleration.", "after": 0.6},
+    {"id": "c08-3", "text": "Our robot is sixty kilograms. In the code that's robot mass, still waiting for a real weigh-in.", "after": 0.6},
+    {"id": "c08-4", "text": "To speed up at ten: sixty times ten, six hundred newtons, or one hundred fifty per wheel.", "after": 0.6},
+    {"id": "c08-5", "text": "Now, grip. The most a tire can push is mu times N.", "after": 0.6},
+    {"id": "c08-6", "text": "N is the normal force: how hard the floor pushes up, the tire's share of the weight.", "after": 0.6},
+    {"id": "c08-7", "text": "Weight is mass times g, gravity's pull, nine point eight one. Sixty times nine point eight one, over four: one hundred forty-seven newtons.", "after": 0.6},
+    {"id": "c08-8", "text": "Mu, a Greek letter like a u with a tail, is the grip number. For good tread on carpet, it's about one.", "after": 0.6},
+    {"id": "c08-9", "text": "So one tire can push one hundred forty-seven newtons to move its fifteen kilograms: nine point eight one, about ten. That's traction accel, about one g.", "after": 0.6},
+    {"id": "c08-10", "text": "Notice the mass canceled out. A heavier robot needs more push, but also grips harder.", "after": 0.3}
+  ]
+}

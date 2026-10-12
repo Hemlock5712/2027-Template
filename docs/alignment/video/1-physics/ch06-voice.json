@@ -1,0 +1,13 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c06-1", "text": "Inside each motor, a magnet spins past coils of wire. Spin one by hand, and it makes electricity. Every motor is also a generator.", "after": 0.6},
+    {"id": "c06-2", "text": "So while it spins, it pushes voltage back against the battery. That's called back E M F.", "after": 0.6},
+    {"id": "c06-3", "text": "The faster it spins, the harder it pushes back. Less current flows, so the shaft gets less twist, called torque.", "after": 0.6},
+    {"id": "c06-4", "text": "At top speed, the push-back matches the battery's twelve volts. No current flows, so there's no push left at all.", "after": 0.6},
+    {"id": "c06-5", "text": "It's like a playground merry-go-round. Standing still, you can shove it hard. Spinning fast, your hands can barely keep up.", "after": 0.6},
+    {"id": "c06-6", "text": "So at low speed, the tires are the limit. Near top speed, the motors are.", "after": 0.6},
+    {"id": "c06-7", "text": "Braking is different. There, back E M F helps instead of fighting, so only grip limits braking.", "after": 0.3}
+  ]
+}

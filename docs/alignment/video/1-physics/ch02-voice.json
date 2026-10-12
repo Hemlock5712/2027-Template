@@ -1,0 +1,14 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c02-1", "text": "Here's why. The robot tracks where it is mostly by counting wheel turns. That's called odometry.", "after": 0.6},
+    {"id": "c02-2", "text": "Each wheel turn rolls out about thirty-five centimeters of carpet. Add up the turns, and you know how far you went.", "after": 0.6},
+    {"id": "c02-3", "text": "But a slipping wheel turns without moving the robot. The count grows anyway, so the robot thinks it's somewhere it isn't.", "after": 0.6},
+    {"id": "c02-4", "text": "In our simulator, a one-loop command jump over-counted by up to one and a half meters. Even careful hard driving cost up to thirty-five centimeters.", "after": 0.6},
+    {"id": "c02-5", "text": "Now remember the job: stop on a scoring spot within two centimeters.", "after": 0.6},
+    {"id": "c02-6", "text": "Close to the target, the camera can lose sight of the tag. Then the robot finishes on odometry alone.", "after": 0.6},
+    {"id": "c02-7", "text": "If odometry is wrong, the robot parks in the wrong place, and thinks it's right.", "after": 0.6},
+    {"id": "c02-8", "text": "So we want the robot to push as hard as it can, but never harder than its tires can grip.", "after": 0.3}
+  ]
+}

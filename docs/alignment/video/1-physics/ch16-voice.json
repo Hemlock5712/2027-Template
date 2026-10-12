@@ -1,0 +1,19 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c16-1", "text": "Lines forty-seven and forty-eight: limit takes current, wanted and d t. Each velocity holds v x, v y and omega, along the field.", "after": 0.6},
+    {"id": "c16-2", "text": "In goes our example. Current: three point six, zero, one. Wanted: four, zero, three. d t: zero point zero two.", "after": 0.6},
+    {"id": "c16-3", "text": "Line forty-nine: a x, the change in v x over d t. Twenty.", "after": 0.6},
+    {"id": "c16-4", "text": "Line fifty: a y. Zero, since we drive straight along x.", "after": 0.6},
+    {"id": "c16-5", "text": "Lines fifty-one and fifty-two: alpha, the change in omega over d t, clamped between minus eight and eight. One hundred becomes eight. Check one.", "after": 0.6},
+    {"id": "c16-6", "text": "Lines fifty-four and fifty-five are comments: only speeding up is limited, and spin-up isn't counted.", "after": 0.6},
+    {"id": "c16-7", "text": "Line fifty-six asks: are we speeding up? It's a dot product: multiply x with x, y with y, and add.", "after": 0.6},
+    {"id": "c16-8", "text": "Positive means speeding up. Twenty times three point six is seventy-two, so we check the motors.", "after": 0.6},
+    {"id": "c16-9", "text": "Lines fifty-seven and fifty-eight: wheel speed, the fastest any wheel could move. Speed, plus spin times base radius: three point nine six.", "after": 0.6},
+    {"id": "c16-10", "text": "Line fifty-nine: motor accel at that speed. Motor limit is ten point four nine.", "after": 0.6},
+    {"id": "c16-11", "text": "Line sixty: a, the size of the driving acceleration. Hypot, short for hypotenuse, is Pythagoras in one call. Twenty.", "after": 0.6},
+    {"id": "c16-12", "text": "Lines sixty-one to sixty-four: if a is too big, scale a x and a y by motor limit over a. Twenty becomes ten point four nine.", "after": 0.6},
+    {"id": "c16-13", "text": "Alpha isn't cut here: in our simulator, cutting spin-up too, like the twenty twenty-six code, slowed turns while driving.", "after": 0.3}
+  ]
+}

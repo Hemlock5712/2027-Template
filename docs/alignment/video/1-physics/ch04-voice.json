@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c04-1", "text": "Push a heavy box across carpet, and the floor grips back, up to a point. A tire works the same way, forwards, backwards or sideways.", "after": 0.6},
+    {"id": "c04-2", "text": "How hard it grips depends on how hard the tire is pressed down. Press harder, more grip.", "after": 0.6},
+    {"id": "c04-3", "text": "So think of grip as a budget, set by the weight on each tire. Forces, grip and weight are always red.", "after": 0.6},
+    {"id": "c04-4", "text": "Speeding up, braking and turning all spend it. Spend more than you have, and the tire slips.", "after": 0.6},
+    {"id": "c04-5", "text": "Here's the twist: the budget doesn't stay put.", "after": 0.6},
+    {"id": "c04-6", "text": "When a bus pulls away, standing riders lean back. Their feet go with the bus, but their bodies lag behind.", "after": 0.6},
+    {"id": "c04-7", "text": "A robot does the same. Its weight sits above the floor, so speeding up shifts weight onto the back wheels.", "after": 0.6},
+    {"id": "c04-8", "text": "Back tires get pressed harder and get a bigger budget. Front tires get lighter and a smaller one.", "after": 0.6},
+    {"id": "c04-9", "text": "Braking does the opposite.", "after": 0.6},
+    {"id": "c04-10", "text": "The catch: our four modules push about the same amount. So the light front wheels run out of grip first.", "after": 0.3}
+  ]
+}

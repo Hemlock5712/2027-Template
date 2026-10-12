@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c05-1", "text": "Now add turning. When the robot spins, every wheel travels around a circle.", "after": 0.6},
+    {"id": "c05-2", "text": "Omega, a Greek letter like a curly w, is how fast the robot spins. Turning is purple.", "after": 0.6},
+    {"id": "c05-3", "text": "Steady spinning is cheap. Changing the spin costs grip, because the wheels must push sideways to speed the spin up.", "after": 0.6},
+    {"id": "c05-4", "text": "And that sideways push uses the same rubber on the same carpet as driving. One budget.", "after": 0.6},
+    {"id": "c05-5", "text": "Draw the budget as a circle. Driving is one arrow. Speeding up the spin is another, at a right angle.", "after": 0.6},
+    {"id": "c05-6", "text": "Together they make a right triangle, and its long side has to fit inside the circle.", "after": 0.6},
+    {"id": "c05-7", "text": "If it doesn't fit, shrinking just the driving arrow would bend the robot's path.", "after": 0.6},
+    {"id": "c05-8", "text": "So we shrink both arrows by the same fraction. The robot keeps its direction, just a little gentler.", "after": 0.6},
+    {"id": "c05-9", "text": "Sudden spin changes caused most slip in our simulator, so they get their own cap.", "after": 0.3}
+  ]
+}

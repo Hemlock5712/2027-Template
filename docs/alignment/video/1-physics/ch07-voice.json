@@ -1,0 +1,18 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c07-1", "text": "Now the plan. Every twenty milliseconds, the code gets two velocities: the one we have, and the one we want.", "after": 0.6},
+    {"id": "c07-2", "text": "It doesn't limit the velocity. It limits the change: how far the velocity may move in this one loop.", "after": 0.6},
+    {"id": "c07-3", "text": "Because changing velocity is what takes a push. Cruising at a steady speed costs almost no grip.", "after": 0.6},
+    {"id": "c07-4", "text": "At ten meters per second squared, that's two tenths of a meter per second per loop. Small steps, fifty times a second.", "after": 0.6},
+    {"id": "c07-5", "text": "Each change goes through three checks, always in this order.", "after": 0.6},
+    {"id": "c07-6", "text": "One, the turning cap: the spin may only change so fast.", "after": 0.6},
+    {"id": "c07-7", "text": "Two, the motors: when speeding up, ask no more than they can still add at this speed.", "after": 0.6},
+    {"id": "c07-8", "text": "Three, traction: driving and turning together must fit inside the grip. If not, shrink both.", "after": 0.6},
+    {"id": "c07-9", "text": "Traction goes last, like a referee, because it's the only check that sees driving and turning together.", "after": 0.6},
+    {"id": "c07-10", "text": "Whatever survives becomes this loop's command.", "after": 0.6},
+    {"id": "c07-11", "text": "In our simulator, these checks left fifteen to thirty percent less odometry error than one fixed limit.", "after": 0.6},
+    {"id": "c07-12", "text": "Now let's put real numbers on every check.", "after": 0.3}
+  ]
+}

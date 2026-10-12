@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c01-1", "text": "Fifty times a second, our robot picks a velocity: how fast to drive, which way, and how fast to spin.", "after": 0.6},
+    {"id": "c01-2", "text": "Velocity, written v, is speed with a direction. It's always blue.", "after": 0.6},
+    {"id": "c01-3", "text": "Say the robot sits still, and the code suddenly wants four meters per second. Why not just ask for it?", "after": 0.6},
+    {"id": "c01-4", "text": "To get there in one loop, twenty milliseconds, the robot would need two hundred meters per second squared.", "after": 0.6},
+    {"id": "c01-5", "text": "That's acceleration, written a: how fast velocity changes. It's always orange.", "after": 0.6},
+    {"id": "c01-6", "text": "No tire can push that hard. The motors spin up, the tread lets go, and the wheel spins on the carpet.", "after": 0.6},
+    {"id": "c01-7", "text": "That's called slip. And slip isn't just slow. It's worse than slow.", "after": 0.6},
+    {"id": "c01-8", "text": "So our goal for this video: find the biggest change the robot can really make, every loop, without slipping.", "after": 0.6},
+    {"id": "c01-9", "text": "We'll get there in four steps: the idea, the maths, the code line by line, and a recap.", "after": 0.3}
+  ]
+}

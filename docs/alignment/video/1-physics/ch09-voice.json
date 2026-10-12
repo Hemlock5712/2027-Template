@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c09-1", "text": "How much current does one hundred forty-seven newtons take? Follow the push back to the motor.", "after": 0.6},
+    {"id": "c09-2", "text": "The wheel is a lever. The twist at the axle, called torque, is force times wheel radius.", "after": 0.6},
+    {"id": "c09-3", "text": "Our wheel radius is zero point zero five five oh four meters. That gives eight point one oh newton meters.", "after": 0.6},
+    {"id": "c09-4", "text": "A gearbox, seven point three six three six to one, multiplies the motor's torque.", "after": 0.6},
+    {"id": "c09-5", "text": "So the motor needs only one point one oh newton meters.", "after": 0.6},
+    {"id": "c09-6", "text": "A Kraken makes zero point zero one nine six six newton meters per amp. That's K t, its torque constant.", "after": 0.6},
+    {"id": "c09-7", "text": "One point one oh divided by that: about fifty-six amps per wheel.", "after": 0.6},
+    {"id": "c09-8", "text": "At the three hundred sixty amp ceiling, a wheel could push nine hundred forty-seven newtons, six point four times its grip. That ceiling never stops a slip.", "after": 0.6},
+    {"id": "c09-9", "text": "For the motor check, the code plans with one hundred fifty amps, called model current. Under the ceiling, but plenty to reach grip.", "after": 0.3}
+  ]
+}

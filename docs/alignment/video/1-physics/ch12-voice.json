@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c12-1", "text": "Now the turning share. Alpha, a Greek letter like a little fish, is how fast the spin changes, in radians per second squared.", "after": 0.6},
+    {"id": "c12-2", "text": "When the spin speeds up, a wheel a distance r from the center speeds up sideways by alpha times r.", "after": 0.6},
+    {"id": "c12-3", "text": "Our wheels are ten inches forward and ten to the side. By Pythagoras, r is zero point three five nine meters.", "after": 0.6},
+    {"id": "c12-4", "text": "With our turning cap of eight, that's two point eight seven meters per second squared.", "after": 0.6},
+    {"id": "c12-5", "text": "Driving and spin-up push at right angles, so they add like a right triangle. The long side must stay under ten.", "after": 0.6},
+    {"id": "c12-6", "text": "So driving still gets the square root of one hundred minus eight point two six: nine point five eight.", "after": 0.6},
+    {"id": "c12-7", "text": "A hard spin-up costs only four percent of the drive.", "after": 0.6},
+    {"id": "c12-8", "text": "Too big? The code finds one scale: ten over the long side. With ten and two point eight seven, that's zero point nine six one.", "after": 0.6},
+    {"id": "c12-9", "text": "Both parts get the same scale. The triangle keeps its shape, so the robot keeps its direction.", "after": 0.6},
+    {"id": "c12-10", "text": "In our simulator, about eighty percent of slip came from sudden spin steps. Lowering the turning limits cut it about six times, at no cost in time.", "after": 0.3}
+  ]
+}

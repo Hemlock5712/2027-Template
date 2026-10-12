@@ -1,0 +1,14 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c03-1", "text": "There's an easy-looking fix. Every drive motor has a current limit. Less current, less push. So why not set it low and never slip?", "after": 0.6},
+    {"id": "c03-2", "text": "Current, written I, is measured in amps, and drawn teal.", "after": 0.6},
+    {"id": "c03-3", "text": "Our limit is k slip current, in Tuner Constants: three hundred sixty amps. That's far more than a wheel needs to break loose.", "after": 0.6},
+    {"id": "c03-4", "text": "In twenty twenty-six, our team learned why it stays high. When the robot speeds up, its weight shifts onto the back wheels.", "after": 0.6},
+    {"id": "c03-5", "text": "Heavier wheels could push harder. But a low current limit chops every wheel down to the same small push.", "after": 0.6},
+    {"id": "c03-6", "text": "Our simulator agrees. With the center of mass twenty centimeters up, sixty amps was zero point four four seconds slower, with one point seven times the odometry error.", "after": 0.6},
+    {"id": "c03-7", "text": "So the current limit is only a ceiling, a safety net. It is not the plan.", "after": 0.6},
+    {"id": "c03-8", "text": "The plan lives in a class called Acceleration Limiter. To build it, we need four ideas: grip, weight, turning, and motors.", "after": 0.3}
+  ]
+}

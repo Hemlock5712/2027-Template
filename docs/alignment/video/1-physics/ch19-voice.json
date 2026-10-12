@@ -1,0 +1,25 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c19-1", "text": "Here's the whole idea, in four sentences.", "after": 0.6},
+    {"id": "c19-2", "text": "One. A robot can only push as hard as its tires grip, about one g, and slipping wheels make odometry lie.", "after": 0.6},
+    {"id": "c19-3", "text": "Two. Grip moves with the weight, turning shares it, and motors lose push as they speed up.", "after": 0.6},
+    {"id": "c19-4", "text": "Three. So every loop, Acceleration Limiter caps the spin change, checks the motors, and fits it all inside the grip.", "after": 0.6},
+    {"id": "c19-5", "text": "Four. The current limit stays high, as a ceiling, so the heavy wheels have room to push.", "after": 0.6},
+    {"id": "c19-6", "text": "Now, check yourself. Pause after each question.", "after": 0.6},
+    {"id": "c19-7", "text": "Question one. Our robot gains ten kilograms. Should traction accel change?", "after": 5.0},
+    {"id": "c19-8", "text": "Not by the formula: the mass cancels. But the motor check gets weaker, because robot mass is in it.", "after": 0.6},
+    {"id": "c19-9", "text": "Question two. Why not set k slip current to sixty amps, and stop slip that way?", "after": 5.0},
+    {"id": "c19-10", "text": "A low limit stops the heavy back wheels from pushing harder when the front ones slip. Slower, with worse odometry.", "after": 0.6},
+    {"id": "c19-11", "text": "Question three. At four meters per second, which limit matters more, grip or motors?", "after": 5.0},
+    {"id": "c19-12", "text": "The motors. At four, they can add only nine point seven, just under the grip's ten.", "after": 0.6},
+    {"id": "c19-13", "text": "Question four. Why does the traction check shrink a x, a y and alpha together?", "after": 5.0},
+    {"id": "c19-14", "text": "So the direction doesn't change. Shrinking only one would bend the path.", "after": 0.6},
+    {"id": "c19-15", "text": "Question five. Why doesn't the motor check run when the robot brakes?", "after": 5.0},
+    {"id": "c19-16", "text": "When braking, back E M F helps instead of fighting. Only grip limits braking.", "after": 0.6},
+    {"id": "c19-17", "text": "Now try it. In the Python simulator's Q seven limiter study, add a row with traction twelve, and run the bench.", "after": 0.6},
+    {"id": "c19-18", "text": "Compare slip and odometry error with traction ten. Is a little time worth it? Then try eight.", "after": 0.6},
+    {"id": "c19-19", "text": "Or in the Java simulator, set traction accel to seven, and watch the commanded velocity ramp more gently. Never go below six.", "after": 0.3}
+  ]
+}

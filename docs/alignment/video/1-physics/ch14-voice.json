@@ -1,0 +1,12 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c14-1", "text": "One loop by hand. The robot drives at three point six meters per second, spinning at one. It wants four, spinning at three.", "after": 0.6},
+    {"id": "c14-2", "text": "With d t, the loop time, at zero point zero two seconds, that asks for twenty meters per second squared of driving, and one hundred of spin.", "after": 0.6},
+    {"id": "c14-3", "text": "Check one caps the spin change at eight.", "after": 0.6},
+    {"id": "c14-4", "text": "Check two: we're speeding up, and the fastest wheel moves at three point nine six. There, the motors allow ten point four nine, not twenty.", "after": 0.6},
+    {"id": "c14-5", "text": "Check three: ten point four nine and two point eight seven make ten point eight eight. That's over ten, so scale by zero point nine one nine.", "after": 0.6},
+    {"id": "c14-6", "text": "The new command: three point seven nine meters per second, spinning at one point one five.", "after": 0.3}
+  ]
+}

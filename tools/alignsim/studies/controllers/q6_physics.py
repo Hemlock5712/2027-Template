@@ -25,6 +25,7 @@ MOVES = [(3.0, 0.0, 0.0), (3.0, 0.0, math.pi / 2), (0.0, 3.0, 0.0), (2.0, 2.0, m
 SETUPS = {  # label: (loop period s, stator limit A, feedforward: None / "equal" / "load", onboard ramp)
     "50 Hz, 120 A": (0.02, 120.0, None, False),
     "50 Hz, 60 A (low slip current)": (0.02, 60.0, None, False),
+    "50 Hz, 360 A (~Kraken stall, no cap)": (0.02, 360.0, None, False),
     "250 Hz, 120 A": (0.004, 120.0, None, False),
     "50 Hz + onboard ramp = accel (Motion Magic)": (0.02, 120.0, None, True),
     "250 Hz + equal force FF": (0.004, 120.0, "equal", False),

@@ -86,6 +86,12 @@ rest, VectorBrake with decel = accel - 1.
   0.4-0.7 s slower and doubles to triples the odometry error: the loaded wheels can't deliver the force.
   Keep the slip current high (~2x grip) and limit acceleration in the command. (Without weight transfer
   the low current looked best; that was a sim artifact.)
+- **120 A vs 360 A (about the Kraken's stall current, i.e. no cap) changes nothing while driving**
+  (added later; same moves, CG 0 and 0.2 m, accel 8 and 10, at 50 Hz, 250 Hz and with feedforward: slip,
+  time and odometry match to within 2 ms / 0.2 cm). Holding 10 m/s^2 needs ~65 A per wheel and the
+  setpoint-step peaks stay under 120 A, so above ~2x grip the cap never acts; the command does the
+  limiting. What a higher cap does change is not modeled here: battery draw and brownouts when the drive
+  motors push against something.
 - **250 Hz control removes the setpoint-step slip.** At 50 Hz each new setpoint makes the stiff velocity
   loop push ~1.4x the average force for a moment. With no weight transfer, 250 Hz is clean up to
   8 m/s^2 (12 ms vs 183 ms of slip).

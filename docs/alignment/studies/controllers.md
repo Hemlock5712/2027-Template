@@ -461,6 +461,9 @@ Full tables: [`results/q5_accel.md`](../../../tools/alignsim/studies/controllers
 - **Don't put Motion Magic velocity on swerve drive motors:** turning while driving needs wheel speeds to
   change faster than the chassis accelerates, so the ramp makes wheels scrub.
 
+- **Any slip current above ~2× grip is the same** for driving: 120 A and 360 A give identical results,
+  because the motors never need more than ~120 A to break the tires loose.
+
 **Ships:** `ACCEL` 10, `DECEL` 6, slip current 120 A. The heading limits stay at 6 / 8.
 
 ## The law to ship, in full

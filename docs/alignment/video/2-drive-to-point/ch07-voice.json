@@ -1,0 +1,20 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c07-1", "text": "Now the maths. How far does it take to stop?", "after": 0.6},
+    {"id": "c07-2", "text": "Draw a graph: speed up the side, time along the bottom.", "after": 0.6},
+    {"id": "c07-3", "text": "The robot starts at v, its speed: four meters per second.", "after": 0.6},
+    {"id": "c07-4", "text": "It brakes at a, its deceleration: six meters per second squared. It loses six meters per second, every second.", "after": 0.6},
+    {"id": "c07-5", "text": "So speed falls in a straight line. The time it takes, t, is v over a. Four over six: zero point six seven seconds.", "after": 0.6},
+    {"id": "c07-6", "text": "Here's the trick: on a speed-time graph, the area under the line is the distance travelled.", "after": 0.6},
+    {"id": "c07-7", "text": "Two meters per second for three seconds is a rectangle: six meters. A triangle is half height times width.", "after": 0.6},
+    {"id": "c07-8", "text": "Half of v, times v over a. So d, the stopping distance, equals v squared over two a.", "after": 0.6},
+    {"id": "c07-9", "text": "Sixteen over twelve: one point three three meters to stop from top speed.", "after": 0.6},
+    {"id": "c07-10", "text": "Now flip it. With d meters left, what's the fastest speed I can still stop from?", "after": 0.6},
+    {"id": "c07-11", "text": "Solve for v: v equals the square root of two times a times d.", "after": 0.6},
+    {"id": "c07-12", "text": "One meter out: three point four six meters per second. Half a meter: two point four five. At the goal: zero.", "after": 0.6},
+    {"id": "c07-13", "text": "A waypoint brakes to an end speed, not zero, so the triangle becomes a trapezoid.", "after": 0.6},
+    {"id": "c07-14", "text": "Then v squared equals end speed squared, plus two a d. That's the exact rule in the code.", "after": 0.3}
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c09-1", "text": "Here's a simpler rule: speed equals P, just a number, times the distance, capped at top speed.", "after": 0.6},
+    {"id": "c09-2", "text": "Let's race it against ours, in our simulator.", "after": 0.6},
+    {"id": "c09-3", "text": "Round one: P is five, with an acceleration limit of three meters per second squared.", "after": 0.6},
+    {"id": "c09-4", "text": "The simple robot overshoots. In the worst runs, by about two meters.", "after": 0.6},
+    {"id": "c09-5", "text": "Why? It only slows once P times d drops below its speed: at d equals v over P.", "after": 0.6},
+    {"id": "c09-6", "text": "Four over five: it starts braking zero point eight meters out.", "after": 0.6},
+    {"id": "c09-7", "text": "But stopping from four at three needs sixteen over six: two point six seven meters.", "after": 0.6},
+    {"id": "c09-8", "text": "Round two: a limit of ten. Stopping takes zero point eight meters, exactly where it starts braking.", "after": 0.6},
+    {"id": "c09-9", "text": "Zero margin. Any delay, and it slides past: twenty centimeters, in our simulator.", "after": 0.6},
+    {"id": "c09-10", "text": "Round three: a gentle P of two. It brakes from two meters out and stops cleanly.", "after": 0.6},
+    {"id": "c09-11", "text": "But its speed shrinks with distance, so it creeps in.", "after": 0.6},
+    {"id": "c09-12", "text": "It reached five centimeters in two point two zero seconds. Ours: one point three nine.", "after": 0.6},
+    {"id": "c09-13", "text": "So P alone must choose: fast and overshoot, or safe and slow.", "after": 0.6},
+    {"id": "c09-14", "text": "Ours asks \"can I still stop?\", so from top speed it brakes at one point five three meters.", "after": 0.6},
+    {"id": "c09-15", "text": "It plans six while the limit allows ten; the gentle line takes the last third of a meter.", "after": 0.6},
+    {"id": "c09-16", "text": "Full speed for longer, no overshoot. All from one square root.", "after": 0.3}
+  ]
+}

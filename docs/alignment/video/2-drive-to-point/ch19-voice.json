@@ -1,0 +1,18 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c19-1", "text": "Line one hundred seventy-two, speed now: the length of the last command. Two meters per second.", "after": 0.6},
+    {"id": "c19-2", "text": "Line one hundred seventy-three, braking distance: distance, minus speed times reaction time, minus switch radius.", "after": 0.6},
+    {"id": "c19-3", "text": "Three, minus two times zero point zero five: two point nine meters. The max stops it going negative.", "after": 0.6},
+    {"id": "c19-4", "text": "Lines one hundred seventy-four and seventy-five: the trapezoid rule from the board, capped at max speed.", "after": 0.6},
+    {"id": "c19-5", "text": "The square root of twelve times two point nine is five point nine. Capped: four.", "after": 0.6},
+    {"id": "c19-6", "text": "Line one hundred seventy-six: end speed is zero, so the gentle line applies.", "after": 0.6},
+    {"id": "c19-7", "text": "K P times distance is eighteen. Four is smaller, so speed stays four.", "after": 0.6},
+    {"id": "c19-8", "text": "Line one hundred seventy-eight: under three millimeters? No.", "after": 0.6},
+    {"id": "c19-9", "text": "Lines one hundred eighty-two and eighty-three turn speed into an arrow.", "after": 0.6},
+    {"id": "c19-10", "text": "The arrow to the goal, divided by its length, has length one. Times speed: v x and v y.", "after": 0.6},
+    {"id": "c19-11", "text": "v x is four, v y is zero: straight at the goal, at top speed.", "after": 0.6},
+    {"id": "c19-12", "text": "We're going two and asking for four. Can we get it? Not decided yet.", "after": 0.3}
+  ]
+}

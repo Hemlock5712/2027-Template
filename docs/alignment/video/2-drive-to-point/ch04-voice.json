@@ -1,0 +1,20 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c04-1", "text": "Picture a driver nearing a stop line. How fast should they go?", "after": 0.6},
+    {"id": "c04-2", "text": "They weigh three things: the speed limit, \"can I still stop?\", and creeping in at the end.", "after": 0.6},
+    {"id": "c04-3", "text": "Our robot asks the same three, every loop.", "after": 0.6},
+    {"id": "c04-4", "text": "Speed one: top speed, four meters per second.", "after": 0.6},
+    {"id": "c04-5", "text": "Speed two: the fastest speed it can still stop from, in the distance left.", "after": 0.6},
+    {"id": "c04-6", "text": "Speed three: gentle, a number times the distance. It only matters in the last third of a meter.", "after": 0.6},
+    {"id": "c04-7", "text": "Then take the smallest of the three.", "after": 0.6},
+    {"id": "c04-8", "text": "Far away, top speed is smallest, so it cruises.", "after": 0.6},
+    {"id": "c04-9", "text": "Then \"can I still stop\" takes over, and it brakes along a smooth curve.", "after": 0.6},
+    {"id": "c04-10", "text": "At the very end, the gentle line takes over, and it glides in.", "after": 0.6},
+    {"id": "c04-11", "text": "One more trick. A driver needs a moment to react before braking.", "after": 0.6},
+    {"id": "c04-12", "text": "So does our robot: its readings are slightly old, and commands take time to reach the motors.", "after": 0.6},
+    {"id": "c04-13", "text": "So it brakes a twentieth of a second early.", "after": 0.6},
+    {"id": "c04-14", "text": "And within three millimeters, about two stacked pennies, it asks for zero.", "after": 0.3}
+  ]
+}

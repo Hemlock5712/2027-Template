@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c02-1", "text": "The simplest idea is a timer: drive at two meters per second for one and a half seconds. Three meters.", "after": 0.6},
+    {"id": "c02-2", "text": "But with a weak battery, a slipping wheel, or a bump, the timer never notices.", "after": 0.6},
+    {"id": "c02-3", "text": "A timed path is smarter: where to be at every moment, like a train timetable.", "after": 0.6},
+    {"id": "c02-4", "text": "They're great for long, planned routes. But they run on a clock.", "after": 0.6},
+    {"id": "c02-5", "text": "If the robot falls behind, the plan keeps going. If the goal moves, the plan must start over.", "after": 0.6},
+    {"id": "c02-6", "text": "Drive To Pose has no clock. Every loop it asks: where am I now, and where is the goal now?", "after": 0.6},
+    {"id": "c02-7", "text": "Like a phone map that re-routes from wherever you really are.", "after": 0.6},
+    {"id": "c02-8", "text": "We call this position-based, instead of time-based.", "after": 0.6},
+    {"id": "c02-9", "text": "So a push, a slip, or a moving goal is just the next starting point.", "after": 0.3}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c16-1", "text": "Line one hundred eleven, with tolerance, changes the finish tolerances.", "after": 0.6},
+    {"id": "c16-2", "text": "Line one hundred twenty-one, with end speed, makes a waypoint by hand: you pick the speed and switch radius.", "after": 0.6},
+    {"id": "c16-3", "text": "Line one hundred thirty-one, passing through, is the easy way: give it the next point, and the corner rule picks both.", "after": 0.6},
+    {"id": "c16-4", "text": "Each returns this, the same command, so they chain. The Drive Then Align auto does exactly that.", "after": 0.6},
+    {"id": "c16-5", "text": "Line one hundred thirty-seven, goal, just asks the supplier. It's protected, so a subclass can replace it.", "after": 0.6},
+    {"id": "c16-6", "text": "Drive To Tag replaces it: the goal measured from the tag, or else the map goal.", "after": 0.6},
+    {"id": "c16-7", "text": "Drive To Piece: a spot forty centimeters short of the piece, facing it. No piece? Stay put.", "after": 0.6},
+    {"id": "c16-8", "text": "That one method lets a moving goal use the same speed rule.", "after": 0.3}
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c01-1", "text": "Here's our robot, and a mark on the field, three meters away.", "after": 0.6},
+    {"id": "c01-2", "text": "The job: drive to the mark, face the right way, and stop.", "after": 0.6},
+    {"id": "c01-3", "text": "Stop exactly: within two centimeters, about a thumb's width, and within two degrees.", "after": 0.6},
+    {"id": "c01-4", "text": "And fast, because every second of autonomous counts.", "after": 0.6},
+    {"id": "c01-5", "text": "It might already be moving: sideways, or even the wrong way.", "after": 0.6},
+    {"id": "c01-6", "text": "And the mark might move, as the robot learns where the target really is.", "after": 0.6},
+    {"id": "c01-7", "text": "One piece of code handles all of this: Drive To Pose.", "after": 0.6},
+    {"id": "c01-8", "text": "A pose is a spot on the field plus a direction to face: x, y, and heading.", "after": 0.6},
+    {"id": "c01-9", "text": "We'll go in order: the goal, the idea in plain words, then the maths with real numbers.", "after": 0.6},
+    {"id": "c01-10", "text": "Then the real Java, line by line, until you know why every line is there.", "after": 0.3}
+  ]
+}

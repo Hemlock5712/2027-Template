@@ -1,0 +1,20 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c12-1", "text": "Now the corner rule, on a route: two meters ahead, then one and a half left. Ninety degrees.", "after": 0.6},
+    {"id": "c12-2", "text": "Step one: the switch radius, r. Forty centimeters, or forty percent of the shorter leg, whichever is smaller.", "after": 0.6},
+    {"id": "c12-3", "text": "Forty percent of one and a half is sixty centimeters, so r is forty.", "after": 0.6},
+    {"id": "c12-4", "text": "Step two: the turning circle touches the first leg r before the corner, and the second leg r after.", "after": 0.6},
+    {"id": "c12-5", "text": "Its radius is big R. The right triangle at the corner gives: big R equals r over tangent of half the turn.", "after": 0.6},
+    {"id": "c12-6", "text": "Half of ninety is forty-five, whose tangent is one. So big R is forty centimeters.", "after": 0.6},
+    {"id": "c12-7", "text": "Step three: driving around a circle takes sideways acceleration: v squared over big R.", "after": 0.6},
+    {"id": "c12-8", "text": "Keep that within our planned braking, six. So v is the square root of six times big R.", "after": 0.6},
+    {"id": "c12-9", "text": "Together: the square root of decel times r, over tangent of half the turn.", "after": 0.6},
+    {"id": "c12-10", "text": "Ninety degrees: the square root of two point four. One point five five meters per second.", "after": 0.6},
+    {"id": "c12-11", "text": "Forty-five degrees: two point four one. A one hundred thirty-five degree hairpin: one point zero zero.", "after": 0.6},
+    {"id": "c12-12", "text": "Under about seventeen degrees, it's capped at top speed. Under one degree, the code calls it straight.", "after": 0.6},
+    {"id": "c12-13", "text": "In our simulator, routes with this rule were eleven to twenty-six percent faster than stop-and-go.", "after": 0.6},
+    {"id": "c12-14", "text": "And they stayed within about twenty centimeters of the drawn lines.", "after": 0.3}
+  ]
+}

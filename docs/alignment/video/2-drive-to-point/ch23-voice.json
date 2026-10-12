@@ -1,0 +1,14 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c23-1", "text": "Line two hundred thirty-nine, end, runs once when the command finishes or is interrupted.", "after": 0.6},
+    {"id": "c23-2", "text": "If interrupted, or this leg stops at its goal, it stops the robot.", "after": 0.6},
+    {"id": "c23-3", "text": "Line two hundred forty-one warns: Idle is not a stop. So line two hundred forty-two sends zero velocity.", "after": 0.6},
+    {"id": "c23-4", "text": "A waypoint that finishes normally sends nothing, and keeps rolling at its corner speed.", "after": 0.6},
+    {"id": "c23-5", "text": "The next command's initialize seeds commanded from that measured speed. A smooth hand-over.", "after": 0.6},
+    {"id": "c23-6", "text": "Drive Then Align does this: through staging at speed, then Drive To Tag takes over.", "after": 0.6},
+    {"id": "c23-7", "text": "The template's two-leg auto stops after each leg. Make its first leg pass through, and you get our ninety degree corner.", "after": 0.6},
+    {"id": "c23-8", "text": "That's the whole file: four questions, one speed rule, two hundred forty-five lines.", "after": 0.3}
+  ]
+}

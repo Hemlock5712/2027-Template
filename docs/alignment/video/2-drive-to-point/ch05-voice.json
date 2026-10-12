@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c05-1", "text": "The robot must also face the right way. Turning uses the same three ideas.", "after": 0.6},
+    {"id": "c05-2", "text": "A top spin rate, the fastest spin it can still stop from, and gentle near the end.", "after": 0.6},
+    {"id": "c05-3", "text": "It brakes its turn early too, and stops turning within a third of a degree.", "after": 0.6},
+    {"id": "c05-4", "text": "It turns the short way, and since it's a swerve robot, it drives and turns at once.", "after": 0.6},
+    {"id": "c05-5", "text": "Now a route with a corner. The simple way: stop at the corner, then start the next leg.", "after": 0.6},
+    {"id": "c05-6", "text": "Stop, go, stop, go. Precise, but slow.", "after": 0.6},
+    {"id": "c05-7", "text": "Drive To Pose can pass through a waypoint instead, handing over just before the corner.", "after": 0.6},
+    {"id": "c05-8", "text": "The hand-over happens on a circle at most forty centimeters from the corner.", "after": 0.6},
+    {"id": "c05-9", "text": "How fast through the corner? Like a car: a gentle bend quickly, a hairpin slowly.", "after": 0.6},
+    {"id": "c05-10", "text": "It picks the fastest speed whose curve fits inside the corner.", "after": 0.3}
+  ]
+}

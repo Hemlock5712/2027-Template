@@ -1,9 +1,0 @@
-{
-  "lead": 1.2,
-  "tail": 1.8,
-  "lines": [
-    {"id": "c1-1", "text": "Every twenty milliseconds, our robot asks four questions.", "after": 0.6},
-    {"id": "c1-2", "text": "Where is the goal? How far is it? How fast should I go? And how much may my speed change, which is the physics from video one.", "after": 0.6},
-    {"id": "c1-3", "text": "There's no schedule. If the goal moves, the next answer just points somewhere new.", "after": 0.3}
-  ]
-}

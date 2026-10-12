@@ -1,0 +1,18 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c22-1", "text": "Line two hundred nine, is finished, is checked after each execute.", "after": 0.6},
+    {"id": "c22-2", "text": "Lines two hundred ten and eleven: a waypoint is done inside its switch radius, at least five centimeters.", "after": 0.6},
+    {"id": "c22-3", "text": "Otherwise, lines two hundred thirteen to sixteen check all three. We're three meters away, so: false.", "after": 0.6},
+    {"id": "c22-4", "text": "Lines two hundred nineteen to thirty-five: use corner rule. Let's trace our ninety degree route.", "after": 0.6},
+    {"id": "c22-5", "text": "Two arrows. In: two, zero. Out: zero, one point five.", "after": 0.6},
+    {"id": "c22-6", "text": "Line two hundred twenty-eight finds the turn between them, with the cross product and the dot product.", "after": 0.6},
+    {"id": "c22-7", "text": "The cross product measures how much the arrows point across each other; the dot product, how much along.", "after": 0.6},
+    {"id": "c22-8", "text": "Cross is three, dot is zero. A-tan-two of three and zero: ninety degrees.", "after": 0.6},
+    {"id": "c22-9", "text": "Lines two hundred twenty-nine and thirty: forty percent of the shorter leg is zero point six, capped at zero point four.", "after": 0.6},
+    {"id": "c22-10", "text": "Lines two hundred thirty-one to thirty-four: the turn is over one degree, so use the corner formula.", "after": 0.6},
+    {"id": "c22-11", "text": "Six times zero point four, over one. Square root: one point five five meters per second.", "after": 0.6},
+    {"id": "c22-12", "text": "The board's formula, in Java. Execute then brakes to it at the switch circle.", "after": 0.3}
+  ]
+}

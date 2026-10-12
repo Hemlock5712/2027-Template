@@ -1,9 +1,0 @@
-{
-  "lead": 1.2,
-  "tail": 1.8,
-  "lines": [
-    {"id": "c4-1", "text": "Turning uses the same three ideas: a top spin rate, the fastest spin it can still stop, and gentle near the end.", "after": 0.6},
-    {"id": "c4-2", "text": "So it can drive and turn at the same time, and both finish together.", "after": 0.6},
-    {"id": "c4-3", "text": "Within a third of a degree, it stops turning.", "after": 0.3}
-  ]
-}

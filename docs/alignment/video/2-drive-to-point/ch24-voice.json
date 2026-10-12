@@ -1,0 +1,22 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c24-1", "text": "The whole idea, in four sentences.", "after": 0.6},
+    {"id": "c24-2", "text": "One: every twenty milliseconds, it asks where the goal is, how far, how fast, and how much it may change.", "after": 0.6},
+    {"id": "c24-3", "text": "Two: how fast is the smallest of top speed, the speed it can still stop from, and a gentle line.", "after": 0.6},
+    {"id": "c24-4", "text": "Three: it brakes early for its delay, turns the same way, and takes corners at a speed that fits.", "after": 0.6},
+    {"id": "c24-5", "text": "Four: with no clock the goal may move, and it's done only when close, aligned, and stopped.", "after": 0.6},
+    {"id": "c24-6", "text": "Now check yourself. Pause after each question.", "after": 0.6},
+    {"id": "c24-7", "text": "Question one: at two meters per second, with decel six, how far does it take to stop?", "after": 4.0},
+    {"id": "c24-8", "text": "Four over twelve: zero point three three meters.", "after": 0.6},
+    {"id": "c24-9", "text": "Question two: why does P times distance alone overshoot at high speed?", "after": 4.0},
+    {"id": "c24-10", "text": "It starts braking at v over P, closer than the v squared over two a it needs.", "after": 0.6},
+    {"id": "c24-11", "text": "Question three: why the gentle line near the goal?", "after": 4.0},
+    {"id": "c24-12", "text": "The curve is so steep there that tiny wiggles become big lurches.", "after": 0.6},
+    {"id": "c24-13", "text": "Question four: why does initialize start from the measured velocity?", "after": 4.0},
+    {"id": "c24-14", "text": "So a moving start has no jump in the command, and the wheels don't slip.", "after": 0.6},
+    {"id": "c24-15", "text": "Question five: is a one hundred thirty-five degree corner faster or slower than ninety?", "after": 4.0},
+    {"id": "c24-16", "text": "Slower: one point zero zero meters per second, not one point five five.", "after": 0.3}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c18-1", "text": "Now execute, the loop. We'll trace one moment, each line's value in grey at its end.", "after": 0.6},
+    {"id": "c18-2", "text": "The robot is at zero, zero, facing zero degrees. The goal: three, zero, facing ninety.", "after": 0.6},
+    {"id": "c18-3", "text": "Last loop we asked for two meters per second straight ahead, no spin. Twenty milliseconds have passed.", "after": 0.6},
+    {"id": "c18-4", "text": "Lines one hundred sixty to sixty-two: d t, the time since last loop, then save the time. Zero point zero two seconds.", "after": 0.6},
+    {"id": "c18-5", "text": "It's kept between a millisecond and a tenth of a second, in case a loop is skipped.", "after": 0.6},
+    {"id": "c18-6", "text": "Line one hundred sixty-four reads the pose. Line one hundred sixty-five asks question one: goal.", "after": 0.6},
+    {"id": "c18-7", "text": "Line one hundred sixty-six, the arrow to the goal: goal minus pose. Three, zero.", "after": 0.6},
+    {"id": "c18-8", "text": "Line one hundred sixty-seven, question two: its length. Three meters.", "after": 0.6},
+    {"id": "c18-9", "text": "Line one hundred sixty-eight, heading error: ninety degrees, one point five seven radians, wrapped between minus pi and pi.", "after": 0.3}
+  ]
+}

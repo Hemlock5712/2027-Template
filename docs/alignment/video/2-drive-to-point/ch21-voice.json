@@ -1,0 +1,17 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c21-1", "text": "Physics decides, says line one hundred ninety-six. Line one hundred ninety-seven gives the limiter what we have, what we want, and d t.", "after": 0.6},
+    {"id": "c21-2", "text": "Have: two, zero, zero. Want: four, zero, four point three four.", "after": 0.6},
+    {"id": "c21-3", "text": "Three checks. Turning: that spin change is over two hundred radians per second squared, so it's capped at eight.", "after": 0.6},
+    {"id": "c21-4", "text": "Motors: at two meters per second and one hundred fifty amps each, they can add about twenty-six. We wanted one hundred.", "after": 0.6},
+    {"id": "c21-5", "text": "Grip: driving and turning together ask for twenty-six point five. The tires give ten.", "after": 0.6},
+    {"id": "c21-6", "text": "So both scale to about thirty-eight percent, together, keeping the path straight.", "after": 0.6},
+    {"id": "c21-7", "text": "Nine point nine four forward, three point zero two of spin, for zero point zero two seconds.", "after": 0.6},
+    {"id": "c21-8", "text": "New command: two point two zero meters per second, and zero point zero six radians per second.", "after": 0.6},
+    {"id": "c21-9", "text": "That's all physics allows. Next loop, it asks again.", "after": 0.6},
+    {"id": "c21-10", "text": "Line one hundred ninety-nine sends it to the swerve drive.", "after": 0.6},
+    {"id": "c21-11", "text": "Lines two hundred one to two hundred four log four values, to graph in AdvantageScope.", "after": 0.3}
+  ]
+}

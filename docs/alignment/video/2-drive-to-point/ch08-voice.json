@@ -1,0 +1,21 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c08-1", "text": "Now the reaction time: zero point zero five seconds.", "after": 0.6},
+    {"id": "c08-2", "text": "Readings are a little old, and each command waits for the loop, then travels over the CAN wires.", "after": 0.6},
+    {"id": "c08-3", "text": "Meanwhile it keeps rolling: at four meters per second, zero point two meters.", "after": 0.6},
+    {"id": "c08-4", "text": "So it subtracts speed times zero point zero five from the distance first.", "after": 0.6},
+    {"id": "c08-5", "text": "From top speed, braking now starts at one point five three meters, not one point three three.", "after": 0.6},
+    {"id": "c08-6", "text": "Next, the gentle line: speed equals K P, a gain of six, times distance.", "after": 0.6},
+    {"id": "c08-7", "text": "Where does it cross the braking curve? Where six d equals the square root of twelve d.", "after": 0.6},
+    {"id": "c08-8", "text": "Square both sides: thirty-six d squared equals twelve d. So d is a third of a meter, at two meters per second.", "after": 0.6},
+    {"id": "c08-9", "text": "Closer than that, the line is lower, so it wins.", "after": 0.6},
+    {"id": "c08-10", "text": "Why bother? Near zero, the curve is almost vertical.", "after": 0.6},
+    {"id": "c08-11", "text": "One millimeter out, the curve asks for eleven centimeters per second. The line, under one.", "after": 0.6},
+    {"id": "c08-12", "text": "Measured positions always wiggle. A steep curve turns every wiggle into a lurch.", "after": 0.6},
+    {"id": "c08-13", "text": "In our simulator, with a centimeter of noise, the curve alone jittered about nine centimeters per second.", "after": 0.6},
+    {"id": "c08-14", "text": "A K P of eight or more also wobbled at the finish. Six didn't.", "after": 0.6},
+    {"id": "c08-15", "text": "Last: inside three millimeters, the stop deadband sets speed to exactly zero.", "after": 0.3}
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c11-1", "text": "Turning uses the same maths. Distance becomes angle; speed becomes omega, the spin rate.", "after": 0.6},
+    {"id": "c11-2", "text": "The heading error stays between minus pi and pi radians, so it turns the short way.", "after": 0.6},
+    {"id": "c11-3", "text": "Top spin: six radians per second, almost a turn a second. Spin braking, alpha: six radians per second squared.", "after": 0.6},
+    {"id": "c11-4", "text": "Stopping from top spin: omega squared over two alpha. Three radians, about one hundred seventy-two degrees.", "after": 0.6},
+    {"id": "c11-5", "text": "Braking early at top spin: zero point zero five seconds is zero point three radians.", "after": 0.6},
+    {"id": "c11-6", "text": "The gentle line, five times the angle, meets the curve at zero point four eight radians, about twenty-seven degrees.", "after": 0.6},
+    {"id": "c11-7", "text": "Inside zero point three degrees, the spin command is zero.", "after": 0.6},
+    {"id": "c11-8", "text": "For a ninety degree turn: curve four point three four, line seven point eight five, cap six.", "after": 0.6},
+    {"id": "c11-9", "text": "Smallest: four point three four radians per second. It shows up again in the code.", "after": 0.6},
+    {"id": "c11-10", "text": "And the margin rule: plan six, below the limiter's eight.", "after": 0.3}
+  ]
+}

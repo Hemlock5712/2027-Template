@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c13-1", "text": "Two last pieces. First, margins.", "after": 0.6},
+    {"id": "c13-2", "text": "We plan to brake at six; video one's limiter allows ten. That gap is on purpose.", "after": 0.6},
+    {"id": "c13-3", "text": "Plan more than the limiter allows, and the robot can't follow. It overshoots.", "after": 0.6},
+    {"id": "c13-4", "text": "In our simulator, planning four with a limit of three overshot by sixty-seven centimeters.", "after": 0.6},
+    {"id": "c13-5", "text": "Why not nine? In our simulator, that made tag line-ups less accurate. Six stayed accurate and quick.", "after": 0.6},
+    {"id": "c13-6", "text": "Second, the finish line: under two centimeters, under two degrees, and under zero point zero five meters per second.", "after": 0.6},
+    {"id": "c13-7", "text": "That's the measured speed. Asking to stop isn't the same as being stopped.", "after": 0.6},
+    {"id": "c13-8", "text": "A waypoint finishes inside the switch radius, or five centimeters, whichever is bigger.", "after": 0.6},
+    {"id": "c13-9", "text": "On our ninety degree corner: forty centimeters out, rolling at about one point five five.", "after": 0.3}
+  ]
+}

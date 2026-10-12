@@ -1,0 +1,18 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c14-1", "text": "Now the real Java. Every line number shown is the real one.", "after": 0.6},
+    {"id": "c14-2", "text": "Lines one to eighteen: licence and imports, the tools this file borrows.", "after": 0.6},
+    {"id": "c14-3", "text": "Lines twenty to thirty-three, the Javadoc: our four questions, written down.", "after": 0.6},
+    {"id": "c14-4", "text": "Line thirty-four extends Classic Command: initialize once, then execute and is finished every loop, then end.", "after": 0.6},
+    {"id": "c14-5", "text": "Lines thirty-five and thirty-six warn: plan to brake below the limiter's limits, or it overshoots.", "after": 0.6},
+    {"id": "c14-6", "text": "Line thirty-seven, max speed: four meters per second, about eighty-eight percent of free speed.", "after": 0.6},
+    {"id": "c14-7", "text": "Line thirty-eight, decel: six. Braking harder costs tag accuracy, says the comment.", "after": 0.6},
+    {"id": "c14-8", "text": "Line forty, K P: six. Line forty-two, reaction time: zero point zero five seconds; zero point one zero with slower odometry.", "after": 0.6},
+    {"id": "c14-9", "text": "Line forty-three, stop deadband: three millimeters.", "after": 0.6},
+    {"id": "c14-10", "text": "Lines forty-five to fifty, heading: six, six, five, zero point zero five, and zero point three degrees.", "after": 0.6},
+    {"id": "c14-11", "text": "Line fifty-four, max switch radius: zero point four meters. Line fifty-six, settled speed: five centimeters per second.", "after": 0.6},
+    {"id": "c14-12", "text": "Distances green, speeds blue, accelerations orange, angles purple, times yellow. Same colours as the board.", "after": 0.3}
+  ]
+}

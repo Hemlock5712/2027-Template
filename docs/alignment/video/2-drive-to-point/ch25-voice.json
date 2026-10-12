@@ -1,0 +1,14 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c25-1", "text": "Now try it in the Java simulator.", "after": 0.6},
+    {"id": "c25-2", "text": "Run the auto called two, Drive To Pose. Then open the newest log in AdvantageScope.", "after": 0.6},
+    {"id": "c25-3", "text": "Put drivetrain pose on the field view, and Drive To Pose commanded velocity on a graph.", "after": 0.6},
+    {"id": "c25-4", "text": "Find the shape: speed up, maybe cruise, a smooth brake, then a gentle glide.", "after": 0.6},
+    {"id": "c25-5", "text": "Now change K P from six to two, and run it again.", "after": 0.6},
+    {"id": "c25-6", "text": "That's the gentle P robot from the race. The end should turn into a long creep.", "after": 0.6},
+    {"id": "c25-7", "text": "Put it back. Change one number at a time, or explore the Python simulator in tools, align sim.", "after": 0.6},
+    {"id": "c25-8", "text": "Next video: measuring the tag, so the goal is the real one.", "after": 0.3}
+  ]
+}

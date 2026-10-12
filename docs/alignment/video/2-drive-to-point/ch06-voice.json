@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c06-1", "text": "Where is the goal? It's asked every loop, so the goal may move.", "after": 0.6},
+    {"id": "c06-2", "text": "Drive To Tag uses this. Far away, it drives to the scoring spot on the field map.", "after": 0.6},
+    {"id": "c06-3", "text": "Once the cameras lock on to the AprilTag, the goal jumps to the spot measured from the tag. Video three.", "after": 0.6},
+    {"id": "c06-4", "text": "Drive To Piece chases a game piece the camera sees. If the piece rolls, the robot follows.", "after": 0.6},
+    {"id": "c06-5", "text": "Same loop, same speed rule. Only the answer to \"where is the goal\" changes.", "after": 0.6},
+    {"id": "c06-6", "text": "So when is the job done? Three checks, all at once.", "after": 0.6},
+    {"id": "c06-7", "text": "Within two centimeters, within two degrees, and truly stopped: measured speed under five centimeters per second.", "after": 0.6},
+    {"id": "c06-8", "text": "Like parking a car. You're not parked until the car stops.", "after": 0.6},
+    {"id": "c06-9", "text": "A pass-through waypoint is done at its hand-over circle, still rolling.", "after": 0.3}
+  ]
+}

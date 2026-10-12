@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c15-1", "text": "Lines fifty-eight to seventy-eight are the fields, the command's memory.", "after": 0.6},
+    {"id": "c15-2", "text": "Blue goal: a fixed goal, written for blue. Goal supplier: a goal that can move. Blue next: the next waypoint.", "after": 0.6},
+    {"id": "c15-3", "text": "Then the tolerances, two centimeters and two degrees, and end speed and switch radius: zero, unless it's a waypoint.", "after": 0.6},
+    {"id": "c15-4", "text": "Lines seventy to seventy-three build the request: a closed-loop field velocity, so even slow final moves happen.", "after": 0.6},
+    {"id": "c15-5", "text": "Line seventy-five, commanded: the last velocity we asked for. The speed rule's only memory.", "after": 0.6},
+    {"id": "c15-6", "text": "Lines seventy-seven and seventy-eight start distance and heading error at infinity: not there yet.", "after": 0.6},
+    {"id": "c15-7", "text": "Line eighty-five takes a fixed goal. Its Javadoc says: always write it for the blue alliance.", "after": 0.6},
+    {"id": "c15-8", "text": "Line ninety-three takes a supplier: a small function returning a fresh goal, already in field coordinates, so never flipped.", "after": 0.6},
+    {"id": "c15-9", "text": "Line ninety-eight is protected, for subclasses like Drive To Tag that bring their own goal.", "after": 0.6},
+    {"id": "c15-10", "text": "All of them reach line one hundred four, which names the command and claims the drivetrain.", "after": 0.3}
+  ]
+}

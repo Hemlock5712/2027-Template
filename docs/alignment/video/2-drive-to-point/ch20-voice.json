@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c20-1", "text": "Lines one hundred eighty-five to ninety-four do the same for turning.", "after": 0.6},
+    {"id": "c20-2", "text": "Braking angle: the angle left, minus spin rate times heading reaction time. No spin yet, so one point five seven radians.", "after": 0.6},
+    {"id": "c20-3", "text": "Then three spin rates; the smallest wins. Max omega: six.", "after": 0.6},
+    {"id": "c20-4", "text": "Can I still stop turning: the square root of twelve times one point five seven. Four point three four.", "after": 0.6},
+    {"id": "c20-5", "text": "The gentle line: five times one point five seven, seven point eight five.", "after": 0.6},
+    {"id": "c20-6", "text": "Smallest: four point three four, the number from the board.", "after": 0.6},
+    {"id": "c20-7", "text": "Lines one hundred ninety-three and ninety-four: inside the deadband, zero. Otherwise copy sign gives it the error's sign.", "after": 0.6},
+    {"id": "c20-8", "text": "So plus four point three four radians per second: counterclockwise, toward ninety degrees.", "after": 0.6},
+    {"id": "c20-9", "text": "This loop's wish: four meters per second forward, four point three four radians per second of spin.", "after": 0.3}
+  ]
+}

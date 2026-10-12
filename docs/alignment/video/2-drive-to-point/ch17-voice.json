@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c17-1", "text": "Line one hundred forty-three, initialize, runs once when the command starts.", "after": 0.6},
+    {"id": "c17-2", "text": "With a fixed blue goal, line one hundred forty-six flips it for our alliance.", "after": 0.6},
+    {"id": "c17-3", "text": "Why here? Line one hundred forty-five: the alliance isn't known yet when an OpMode is built.", "after": 0.6},
+    {"id": "c17-4", "text": "On red, x becomes field length minus x, y becomes field width minus y, and the heading turns half a circle.", "after": 0.6},
+    {"id": "c17-5", "text": "Line one hundred forty-seven swaps in a supplier that always returns that goal, so execute only calls goal.", "after": 0.6},
+    {"id": "c17-6", "text": "Lines one hundred forty-eight to one hundred fifty: with a next waypoint, run the corner rule from the robot's current pose.", "after": 0.6},
+    {"id": "c17-7", "text": "Line one hundred fifty-two matters most: commanded starts as the robot's measured velocity.", "after": 0.6},
+    {"id": "c17-8", "text": "Already rolling at two meters per second? The limiter starts from two, not zero: no jump, no slipping wheels.", "after": 0.6},
+    {"id": "c17-9", "text": "Then start the clock, and reset distance and heading error: not there yet.", "after": 0.3}
+  ]
+}

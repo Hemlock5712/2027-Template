@@ -1,0 +1,16 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    {"id": "c03-1", "text": "The robot's code runs in a loop, fifty times a second: once every twenty milliseconds.", "after": 0.6},
+    {"id": "c03-2", "text": "Each time, Drive To Pose asks four questions.", "after": 0.6},
+    {"id": "c03-3", "text": "One: where is the goal? It asks every loop, because the goal may have moved.", "after": 0.6},
+    {"id": "c03-4", "text": "Two: how far is it? A straight arrow from robot to goal.", "after": 0.6},
+    {"id": "c03-5", "text": "Three: how fast should I go? The heart of this video.", "after": 0.6},
+    {"id": "c03-6", "text": "Four: how much may my velocity change this loop? That's physics, from video one.", "after": 0.6},
+    {"id": "c03-7", "text": "The answers become one arrow: the velocity the robot is told to drive.", "after": 0.6},
+    {"id": "c03-8", "text": "Twenty milliseconds later, it throws them away and asks again.", "after": 0.6},
+    {"id": "c03-9", "text": "No plan is stored. Its only memory is the last velocity it asked for.", "after": 0.6},
+    {"id": "c03-10", "text": "Far away the arrow is long. Close in, it shrinks. On the mark, it's gone.", "after": 0.3}
+  ]
+}

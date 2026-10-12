@@ -2,6 +2,9 @@
 
 **Status: research + simulation studies + prototype code, Oct 2026. Untested on a robot.**
 
+**Track:** this is the team's advanced track. The schools' simple examples stay as they are; don't
+merge this into the template's `main`. [handoff/](handoff/) has the prompts for taking it further.
+
 This document covers how the 2027 robot should (1) drive to a point and (2) line up precisely with an
 AprilTag or a game piece. It includes:
 - what top FRC teams and industry do;

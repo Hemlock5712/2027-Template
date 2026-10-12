@@ -57,7 +57,7 @@ public class TunerConstants {
   // This needs to be tuned to your individual robot
   // Hardware ceiling only (~Kraken X60 stall): weight transfer needs the loaded wheels to push
   // hard.
-  // DriveToPose limits acceleration from physics instead (TRACTION_ACCEL, MODEL_CURRENT).
+  // AccelerationLimiter limits acceleration from physics instead.
   private static final Current kSlipCurrent = Amps.of(360);
 
   // Initial configs for the drive and steer motors and the azimuth encoder; these cannot be null.

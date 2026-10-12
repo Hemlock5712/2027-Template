@@ -470,7 +470,8 @@ each loop: a friction circle (`TRACTION_ACCEL` 10, shared by driving and turning
 up, the motors' torque-speed curve at a 150 A model current. Against a fixed accel 10 it leaves 15–30%
 less odometry error, costs ~0.09 s on moves from rest that also turn, and doesn't change tag alignment.
 
-**Ships:** `TRACTION_ACCEL` 10, `MODEL_CURRENT` 150 A, `DECEL` 6, heading limits 6 / 8; `kSlipCurrent`
+**Ships** (limits in `utils/AccelerationLimiter.java`, the law in `DriveToPose`): `TRACTION_ACCEL` 10,
+`MODEL_CURRENT` 150 A, `DECEL` 6, heading limits 6 / 8; `kSlipCurrent`
 360 A (hardware ceiling).
 
 ## 7. B-Line and 2056: P on distance alone

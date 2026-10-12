@@ -280,6 +280,7 @@ DriveToPose controller  ◄── before lock: field-map goal (global);  after l
 | File | What it is |
 | --- | --- |
 | [`commands/DriveToPose.java`](../../src/main/java/frc/robot/commands/DriveToPose.java) | The one controller, with the sim-tuned limits. Fixed blue-origin goal (flipped for red) or a moving goal; `passingThrough(next)` waypoints with the corner rule; `withTolerance`; closed-loop velocity requests |
+| [`utils/AccelerationLimiter.java`](../../src/main/java/frc/robot/utils/AccelerationLimiter.java) | How fast the velocity may change, from physics: heading cap, motor torque at speed, tire grip shared by driving and turning |
 | [`commands/DriveToTag.java`](../../src/main/java/frc/robot/commands/DriveToTag.java) | Map goal until locked, then the local goal; finishes only when locked |
 | [`commands/DriveToPiece.java`](../../src/main/java/frc/robot/commands/DriveToPiece.java) | Same idea for a detected game piece. Stops in place until locked; gives up after 0.5 s without a lock |
 | [`subsystems/WheelOdometry.java`](../../src/main/java/frc/robot/subsystems/WheelOdometry.java) | Wheel + gyro pose with timestamped history, fed from CTRE's odometry thread |
@@ -329,11 +330,11 @@ the keys are listed in the `log-reading` skill.
 2. **Odometry and grip.**
    - Push the robot 3 m along a tape measure and compare with `OdometryPose`.
    - Measure the grip: ramp drive current on carpet until a wheel spins. Keep `kSlipCurrent` at about
-     360 A (a ceiling); the real limit belongs in `DriveToPose`'s `TRACTION_ACCEL`.
+     360 A (a ceiling); the real limit is `TRACTION_ACCEL` in `AccelerationLimiter`.
    - Measure the CG height (or balance the robot on a rod) for the weight-transfer math.
    - Check acceleration: from rest, command a hard 3 m move and compare `OdometryPose` with a tape
      measure. More than ~2 cm off means the wheels slipped; lower `TRACTION_ACCEL`.
-   - Weigh the robot for `ROBOT_MASS` (it sets the motor torque limit).
+   - Weigh the robot for `ROBOT_MASS` in `AccelerationLimiter` (it sets the motor torque limit).
 3. **Camera noise and bias vs distance.** Park still, facing a tag, at 1, 2 and 3 m, head-on and at
    30°, for 10 s each. The spread of `TagTracker/<id>/TagInRobot` gives the real noise; the mean vs a
    tape measure shows whether the yaw bias changes with distance or angle.

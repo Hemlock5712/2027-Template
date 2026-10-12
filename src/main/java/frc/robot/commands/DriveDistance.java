@@ -90,7 +90,8 @@ public class DriveDistance extends ClassicCommand {
   /** Stops the drivetrain. Runs on both finish and interruption. */
   @Override
   protected void end(boolean interrupted) {
-    drivetrain.setControl(new SwerveRequest.Idle());
+    // Idle is not a stop: it leaves every module on its last request, so send zero velocity.
+    drivetrain.setControl(driveRequest.withVelocity(new ChassisVelocities()));
   }
 
   /**

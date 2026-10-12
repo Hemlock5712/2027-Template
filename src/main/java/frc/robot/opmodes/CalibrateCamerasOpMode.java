@@ -52,6 +52,11 @@ public class CalibrateCamerasOpMode extends PeriodicOpMode {
   private final DriveMechanism drivetrain;
   private final Limelight[] cameras;
   private final Command backOff;
+  // A command that ends sends nothing, so the back-off would keep rolling: stop it ourselves.
+  private final SwerveRequest.ApplyRobotVelocity stop =
+      new SwerveRequest.ApplyRobotVelocity()
+          .withDriveRequestType(DriveRequestType.Velocity)
+          .withVelocity(new ChassisVelocities());
   private final long[] lastFrameIndex;
   // Per camera: sum of x, y, sin(yaw), cos(yaw), and the frame count.
   private final double[][] sums;
@@ -59,6 +64,7 @@ public class CalibrateCamerasOpMode extends PeriodicOpMode {
   private Pose2d expectedTag; // where the tag must be (odometry frame) if we parked exactly
   private double startTime;
   private boolean printed;
+  private boolean stopped;
 
   public CalibrateCamerasOpMode(Robot robot) {
     drivetrain = robot.drivetrain;
@@ -85,6 +91,7 @@ public class CalibrateCamerasOpMode extends PeriodicOpMode {
     Arrays.fill(lastFrameIndex, -1);
     startTime = Utils.getCurrentTimeSeconds();
     printed = false;
+    stopped = false;
     Scheduler.getDefault().schedule(backOff);
   }
 
@@ -93,7 +100,13 @@ public class CalibrateCamerasOpMode extends PeriodicOpMode {
     for (int i = 0; i < cameras.length; i++) {
       addFrame(i);
     }
-    if (!printed && Utils.getCurrentTimeSeconds() - startTime > BACK_OFF_SECONDS + 0.5) {
+    double elapsed = Utils.getCurrentTimeSeconds() - startTime;
+    if (!stopped && elapsed >= BACK_OFF_SECONDS) {
+      stopped = true;
+      Scheduler.getDefault().cancel(backOff);
+      drivetrain.setControl(stop);
+    }
+    if (!printed && elapsed > BACK_OFF_SECONDS + 0.5) {
       printed = true;
       printCorrections();
     }
@@ -102,6 +115,7 @@ public class CalibrateCamerasOpMode extends PeriodicOpMode {
   @Override
   public void end() {
     Scheduler.getDefault().cancel(backOff);
+    drivetrain.setControl(stop);
   }
 
   private void addFrame(int i) {

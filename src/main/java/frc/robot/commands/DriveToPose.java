@@ -238,7 +238,8 @@ public class DriveToPose extends ClassicCommand {
   @Override
   protected void end(boolean interrupted) {
     if (interrupted || endSpeed == 0.0) {
-      drivetrain.setControl(new SwerveRequest.Idle());
+      // Idle is not a stop: it leaves every module on its last request, so send zero velocity.
+      drivetrain.setControl(driveRequest.withVelocity(new ChassisVelocities()));
     }
   }
 }

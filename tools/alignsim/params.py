@@ -28,6 +28,9 @@ class RobotParams:
     drive_kp: float = 3.0  # V per m/s of wheel speed error (onboard velocity loop)
     drive_ks: float = 0.15  # V static friction feedforward
     cosine_compensation: bool = True
+    # Optional physics / onboard control (0 = off, the default for every earlier study)
+    cg_height: float = 0.0  # m; > 0 adds weight transfer (load moves off the wheels you accelerate away from)
+    drive_ramp: float = 0.0  # m/s^2; > 0 = onboard setpoint ramp + accel feedforward (Motion Magic velocity)
     # Steering
     steer_gain: float = 60.0  # 1/s
     steer_max_rate: float = 25.0  # rad/s

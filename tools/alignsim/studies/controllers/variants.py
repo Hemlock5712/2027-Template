@@ -256,3 +256,4 @@ class VecLimited:
         w = self.cmd[2] + _clamp(w - self.cmd[2], -self.alpha * dt, self.alpha * dt)
         self.cmd = (vx, vy, w)
         return self.cmd
+

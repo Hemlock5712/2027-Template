@@ -30,8 +30,8 @@ should the 2027 code use, and with which numbers?
    | Java constant | now | ship | why |
    |---|---:|---:|---|
    | `MAX_SPEED` | 3.5 | 4.0 m/s | about 88 % of free speed (keep 3.5 if you prefer margin) |
-   | `DECEL` | 3.0 | **6.0** m/s² | braking that is planned (4.0 in this study; raised in [Q5](#6-revisit-how-hard-can-it-accelerate-q5)) |
-   | `ACCEL` | 6.0 | **10.0** m/s² | hard limit. **Must stay above `DECEL`**. 5.0 in this study; 10 needs the slip current at grip ([Q5](#6-revisit-how-hard-can-it-accelerate-q5)) |
+   | `DECEL` | 3.0 | **6.0** m/s² | braking that is planned (4.0 in this study; raised in [Q5/Q6](#6-revisit-how-hard-can-it-accelerate-q5-q6)) |
+   | `ACCEL` | 6.0 | **10.0** m/s² | hard limit. **Must stay above `DECEL`**. 5.0 in this study; raised in [Q5/Q6](#6-revisit-how-hard-can-it-accelerate-q5-q6) |
    | `KP` | 4.0 | **6.0** 1/s | 0.2 s faster finish. 8 or more starts a small limit cycle |
    | `REACTION_TIME` | 0.05 | 0.05 s | use **0.10 on SystemCore without a CANivore** (100 Hz) |
    | `MAX_OMEGA` | 6.0 | 6.0 rad/s | |
@@ -53,10 +53,10 @@ should the 2027 code use, and with which numbers?
    - **Limit ≥ planned brake + margin.** Use `ACCEL ≥ DECEL + ~1` and `ANGULAR_ACCEL > ANGULAR_DECEL`.
      If the limiter is lower than the braking curve, the robot can't follow it. `accel 3 < decel 4`
      overshoots up to 67 cm, and `waccel 6 < wdecel 10` overshoots 50° of heading.
-   - **Per-loop step budget (only with a 120 A slip current).** At 120 A, keep
-     `(ACCEL + ANGULAR_ACCEL·0.41 m)·0.02 s` at or below about 0.17 m/s, or the onboard velocity loop
-     turns the step into wheel slip. With the slip current set at the tires' grip (55–60 A here),
-     ACCEL 10 is clean; see Q5.
+   - **Per-loop step budget at 50 Hz.** Each new setpoint makes the onboard velocity loop push
+     harder than the average for a moment, so big per-loop steps slip the wheels. Running the law at
+     250 Hz removes most of it (Q6). Don't fix it by lowering the slip current: weight transfer needs
+     the loaded wheels to push harder (Q6).
    - **Brake early for delay, translation and heading both.** Set `react` ≈ total actuation delay.
 4. **Pass-through waypoints: use the corner rule, not "end speed at a 15 cm switch".**
    - **The rule.** Pick a switch radius `r = min(0.4 m, 40 % of the shorter leg)`. Then set the end
@@ -431,21 +431,37 @@ failures.
 - **It is time-based.** If the robot falls behind (slip, a push), the setpoint keeps going: 6.6 cm
   overshoot.
 
-## 6. Revisit: how hard can it accelerate? (Q5)
+## 6. Revisit: how hard can it accelerate? (Q5, Q6)
 
 Asked after the study: aren't 5 m/s² and 4 m/s² too conservative, when the tires can do about 1 g?
 Full tables: [`results/q5_accel.md`](../../../tools/alignsim/studies/controllers/results/q5_accel.md).
 
-- **Yes, if the slip current matches the grip.** At 120 A the motors push about 1.8× harder than the
-  tread holds, so ACCEL 10 slips 582 ms per move. At 55–60 A, ACCEL 10 / DECEL 6 is as clean as the
-  old tune (31 ms slip, 0.5 cm odometry error) and 0.23–0.28 s faster per move.
+- **Yes.** ACCEL 10 / DECEL 6 is 0.23–0.28 s faster per move than 5 / 4.
+- **Q5 first suggested lowering the slip current to ~55–60 A to stop the slip. That was wrong** (Q6):
+  the Q5 plant had no weight transfer. With it, a low slip current starves the loaded wheels and is
+  slower with 2–3× the odometry error. Keep it high (~2× grip) and limit acceleration in the command,
+  as 5712 did in 2026.
 - **Braking is the knob to keep moderate.** On the final tag approach, DECEL 9 drops the very hard
   world from 97% to 85–89% (the robot covers the last stretch fast, so timing error becomes depth
   error). DECEL 6 keeps 98–99% and is still 0.15–0.2 s faster than before.
 - **Hard reversals from a moving start still slip** (~400 ms, ~11 cm odometry error) while the modules
   re-steer. A wheel-only auto that starts moves at speed is better with ACCEL ~7.
 
-**Ships:** `ACCEL` 10, `DECEL` 6, slip current 60 A (TODO: measure). The heading limits stay at 6 / 8.
+**Q6, physics and timing** ([`results/q6_physics.md`](../../../tools/alignsim/studies/controllers/results/q6_physics.md)):
+
+- **Weight transfer is the big effect.** Velocity-controlled modules push about equally, so the light
+  wheels slip first: with a 0.2 m CG the equal-force limit is only ~6 m/s².
+- **250 Hz control** (the law run in CTRE's odometry thread) removes the 50 Hz setpoint-step slip:
+  clean to 8 m/s² without weight transfer.
+- **Load-split wheel force feedforward** (CTRE per-module forces, split by expected load) is the
+  per-module win: with a 0.2 m CG at 6–8 m/s² it cuts slip 3–4× and halves odometry error, and the robot
+  follows its command within 0.05 m/s.
+- **At 10 m/s² with a realistic CG, some wheels slip whatever you do.** Alignment still works (96–99%)
+  because the tag tracker re-anchors; odometry takes 4–7 cm per hard move, which vision corrects.
+- **Don't put Motion Magic velocity on swerve drive motors:** turning while driving needs wheel speeds to
+  change faster than the chassis accelerates, so the ramp makes wheels scrub.
+
+**Ships:** `ACCEL` 10, `DECEL` 6, slip current 120 A. The heading limits stay at 6 / 8.
 
 ## The law to ship, in full
 
@@ -460,7 +476,7 @@ each loop (dt = 0.02):
   commanded velocity moves toward speed·dir by at most ACCEL·dt (as one vector)
   commanded ω moves toward ω_target by at most WACCEL·dt
 
-VMAX 4.0  DECEL 6.0  ACCEL 10.0  KP 6  REACT 0.05 (0.10 at 100 Hz)   (slip current at grip, ~60 A)
+VMAX 4.0  DECEL 6.0  ACCEL 10.0  KP 6  REACT 0.05 (0.10 at 100 Hz)   (slip current high, ~2x grip)
 WMAX 6.0  WDECEL 6.0 WACCEL 8.0 KP_W 5 WREACT 0.05
 waypoint: r = min(0.4, 0.4·shorter leg);  endSpeed = √(DECEL·r / tan(turn/2));  hand over inside r
 ```

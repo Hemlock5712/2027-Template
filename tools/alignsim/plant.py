@@ -10,6 +10,7 @@ from .params import RobotParams
 G = 9.81
 V_REG = 0.05  # m/s: sliding friction ramps to full below this slip speed
 SUBSTEPS = 8
+WT_TAU = 0.03  # s, how fast load shifts between wheels (only with cg_height > 0)
 
 
 class SwervePlant:
@@ -42,11 +43,16 @@ class SwervePlant:
         self.t = 0.0
         self.mass_per_wheel = rp.mass / 4.0
         self.normal = rp.mass * G / 4.0
+        self.normals = [self.normal] * 4  # per wheel; differ only with cg_height > 0
+        self.acc_r = (0.0, 0.0)  # last chassis acceleration, robot frame (for weight transfer)
+        self.sp_int = list(self.target_speed)  # onboard (ramped) velocity setpoint per module
+        self.ff_force = [0.0] * 4  # N along each wheel, from the request (CTRE wheel force feedforward)
         self.kv_volts = 12.0 / rp.free_speed
 
     # ------------------------------------------------------------------ commands
-    def set_chassis_robot(self, vx, vy, w):
-        """Robot-relative ChassisVelocities -> module targets (like CTRE's request at apply time)."""
+    def set_chassis_robot(self, vx, vy, w, forces=None):
+        """Robot-relative ChassisVelocities -> module targets (like CTRE's request at apply time).
+        forces: optional per-module (fx, fy) feedforward in newtons, robot frame."""
         rp = self.rp
         speeds, angles = [], []
         for mx, my in self.mods:
@@ -66,6 +72,9 @@ class SwervePlant:
                 s = -s
             self.target_angle[i] = a
             self.target_speed[i] = s
+            if forces is not None:
+                fx, fy = forces[i]
+                self.ff_force[i] = fx * math.cos(a) + fy * math.sin(a)
         self.neutral = False
 
     def set_neutral(self):
@@ -83,6 +92,11 @@ class SwervePlant:
         vxr, vyr = c * self.vx + s * self.vy, -s * self.vx + c * self.vy  # robot frame
         fxr = fyr = tau = 0.0
         any_slip = False
+        if rp.cg_height > 0:
+            # load per wheel: sum = m g, and the ground moments balance the inertial ones at the CG
+            k = rp.mass * rp.cg_height / (4.0 * rp.module_xy ** 2)
+            for i, (mx, my) in enumerate(self.mods):
+                self.normals[i] = max(0.0, self.normal - k * (self.acc_r[0] * mx + self.acc_r[1] * my))
         for i in range(4):
             mx, my = self.mods[i]
             # steering (onboard position loop, rate limited)
@@ -96,10 +110,22 @@ class SwervePlant:
             if self.neutral:
                 volts = 0.0
             else:
-                sp = self.target_speed[i]
+                if rp.drive_ramp > 0:
+                    step_max = rp.drive_ramp * dt
+                    new = self.sp_int[i] + max(-step_max, min(step_max, self.target_speed[i] - self.sp_int[i]))
+                    a_int = (new - self.sp_int[i]) / dt
+                    self.sp_int[i] = new
+                else:
+                    self.sp_int[i] = self.target_speed[i]
+                    a_int = 0.0
+                sp = self.sp_int[i]
+                f_ff = self.ff_force[i] + (rp.mass / 4.0 + rp.reflected_wheel_mass) * a_int
                 if rp.cosine_compensation:
-                    sp *= math.cos(wrap(self.target_angle[i] - self.steer[i]))
+                    cosf = math.cos(wrap(self.target_angle[i] - self.steer[i]))
+                    sp *= cosf
+                    f_ff *= cosf
                 volts = self.kv_volts * sp + rp.drive_kp * (sp - sw)
+                volts += f_ff * rp.wheel_radius / (rp.motor_kt * rp.drive_gear) * rp.motor_r
                 if abs(sp) > 1e-3:
                     volts += math.copysign(rp.drive_ks, sp)
                 volts = max(-12.0, min(12.0, volts))
@@ -115,7 +141,7 @@ class SwervePlant:
 
             f_static_long = f_motor
             f_static_lat = -rp.lateral_stiffness * u_lat
-            fmax_s = rp.mu_static * self.normal
+            fmax_s = rp.mu_static * self.normals[i]
             if self.slipping[i]:
                 slip_l, slip_t = sw - u_long, -u_lat
                 if math.hypot(slip_l, slip_t) < 0.03 and math.hypot(f_static_long, f_static_lat) <= fmax_s:
@@ -127,7 +153,7 @@ class SwervePlant:
                 any_slip = True
                 # kinetic friction, regularized below V_REG and sub-stepped so the light wheel
                 # can't chatter around zero slip
-                fk = rp.mu_kinetic * self.normal
+                fk = rp.mu_kinetic * self.normals[i]
                 slip_t = -u_lat
                 fl_sum = ft_sum = 0.0
                 h = dt / SUBSTEPS
@@ -159,6 +185,10 @@ class SwervePlant:
             ffx += self.ext[0]
             ffy += self.ext[1]
             tau += self.ext[2]
+        # weight transfer follows the chassis acceleration with a lag (frame/tread compliance), not per step
+        a_now = rot((ffx / rp.mass, ffy / rp.mass), -self.th)
+        k = dt / (WT_TAU + dt)
+        self.acc_r = (self.acc_r[0] + k * (a_now[0] - self.acc_r[0]), self.acc_r[1] + k * (a_now[1] - self.acc_r[1]))
         # move with the velocity the encoders just integrated, so a rolling wheel reads true travel
         self.x += self.vx * dt
         self.y += self.vy * dt

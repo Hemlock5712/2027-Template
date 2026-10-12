@@ -34,6 +34,28 @@ class Move:
     legs: list
 
 
+def wheel_loads(rp, a_robot, cg_height):
+    """Expected load (N) on each wheel for a chassis acceleration (robot frame), with weight transfer."""
+    n0 = rp.mass * 9.81 / 4.0
+    k = rp.mass * cg_height / (4.0 * rp.module_xy ** 2)
+    return [max(0.0, n0 - k * (a_robot[0] * mx + a_robot[1] * my)) for mx, my in rp.module_positions]
+
+
+def wheel_forces(rp, a_robot, alpha, cg_height=0.0):
+    """Per-module (fx, fy) newtons, robot frame, for a chassis acceleration. Translation is split in
+    proportion to each wheel's expected load (equal when cg_height = 0, like CTRE's WheelForceCalculator);
+    the torque I*alpha is shared by the four modules."""
+    loads = wheel_loads(rp, a_robot, cg_height)
+    total = sum(loads) or 1.0
+    out = []
+    for (mx, my), n in zip(rp.module_positions, loads):
+        r2 = mx * mx + my * my
+        ft = rp.inertia * alpha / (4.0 * r2)
+        share = rp.mass * n / total
+        out.append((share * a_robot[0] - ft * my, share * a_robot[1] + ft * mx))
+    return out
+
+
 @dataclass
 class BenchCfg:
     rp: RobotParams = field(default_factory=RobotParams)
@@ -48,6 +70,8 @@ class BenchCfg:
     done_xy: float = 0.02  # Java DriveToPose.isFinished defaults
     done_yaw: float = math.radians(2.0)
     done_speed: float = 0.05
+    wheel_ff: bool = False  # send per-module force feedforward from the commanded accel (CTRE-style)
+    ff_cg: float = 0.0  # CG height the feedforward assumes: > 0 splits force by expected wheel load
 
 
 def _polyline_dist(p, pts):
@@ -132,7 +156,7 @@ def run_move(make_ctrl, move: Move, cfg: BenchCfg, seed: int, record=False):
             while requests and requests[0][0] <= t:
                 cur_req = requests.pop(0)[1]
             vr = rot((cur_req[0], cur_req[1]), -odo.pose[2])
-            plant.set_chassis_robot(vr[0], vr[1], cur_req[2])
+            plant.set_chassis_robot(vr[0], vr[1], cur_req[2], cur_req[3] if len(cur_req) > 3 else None)
             odo.update(plant.read_gyro(), plant.read_modules())
             true_p, odom_p, vel = snap()
             ts.append(t)
@@ -176,14 +200,18 @@ def run_move(make_ctrl, move: Move, cfg: BenchCfg, seed: int, record=False):
                     t_done = t
             ax_, ay_ = (cmd[0] - last_cmd[0]) / lp.main_period, (cmd[1] - last_cmd[1]) / lp.main_period
             pk_acc = max(pk_acc, math.hypot(ax_, ay_))
-            pk_alpha = max(pk_alpha, abs(cmd[2] - last_cmd[2]) / lp.main_period)
+            pk_alpha_now = (cmd[2] - last_cmd[2]) / lp.main_period
+            pk_alpha = max(pk_alpha, abs(pk_alpha_now))
             if last_acc is not None:
                 da = math.hypot(ax_ - last_acc[0], ay_ - last_acc[1])
                 pk_jerk = max(pk_jerk, da / lp.main_period)
                 acc_tv += da
             last_acc = (ax_, ay_)
             last_cmd = tuple(cmd)
-            requests.append((t + lp.actuation_delay, tuple(cmd)))
+            req = tuple(cmd)
+            if cfg.wheel_ff:
+                req = req + (wheel_forces(cfg.rp, rot((ax_, ay_), -pose[2]), pk_alpha_now, cfg.ff_cg),)
+            requests.append((t + lp.actuation_delay, req))
             if record:
                 trace.append((t, true_p, pose, odom_p, goal, tuple(cmd), leg_i))
         plant.step(dt)

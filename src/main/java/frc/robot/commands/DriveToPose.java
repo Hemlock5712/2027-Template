@@ -26,7 +26,7 @@ import org.wpilib.math.kinematics.ChassisVelocities;
 public class DriveToPose extends ClassicCommand {
   // Tuned in tools/alignsim (docs/alignment/studies/controllers.md). Keep ACCEL > DECEL and
   // ANGULAR_ACCEL > ANGULAR_DECEL (or it overshoots).
-  // ACCEL 10 needs kSlipCurrent in TunerConstants at the tires' grip, or the wheels spin.
+  // ACCEL is the traction limit; kSlipCurrent stays high so weight-shifted wheels aren't starved.
   private static final double MAX_SPEED = 4.0; // m/s
   private static final double DECEL = 6.0; // m/s^2; braking harder costs tag accuracy at the end
   private static final double ACCEL = 10.0; // m/s^2, hard limit on any change of velocity

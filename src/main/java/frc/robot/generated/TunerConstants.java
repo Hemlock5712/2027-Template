@@ -55,8 +55,9 @@ public class TunerConstants {
 
   // The stator current at which the wheels start to slip;
   // This needs to be tuned to your individual robot
-  // TODO: measure - ramp drive current on carpet until a wheel spins, then use ~85% of it.
-  private static final Current kSlipCurrent = Amps.of(60); // ~tire grip for a 60-70 kg robot
+  // Keep ~2x the real grip limit: under weight transfer the loaded wheels need more. DriveToPose
+  // limits acceleration in the command instead.
+  private static final Current kSlipCurrent = Amps.of(120);
 
   // Initial configs for the drive and steer motors and the azimuth encoder; these cannot be null.
   // Some configs will be overwritten; check the `with*InitialConfigs()` API documentation.

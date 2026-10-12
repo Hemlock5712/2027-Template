@@ -1,0 +1,15 @@
+{
+  "lead": 1.2,
+  "tail": 1.8,
+  "lines": [
+    { "id": "goal", "text": "Our robot has to drop this piece within two centimeters. About the width of your thumb.", "after": 0.5 },
+    { "id": "map", "text": "Easy: drive to where the map says. But real fields are built by people, so the target is a few centimeters off.", "after": 0.6 },
+    { "id": "tag", "text": "So near the end, the robot stops trusting the map. It reads the target's own AprilTag and measures where it really is.", "after": 0.5 },
+    { "id": "latency", "text": "But every photo is a little old. By then, the robot moved about five centimeters. So it remembers where its wheels were when the photo was taken.", "after": 0.7 },
+    { "id": "calibrate", "text": "A camera turned just one degree sees the tag almost two centimeters off. So each camera is calibrated once, on the real spot.", "after": 0.6 },
+    { "id": "speed", "text": "Now, the drive. A robot that slows down only when it's close overshoots. Ours asks fifty times a second: can I still stop?", "after": 0.6 },
+    { "id": "grip", "text": "And it never asks the tires for more than they can grip. Speeding up shifts weight back, so the front wheels slip first.", "after": 0.5 },
+    { "id": "rush", "text": "Measure the target. Rewind the photo. Fix the camera. Brake on time. Respect the tires.", "after": 0.4 },
+    { "id": "end", "text": "That's how a robot hits a two-centimeter target.", "after": 0.3 }
+  ]
+}

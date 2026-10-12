@@ -473,6 +473,25 @@ less odometry error, costs ~0.09 s on moves from rest that also turn, and doesn'
 **Ships:** `TRACTION_ACCEL` 10, `MODEL_CURRENT` 150 A, `DECEL` 6, heading limits 6 / 8; `kSlipCurrent`
 360 A (hardware ceiling).
 
+## 7. B-Line and 2056: P on distance alone
+
+B-Line (and 2056's `DriveToPoint`) set speed = P × distance left (B-Line: remaining *path* distance),
+clamped to a max, then rate-limit the change. That is the same position-based family as `DriveToPose`,
+minus its "can I still stop in time?" term `√(2·DECEL·d)`. Same bench, 1–6 m moves from rest, n = 60:
+
+| speed rule | t 5 cm | t settle | overshoot p95 |
+|---|---:|---:|---:|
+| P 5, accel limit 3 (B-Line README example) | 1.90 s | 3.99 s | 205 cm |
+| P 5, accel limit 10 | 1.45 s | 1.78 s | 20 cm |
+| P 2 (gentle), accel limit 10 | 2.20 s | 2.50 s | 0.1 cm |
+| `DriveToPose` (+ √(2·DECEL·d), DECEL 6, accel 10) | **1.39 s** | **1.48 s** | **0.0 cm** |
+
+P alone must choose between overshooting and being slow: it starts braking only when P × d drops below
+the current speed, which at high speed is later than the limiter can stop. The extra √ term is one line
+and fixes both. B-Line's real additions are multi-waypoint polylines (with a GUI and JSON), cross-track
+correction and heading interpolated along the path; its path is fixed during a run, so a moving tag goal
+still needs `DriveToTag`.
+
 ## The law to ship, in full
 
 ```

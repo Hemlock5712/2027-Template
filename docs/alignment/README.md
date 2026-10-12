@@ -27,13 +27,13 @@ AprilTag or a game piece. It includes:
 | 4 | **Use the tag's measured yaw**, not the map's: the map's yaw inherits the element's rotation error (31% in the hard world). Camera yaw bias is handled by decision 3. | Medium-high (sim) | Test plan step 5 |
 | 5 | **Keep the simple per-axis Kalman filter** in `TagTracker`, dropping frames with ambiguity > 0.3. Once cameras are calibrated it ties a geometry-aware filter (100/99/98% vs 100/99/97%). | Medium-high (sim) | Replay on real logs prefers the geo filter |
 | 6 | **Two cameras at the front corners.** One center camera sees the tag head-on, where the yaw solve is ambiguous: 73–78%. | High (sim) | — |
-| 7 | **Drive-to-point law: keep `VectorBrake`, retuned** (`DriveToPose`): speed = `min(vmax, √(v_end² + 2·decel·d'), kP·d)` with a vector accel limit, plus a heading reaction time and stop deadbands. Pass-through waypoints use the **corner rule** (`passingThrough(next)`). 0.28 s faster than before with no wheel slip. | High (sim) | Real drivetrain limits differ |
-| 8 | **Three rules for any limits you pick:** `ACCEL ≥ DECEL + ~1`; per-loop step `(ACCEL + ANGULAR_ACCEL·0.41)·0.02 ≤ ~0.17 m/s`; brake early by the actuation delay. | High (sim) | — |
+| 7 | **Drive-to-point law: keep `VectorBrake`, retuned** (`DriveToPose`): speed = `min(vmax, √(v_end² + 2·decel·d'), kP·d)` with a vector accel limit, plus a heading reaction time and stop deadbands. **ACCEL 10, DECEL 6 m/s²**: accelerate near the tires' limit, brake moderately so the last frames of a tag approach are taken slowly. Pass-through waypoints use the **corner rule** (`passingThrough(next)`). | High (sim) | Real drivetrain limits differ |
+| 8 | **Rules for any limits you pick:** `ACCEL > DECEL`; **set the drive slip current at the tires' grip** (about 60 A, not 120 A) or high accel just spins the wheels; brake early by the actuation delay. | High (sim) | — |
 | 9 | **Timestamps:** capture time = now − (frame age + Limelight latency), on the Phoenix clock. A straight approach is forgiving (no compensation at all still gets 98%); turning while viewing is not. | High | Spin test shows the tag pose swinging |
 | 10 | **Global fusion: add frames oldest-first.** The estimator throws away stored updates newer than the one being added. | High (read in source) | — |
 | 11 | **Collisions are the open risk** (32% false "done" after a 300–800 N push near the target). Next: an IMU-vs-wheels skid detector, and treat the lock as suspect after a skid (back off 30 cm, re-lock). Not in code yet. | Medium (sim) | IMU logs from pushes |
 | 12 | **Game pieces: steer on the bearing** (`yaw at capture − tx`), speed from `ty`, never stop on a measured range. The two-constant fixes are in; the full law is next. | Medium-high (sim) | 2027 game piece |
-| 13 | **2027 hardware:** SystemCore **plus a CANivore** (250 Hz odometry), Pigeon 2, Limelight 4s. 100 Hz odometry is fine for alignment; set `REACTION_TIME` to 0.10 without a CANivore. Set the drive slip current below the tire's grip (about 50–55 A here, not 120 A). | Medium (beta) | SystemCore CAN FD ships |
+| 13 | **2027 hardware:** SystemCore **plus a CANivore** (250 Hz odometry), Pigeon 2, Limelight 4s. 100 Hz odometry is fine for alignment; set `REACTION_TIME` to 0.10 without a CANivore. Slip current set to 60 A (was 120 A); measure the real value. | Medium (beta) | SystemCore CAN FD ships |
 | 14 | **Paths:** Commands v3 coroutines with `DriveToPose(...).passingThrough(next)` waypoints and `fork` for mechanisms. For curved paths use BLine (supports v3) or Choreo behind a small v3 follower. | Medium | 2027 game reveal |
 | 15 | **Upgrade the template next** to WPILib alpha-7, Phoenix 26.70.0-alpha-2, LimelightLib beta9-alpha7, AdvantageKit 27 alpha-5/6 and SystemCore image ≥ 14. Do it as its own PR. | High | — |
 
@@ -225,6 +225,9 @@ What it says:
   no command steps from a moving start, and graceful behavior with latency.
 - The old constants slipped the wheels about 300 ms per long move (`ANGULAR_ACCEL` 20 added a 0.16 m/s
   per-loop step at each module). The retune cuts that to 26 ms and finishes the approach 0.28 s sooner.
+- **Accelerating at 10 m/s² is fine once the slip current matches the grip** (55–60 A instead of
+  120 A): moves get 0.23–0.28 s faster with no extra slip. Braking stays at 6, because braking at 9
+  costs tag accuracy in the worst-case world (97% → 85–89%).
 - Profile-based laws (6328 rolling, WPILib per-axis, CTRE LinearPath) step the command after a moving
   start. The wheels slip and odometry is off 61–146 cm, which wrecks the local pose (79% false done).
 - Pass-through waypoints with the corner rule are 11–26% faster than stop-and-go and stay inside the
@@ -320,8 +323,10 @@ the keys are listed in the `log-reading` skill.
    - `Drivetrain/OdometryFrequencyHz` should be about 250.
 2. **Odometry and grip.**
    - Push the robot 3 m along a tape measure and compare with `OdometryPose`.
-   - Find the slip current: ramp drive current on carpet until a wheel spins, then set the slip
-     current to about 85% of that.
+   - Find the slip current: ramp drive current on carpet until a wheel spins, then set
+     `kSlipCurrent` in `TunerConstants` to about 85% of that (it ships at a guessed 60 A).
+   - Check acceleration: from rest, command a hard 3 m move and compare `OdometryPose` with a tape
+     measure. More than ~2 cm off means the wheels slipped; lower `kSlipCurrent` or `ACCEL`.
 3. **Camera noise and bias vs distance.** Park still, facing a tag, at 1, 2 and 3 m, head-on and at
    30°, for 10 s each. The spread of `TagTracker/<id>/TagInRobot` gives the real noise; the mean vs a
    tape measure shows whether the yaw bias changes with distance or angle.

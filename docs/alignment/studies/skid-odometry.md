@@ -44,7 +44,8 @@ it break 1 cm alignment, and what should the robot do about it?
   change nothing.
 - **Prevent cheaply.**
   - Set the drive slip current *below the sliding grip* (about 50–55 A here, not 120 A).
-  - Keep the drive-to-pose accel ≤ 8 m/s².
+  - Keep the drive-to-pose accel ≤ 8 m/s². *(Later: with the slip current at grip, accel 10 is also
+    clean; see [controllers.md Q5](controllers.md#6-revisit-how-hard-can-it-accelerate-q5).)*
   - This keeps odometry clean on launches at no time cost, but it doesn't fix collisions.
 - **100 Hz odometry (no CANivore) does not matter for alignment** (same success with and without
   pushes). It adds about 1 cm of drift during fast steering and halves IMU-bridge precision (p95
@@ -421,7 +422,8 @@ In priority order. The thresholds are starting points: log every signal, then se
    until a wheel spins, then use about 85% of that. Keep the drive-to-pose accel ≤ 8 m/s² (0.7 g)
    with `VectorBrake`'s default 6 as the norm. It costs nothing in approach time and keeps the
    global pose clean. It does not change local alignment, because hard launches happen while frames
-   still arrive.
+   still arrive. *(Later, controllers.md Q5: with the slip current at grip, `DriveToPose` now ships
+   accel 10 / decel 6 with no extra slip from rest.)*
 7. **Don't bother with these:**
    - (a) inflating the tracker filter: after a real hit there are no good frames left to use;
    - (b) dropping slipping modules: all four slip together;

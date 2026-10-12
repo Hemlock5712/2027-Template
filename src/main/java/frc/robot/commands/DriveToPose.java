@@ -24,12 +24,12 @@ import org.wpilib.math.kinematics.ChassisVelocities;
  * <p>Classic-style Commands v3 command on {@link ClassicCommand}.
  */
 public class DriveToPose extends ClassicCommand {
-  // Tuned in tools/alignsim (docs/alignment/studies/controllers.md). Rules that must keep holding:
-  // ACCEL > DECEL and ANGULAR_ACCEL > ANGULAR_DECEL (or it overshoots), and
-  // (ACCEL + ANGULAR_ACCEL * 0.41 m) * 0.02 s <= ~0.17 m/s per loop (or the wheels slip).
+  // Tuned in tools/alignsim (docs/alignment/studies/controllers.md). Keep ACCEL > DECEL and
+  // ANGULAR_ACCEL > ANGULAR_DECEL (or it overshoots).
+  // ACCEL 10 needs kSlipCurrent in TunerConstants at the tires' grip, or the wheels spin.
   private static final double MAX_SPEED = 4.0; // m/s
-  private static final double DECEL = 4.0; // m/s^2, the braking we plan on
-  private static final double ACCEL = 5.0; // m/s^2, hard limit on any change of velocity
+  private static final double DECEL = 6.0; // m/s^2; braking harder costs tag accuracy at the end
+  private static final double ACCEL = 10.0; // m/s^2, hard limit on any change of velocity
   // Close to the goal, speed = KP * distance instead of the braking curve (no chatter at the end).
   private static final double KP = 6.0; // (m/s) per m
   // Brake this much early to cover sensor + CAN delay. Use 0.10 with 100 Hz odometry (no CANivore).
